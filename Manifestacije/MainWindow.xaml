@@ -1,0 +1,173 @@
+﻿<Window x:Class="Manifestacije.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manifestacije"
+        mc:Ignorable="d"
+        Title="Manifestacije" Height="680" Width="1200" WindowStartupLocation="CenterScreen"
+        WindowStyle="None" ResizeMode="NoResize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Window.Resources>
+
+        
+
+        <Style x:Key="ListViewStyle" TargetType="ListView">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+    </Window.Resources>
+
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="20" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Width="20" Background="Transparent" BorderBrush="Transparent" Click="Exit_Click">
+                <Image Source="images/robot.png"></Image>
+            </Button>
+        </StackPanel>
+        <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="MS Gothic" FontStyle="Oblique">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"></DockPanel>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="File">
+                <MenuItem Header="Dodaj">
+                    <MenuItem Header="Tip manifestacije" Click="DodajTipManifestacije_Click"></MenuItem>
+                    <MenuItem Header="Manifestacija" Click="DodajManifestaciju_Click"></MenuItem>
+                    <MenuItem Header="Etiketa" Click="DodajEtiketu_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Brisanje">
+                    <MenuItem Header="Tip manifestacije" Click="BrisanjeSvihTipovaManifestacija_Click"></MenuItem>
+                    <MenuItem Header="Manifestacija" Click="BrisanjeSvihManifestacija_Click"></MenuItem>
+                    <MenuItem Header="Etiketa" Click="BrisanjeSvihEtiketa_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Ucitaj">
+                    <MenuItem Header="Tip manifestacije"></MenuItem>
+                    <MenuItem Header="Manifestacija"></MenuItem>
+                    <MenuItem Header="Etiketa"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Sacuvaj"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Izmeni" Click="Edit_Click">
+            </MenuItem>
+            <MenuItem Header="Tabela" Click="SveManifestacije_Click"></MenuItem>
+            <Separator Width="1058" Background="Transparent"></Separator>
+
+
+        </Menu>
+        <StackPanel x:Name="tools" DockPanel.Dock="Top" Orientation="Horizontal" Background="Transparent" Height="40" 
+                    Margin="5,5,5,0" HorizontalAlignment="Center">
+            <Button x:Name="sveBtn" Width="200" Foreground="Black" Margin="0,0,20,0" 
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" Click="SveManifestacije_Click"
+                    ToolTip="Tabelarni prikaz svih unetih podataka" >
+                    <TextBlock VerticalAlignment="Center">View</TextBlock>
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" 
+                    Click="DodajTipManifestacije_Click" >
+                
+                    <TextBlock VerticalAlignment="Center">Dodaj tip manifestacije</TextBlock>
+                
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black"  Margin="0,0,20,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" Click="DodajManifestaciju_Click"
+                   >
+                
+                    <TextBlock VerticalAlignment="Center">Dodaj manifestaciju</TextBlock>
+               
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" 
+                    Click="DodajEtiketu_Click" >
+               
+                    <TextBlock VerticalAlignment="Center">Dodaj etiketu</TextBlock>
+                
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="175" Foreground="Black" Margin="0,0,2,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent"
+                   >
+               
+                    <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Help</TextBlock>
+                
+            </Button>
+
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Width="1190" Margin="0,10,0,10">
+            <StackPanel x:Name="left" Orientation="Vertical" Background="{StaticResource TransparentWhite}" Width="215" Margin="0,0,10,0">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="5">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Učitavanje podataka"
+                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
+                                       >
+                                <TextBlock VerticalAlignment="Center">Load</TextBlock>
+                            </Button>
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Čuvanje podataka"
+                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
+                                         >
+                                <TextBlock VerticalAlignment="Center">Save</TextBlock>
+                            </Button>
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Izmena manifestacije"
+                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
+                                        Click="Edit_Click" >
+                                <TextBlock VerticalAlignment="Center">Edit</TextBlock>
+                            </Button>
+                            <Button Height="30" Width="30" ToolTip="Brisanje manifestacije"
+                                        Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
+                                        Click="Delete_Click" >
+                                <TextBlock VerticalAlignment="Center">Delete</TextBlock>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="txtPRETRAGA" Text="Pretraga..."  Height="25" Width="165" FontFamily="MS Gothic" 
+                                         FontStyle="Oblique" FontSize="16" Margin="2,2,0,2" VerticalAlignment="Center"
+                                         Background="{StaticResource TransparentWhite}" Cursor="IBeam">
+                            </TextBox>
+                            <Button Height="30" Width="40" BorderBrush="Transparent" ToolTip="Pretraga"
+                                        >
+                                <TextBlock>Search</TextBlock>
+                            </Button>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <ListView x:Name="lista" DockPanel.Dock="Bottom" ItemsSource="{Binding Manifestacije, UpdateSourceTrigger=PropertyChanged}" 
+                                  Style="{StaticResource ResourceKey=ListViewStyle}" Width="190" Height="500"
+                                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  Background="{StaticResource TransparentWhite}" MouseDoubleClick="Lista_MouseDoubleClick" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                                <Image Width="40" Height="40" Source="{Binding Ikonica}"/>
+                                                <TextBlock Width="137" VerticalAlignment="Center" Text="{Binding Ime}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+
+                    </ListView>
+
+                </DockPanel>
+            </StackPanel>
+            <StackPanel Background="White" Opacity="0.5"  >
+                <Image DockPanel.Dock="Top" Source="images/mapa.png" Stretch="Fill" Width="1000" Height="550"></Image>
+            </StackPanel>
+
+        </StackPanel>
+
+
+    </DockPanel>
+
+</Window>

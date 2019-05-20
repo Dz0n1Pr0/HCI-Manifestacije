@@ -1,0 +1,155 @@
+﻿<Window x:Class="Manifestacije.ViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manifestacije"
+         mc:Ignorable="d"
+        Title="Pregled" Height="460" Width="960" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+
+    <Window.Resources>
+
+        
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontStyle" Value="Oblique"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="RowHeight" Value="18"/>
+            <Setter Property="ColumnWidth" Value="80"/>
+            <Setter Property="ColumnHeaderHeight" Value="40"/>
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}" />
+        </Style>
+
+        <Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontStyle" Value="Oblique"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="12*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="22" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center">Pregled podataka</TextBlock>
+
+        <StackPanel x:Name="pnlVrste" Grid.Row="1" Grid.Column="0" Width="820" Margin="5,0,0,5" 
+                    Background="{StaticResource TransparentWhite}" Visibility="Visible" HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <DataGrid x:Name="tabelaVrste" ItemsSource="{Binding Path=Manifestacije}" CanUserDeleteRows ="True"  IsReadOnly="True" 
+                  Height="400" Width="785" Background="{StaticResource TransparentWhite}" 
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
+                  AutoGenerateColumns="True" AutoGeneratingColumn="TabelaVrste_AutoGeneratingColumn" HorizontalAlignment="Center">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.CellStyle>
+                    <Style>
+                        <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel x:Name="pnlTipoviVrsta" Grid.Row="1" Grid.Column="0" Width="820" Margin="5,0,0,5" 
+                    Background="{StaticResource TransparentWhite}" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Visibility="Hidden" >
+            <DataGrid x:Name="tabelaTipoviVrsta" ItemsSource="{Binding Path=TipoviManifestacija}" CanUserDeleteRows ="True"  IsReadOnly="True" 
+                  Height="400" Width="785" Background="{StaticResource TransparentWhite}"  
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}">
+                <DataGrid.CellStyle>
+                    <Style>
+                        <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel x:Name="pnlEtikete" Grid.Row="1" Grid.Column="0" Width="820" Visibility="Hidden" 
+                    Background="{StaticResource TransparentWhite}" HorizontalAlignment="Center"
+                    VerticalAlignment="Center"  Margin="5,0,0,5" >
+            <DataGrid x:Name="tabelaEtikete" ItemsSource="{Binding Path=Etikete}" CanUserDeleteRows ="True"  IsReadOnly="True" 
+                  Height="400" Width="785" Background="{StaticResource TransparentWhite}" 
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
+                  AutoGenerateColumns="True" AutoGeneratingColumn="TabelaEtikete_AutoGeneratingColumn">
+                <DataGrid.CellStyle>
+                    <Style>
+                        <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Height="400" Width="130" Background="{StaticResource TransparentWhite}"
+                    Margin="5,5,5,15" VerticalAlignment="Bottom">
+            <Button Height="74" Margin="5,5,5,5"  Click="TipoviVrsta_Click" Background="{StaticResource TransparentWhite}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="106" TextAlignment="Center"  TextWrapping="Wrap">Tipovi manifestacija</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Height="40" Margin="5,0,5,5" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent"
+                    Background="{StaticResource TransparentWhite}" Click="Vrste_Click"
+                    >
+                <StackPanel Orientation="Horizontal">
+                    
+                    <TextBlock VerticalAlignment="Center">Manifestacije</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Height="40" Margin="5,0,5,5" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent"
+                    Background="{StaticResource TransparentWhite}" Click="Etikete_Click"
+                    >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">Etikete</TextBlock>
+                </StackPanel>
+            </Button>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Height="30" Width="30" ToolTip="Dodavanje"
+                        Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
+                         Click="Dodaj_Click">
+                    <TextBlock>Add</TextBlock>
+                </Button>
+                <Button Height="30" Width="30" ToolTip="Izmena"
+                                    Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
+                                     Click="Izmeni_Click">
+                    <TextBlock>Edit</TextBlock>
+                </Button>
+                <Button Height="30" Width="30" ToolTip="Brisanje" Click="Obrisi_Click"
+                                    Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
+                                    >
+                    <TextBlock>Del</TextBlock>
+                </Button>
+            </StackPanel>
+
+
+            <Button Height="40" Margin="5,145,5,5" Click="Nazad_Click"  >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">Nazad</TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
