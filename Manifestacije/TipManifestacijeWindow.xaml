@@ -1,0 +1,200 @@
+﻿<Window x:Class="Manifestacije.TipManifestacijeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manifestacije"
+         mc:Ignorable="d"
+        Title="Dodavanje tipa vrste" Height="265" Width="490" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1">
+
+    <Window.Resources>
+        
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="Margin" Value="3"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="Blue"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="1.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+
+    </Window.Resources>
+
+
+    <StackPanel Orientation="Vertical" >
+        <TextBlock x:Name="lblNaslov" HorizontalAlignment="Center" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}"> Dodavanje tipa vrste</TextBlock>
+
+        <StackPanel Orientation="Horizontal" Margin="5">
+
+            <Grid Background="{StaticResource TransparentWhite}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="15"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="ID oznaka :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Ime :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="Opis:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
+                <TextBlock Grid.Column="0" Grid.Row="5" Text="Ikonica :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
+
+                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource ResourceKey=TextBoxStyle}">
+                    <TextBox.Text>
+                        <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
+                            
+                        </Binding>
+                    </TextBox.Text>
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
+                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
+                                           HorizontalAlignment="Left" FontSize="12"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                </TextBox>
+                <TextBox x:Name="txtIME" Grid.Column="1" Grid.Row="2" Style="{StaticResource ResourceKey=TextBoxStyle}" >
+                    <TextBox.Text>
+                        <Binding Path="Ime" UpdateSourceTrigger="PropertyChanged">
+                            
+                        </Binding>
+                    </TextBox.Text>
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
+                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
+                                           HorizontalAlignment="Left" FontSize="12"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                </TextBox>
+                <TextBox x:Name="txtOPIS" Grid.Column="1" Grid.Row="4" Height="100" Style="{StaticResource ResourceKey=TextBoxStyle}"
+                     ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap"
+                     Text="{Binding Path=Opis}"></TextBox>
+                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" >
+                    <TextBox x:Name="txtIKONICA" Width="157" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="20" FontSize="12"
+                             VerticalAlignment="Center">
+                        <TextBox.Text>
+                            <Binding Path="IkonicaP" UpdateSourceTrigger="PropertyChanged">
+                                
+                            </Binding>
+                        </TextBox.Text>
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
+                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
+                                           HorizontalAlignment="Left" FontSize="12"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+                    </TextBox>
+                    <Button Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" 
+                    BorderBrush="Transparent" Width="41" Height="25" Click="Ikonica_Click">
+                        <TextBlock>Upload</TextBlock>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+
+            <StackPanel Orientation="Vertical" Width="170" Background="{StaticResource TransparentWhite}" Margin="5,0,5,0">
+
+                <Button Width="150"  Height="40" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" 
+                    BorderBrush="Transparent" Margin="5" Click="Potvrdi_Click">
+                  
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Potvrdi</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Width="150" Height="40" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" 
+                    BorderBrush="Transparent" Click="Nazad_Click" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Nazad</TextBlock>
+                    </StackPanel>
+                </Button>
+                
+                <Border  Grid.Column="1" Grid.Row="3" Height="100" Width="100" BorderBrush="Green" BorderThickness="1"
+                             HorizontalAlignment="Center" Margin="3,10,0,5">
+                    <Image x:Name="Ikonica"  Opacity="1" Source="{Binding Path=IkonicaP}" ></Image>
+                </Border>
+            </StackPanel>
+
+        </StackPanel>
+    </StackPanel>
+</Window>
