@@ -9,12 +9,12 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1">
 
     <Window.Resources>
-        
+
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontFamily" Value="MS Gothic"/>
-            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontStyle" Value="Normal" />
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Margin" Value="3"/>
         </Style>
@@ -23,8 +23,8 @@
             <Setter Property="Width" Value="200" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontFamily" Value="MS Gothic"/>
-            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontStyle" Value="Normal" />
             <Setter Property="Margin" Value="3"/>
 
             <Setter Property="Template">
@@ -57,7 +57,7 @@
 
 
     <StackPanel Orientation="Vertical" >
-        <TextBlock x:Name="lblNaslov" HorizontalAlignment="Center" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}"> Dodavanje tipa vrste</TextBlock>
+        <TextBlock x:Name="lblNaslov" HorizontalAlignment="Center" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}">Add Event Type</TextBlock>
 
         <StackPanel Orientation="Horizontal" Margin="5">
 
@@ -76,15 +76,14 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="ID oznaka :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="Ime :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
-                <TextBlock Grid.Column="0" Grid.Row="4" Text="Opis:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
-                <TextBlock Grid.Column="0" Grid.Row="5" Text="Ikonica :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Type ID :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,2.8" Width="81"  ></TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Type Name :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,2.6,3,3" Width="81" />
 
                 <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource ResourceKey=TextBoxStyle}">
                     <TextBox.Text>
                         <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
-                            
+
                         </Binding>
                     </TextBox.Text>
                     <Validation.ErrorTemplate>
@@ -110,7 +109,7 @@
                 <TextBox x:Name="txtIME" Grid.Column="1" Grid.Row="2" Style="{StaticResource ResourceKey=TextBoxStyle}" >
                     <TextBox.Text>
                         <Binding Path="Ime" UpdateSourceTrigger="PropertyChanged">
-                            
+
                         </Binding>
                     </TextBox.Text>
                     <Validation.ErrorTemplate>
@@ -137,14 +136,17 @@
                      ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap"
                      Text="{Binding Path=Opis}"></TextBox>
-                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" >
-                    <TextBox x:Name="txtIKONICA" Width="157" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="20" FontSize="12"
-                             VerticalAlignment="Center">
-                        <TextBox.Text>
-                            <Binding Path="IkonicaP" UpdateSourceTrigger="PropertyChanged">
-                                
-                            </Binding>
-                        </TextBox.Text>
+
+            </Grid>
+            <StackPanel Orientation="Vertical" Width="192" Background="{StaticResource TransparentWhite}" Margin="5,0,5,0">
+                <Border Height="100" Width="100" BorderBrush="Green" BorderThickness="2"
+                             HorizontalAlignment="Center" Margin="47,10,45,5">
+                    <Image x:Name="Ikonica"  Opacity="1" Source="{Binding IkonicaP}" Margin="-1,1.2,-1.2,-1.6" />
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Height="29" Margin="10,0,10,0">
+                    <TextBox x:Name="txtIKONICA" Width="118" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="20" FontSize="12"
+                             VerticalAlignment="Center" Text="{Binding IkonicaP, UpdateSourceTrigger=PropertyChanged}" Margin="10,3,3,2.6">
                         <Validation.ErrorTemplate>
                             <ControlTemplate>
                                 <Grid>
@@ -165,34 +167,27 @@
                             </ControlTemplate>
                         </Validation.ErrorTemplate>
                     </TextBox>
-                    <Button Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" 
+                    <Button Foreground="Black" FontFamily="Calibri" 
                     BorderBrush="Transparent" Width="41" Height="25" Click="Ikonica_Click">
-                        <TextBlock>Upload</TextBlock>
+                        <TextBlock><Run Text="Upload"/></TextBlock>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation = "Horizontal" Height="54" Margin="13,20,0,0">
+                    <Button Foreground="Black" FontFamily="Calibri" FontSize="16" 
+                    BorderBrush="Transparent" Margin="10,12,90.6,10.4" Click="Potvrdi_Click" Width="67">
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center"><Run Text="Add"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Foreground="Black" FontFamily="Calibri" FontSize="16" 
+                    BorderBrush="Transparent" Click="Nazad_Click" Margin="-70,12,90.6,10.4" Width="67" >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center"><Run Text="Cancel"/></TextBlock>
+                        </StackPanel>
                     </Button>
                 </StackPanel>
 
-            </Grid>
-
-            <StackPanel Orientation="Vertical" Width="170" Background="{StaticResource TransparentWhite}" Margin="5,0,5,0">
-
-                <Button Width="150"  Height="40" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" 
-                    BorderBrush="Transparent" Margin="5" Click="Potvrdi_Click">
-                  
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Potvrdi</TextBlock>
-                    </StackPanel>
-                </Button>
-                <Button Width="150" Height="40" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" 
-                    BorderBrush="Transparent" Click="Nazad_Click" >
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Nazad</TextBlock>
-                    </StackPanel>
-                </Button>
-                
-                <Border  Grid.Column="1" Grid.Row="3" Height="100" Width="100" BorderBrush="Green" BorderThickness="1"
-                             HorizontalAlignment="Center" Margin="3,10,0,5">
-                    <Image x:Name="Ikonica"  Opacity="1" Source="{Binding Path=IkonicaP}" ></Image>
-                </Border>
             </StackPanel>
 
         </StackPanel>

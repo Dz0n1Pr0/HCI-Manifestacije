@@ -10,15 +10,15 @@
 
     <Window.Resources>
 
-        
+
 
         <Style x:Key="ListViewStyle" TargetType="ListView">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontFamily" Value="MS Gothic"/>
-            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
+
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
     </Window.Resources>
 
@@ -29,119 +29,120 @@
                 <Image Source="images/robot.png"></Image>
             </Button>
         </StackPanel>
-        <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="MS Gothic" FontStyle="Oblique">
+        <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="Calibri" Height="27">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <DockPanel HorizontalAlignment="Stretch"></DockPanel>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Header="File">
-                <MenuItem Header="Dodaj">
-                    <MenuItem Header="Tip manifestacije" Click="DodajTipManifestacije_Click"></MenuItem>
-                    <MenuItem Header="Manifestacija" Click="DodajManifestaciju_Click"></MenuItem>
-                    <MenuItem Header="Etiketa" Click="DodajEtiketu_Click"></MenuItem>
+            <MenuItem Header="File" Width="38">
+                <MenuItem Header="Add">
+                    <MenuItem Header="Event Type" Click="DodajTipManifestacije_Click"></MenuItem>
+                    <MenuItem Header="Event" Click="DodajManifestaciju_Click"></MenuItem>
+                    <MenuItem Header="Label" Click="DodajEtiketu_Click"></MenuItem>
                 </MenuItem>
-                <MenuItem Header="Brisanje">
-                    <MenuItem Header="Tip manifestacije" Click="BrisanjeSvihTipovaManifestacija_Click"></MenuItem>
-                    <MenuItem Header="Manifestacija" Click="BrisanjeSvihManifestacija_Click"></MenuItem>
-                    <MenuItem Header="Etiketa" Click="BrisanjeSvihEtiketa_Click"></MenuItem>
+                <MenuItem Header="Delete">
+                    <MenuItem Header="Event Type" Click="BrisanjeSvihTipovaManifestacija_Click"></MenuItem>
+                    <MenuItem Header="Event" Click="BrisanjeSvihManifestacija_Click"></MenuItem>
+                    <MenuItem Header="Label" Click="BrisanjeSvihEtiketa_Click"></MenuItem>
                 </MenuItem>
-                <MenuItem Header="Ucitaj">
-                    <MenuItem Header="Tip manifestacije"></MenuItem>
-                    <MenuItem Header="Manifestacija"></MenuItem>
-                    <MenuItem Header="Etiketa"></MenuItem>
+                <MenuItem Header="Load">
+                    <MenuItem Header="Event Type"></MenuItem>
+                    <MenuItem Header="Event"></MenuItem>
+                    <MenuItem Header="Label"></MenuItem>
                 </MenuItem>
-                <MenuItem Header="Sacuvaj"></MenuItem>
+                <MenuItem Header="Save"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Izmeni" Click="Edit_Click">
+            <MenuItem Header="Edit" Width="38" Click="Edit_Click">
             </MenuItem>
-            <MenuItem Header="Tabela" Click="SveManifestacije_Click"></MenuItem>
+            <MenuItem Header="View All" Width="54" Click="SveManifestacije_Click"></MenuItem>
+            <MenuItem Header="Help" Width="39"></MenuItem>         
             <Separator Width="1058" Background="Transparent"></Separator>
 
 
         </Menu>
         <StackPanel x:Name="tools" DockPanel.Dock="Top" Orientation="Horizontal" Background="Transparent" Height="40" 
-                    Margin="5,5,5,0" HorizontalAlignment="Center">
-            <Button x:Name="sveBtn" Width="200" Foreground="Black" Margin="0,0,20,0" 
-                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" Click="SveManifestacije_Click"
-                    ToolTip="Tabelarni prikaz svih unetih podataka" >
-                    <TextBlock VerticalAlignment="Center">View</TextBlock>
-            </Button>
+                    Margin="428,5,88,0" HorizontalAlignment="Center" Width="684">
+
             <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
-                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" 
+                    FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" 
                     Click="DodajTipManifestacije_Click" >
-                
-                    <TextBlock VerticalAlignment="Center">Dodaj tip manifestacije</TextBlock>
-                
+
+                <TextBlock VerticalAlignment="Center">Add Event Type</TextBlock>
+
             </Button>
             <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black"  Margin="0,0,20,0"
-                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" Click="DodajManifestaciju_Click"
+                    FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" Click="DodajManifestaciju_Click"
                    >
-                
-                    <TextBlock VerticalAlignment="Center">Dodaj manifestaciju</TextBlock>
-               
+
+                <TextBlock VerticalAlignment="Center">Add Event</TextBlock>
+
             </Button>
             <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
-                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" 
+                    FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" 
                     Click="DodajEtiketu_Click" >
-               
-                    <TextBlock VerticalAlignment="Center">Dodaj etiketu</TextBlock>
-                
+
+                <TextBlock VerticalAlignment="Center">Add Label</TextBlock>
+
             </Button>
-            <Button Background="{StaticResource TransparentWhite}" Width="175" Foreground="Black" Margin="0,0,2,0"
-                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent"
-                   >
-               
-                    <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Help</TextBlock>
-                
-            </Button>
+
 
         </StackPanel>
+        <StackPanel Margin="0,-40,0,0">
+            <Grid x:Name="left" Background="{StaticResource TransparentWhite}" Margin="0,0,0,0" Height="644" Width="287">
+                <DockPanel Width ="286" Margin="0,0,1,0">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,1,0,-73" Height="60" Width="266">
 
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Width="1190" Margin="0,10,0,10">
-            <StackPanel x:Name="left" Orientation="Vertical" Background="{StaticResource TransparentWhite}" Width="215" Margin="0,0,10,0">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="5">
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Učitavanje podataka"
-                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
-                                       >
-                                <TextBlock VerticalAlignment="Center">Load</TextBlock>
-                            </Button>
-                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Čuvanje podataka"
-                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
-                                         >
-                                <TextBlock VerticalAlignment="Center">Save</TextBlock>
-                            </Button>
-                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Izmena manifestacije"
-                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
-                                        Click="Edit_Click" >
-                                <TextBlock VerticalAlignment="Center">Edit</TextBlock>
-                            </Button>
-                            <Button Height="30" Width="30" ToolTip="Brisanje manifestacije"
-                                        Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
-                                        Click="Delete_Click" >
-                                <TextBlock VerticalAlignment="Center">Delete</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="txtPRETRAGA" Text="Search..."  Height="25" Width="210" FontFamily="Calibri" 
+                                FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"
+                                Background="{StaticResource TransparentWhite}" Cursor="IBeam"/>
+                            <Button Height="25" Width="42" BorderBrush="Transparent" ToolTip="Searching for events"
+                                        >
+                                <TextBlock><Run Text="Search"/></TextBlock>
                             </Button>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="txtPRETRAGA" Text="Pretraga..."  Height="25" Width="165" FontFamily="MS Gothic" 
-                                         FontStyle="Oblique" FontSize="16" Margin="2,2,0,2" VerticalAlignment="Center"
-                                         Background="{StaticResource TransparentWhite}" Cursor="IBeam">
-                            </TextBox>
-                            <Button Height="30" Width="40" BorderBrush="Transparent" ToolTip="Pretraga"
-                                        >
-                                <TextBlock>Search</TextBlock>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Loading data"
+                                Background="{StaticResource TransparentWhite}"  Margin="-4,0,0,0"
+                                       >
+                                <TextBlock VerticalAlignment="Center"><Run Text="Load"/></TextBlock>
+                            </Button>
+                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Saving data"
+                                Background="{StaticResource TransparentWhite}"  Margin="0,0,0,0"
+                                         >
+                                <TextBlock VerticalAlignment="Center"><Run Text="Save"/></TextBlock>
+                            </Button>
+                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Edit selected event"
+                                Background="{StaticResource TransparentWhite}"  Margin="0,0,0,0"
+                                Click="Edit_Click" >
+                                <TextBlock VerticalAlignment="Center"><Run Text="Edit"/></TextBlock>
+                            </Button>
+                            <Button Height="30" Width="67" ToolTip="Delete selected event"
+                                Background="{StaticResource TransparentWhite}" Margin="0,0,0,0" BorderBrush="Transparent"
+                                Click="Delete_Click" >
+                                <TextBlock VerticalAlignment="Center"><Run Text="Delete"/></TextBlock>
                             </Button>
                         </StackPanel>
 
                     </StackPanel>
 
                     <ListView x:Name="lista" DockPanel.Dock="Bottom" ItemsSource="{Binding Manifestacije, UpdateSourceTrigger=PropertyChanged}" 
-                                  Style="{StaticResource ResourceKey=ListViewStyle}" Width="190" Height="500"
-                                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                  Background="{StaticResource TransparentWhite}" MouseDoubleClick="Lista_MouseDoubleClick" >
+                        Height="518"
+                        ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                        MouseDoubleClick="Lista_MouseDoubleClick" Margin="10,-2,10.4,0" Width="266" >
+                        <ListView.Resources>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.Style>
+                            <StaticResource ResourceKey="ListViewStyle"/>
+                        </ListView.Style>
+                        <ListView.Background>
+                            <StaticResource ResourceKey="TransparentWhite"/>
+                        </ListView.Background>
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn>
@@ -160,9 +161,21 @@
                     </ListView>
 
                 </DockPanel>
-            </StackPanel>
+                <Button x:Name="sveBtn" Width="264" Height="28" Foreground="Black" Margin="13,586,10,30" 
+                    FontFamily="Calibri" FontSize="16" Click="SveManifestacije_Click"
+                    ToolTip="Tabular presentation of all the data" >
+                    <TextBlock VerticalAlignment="Center">View All</TextBlock>
+                </Button>
+
+            </Grid>
+
+        </StackPanel>
+
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,10,5,10">
+
             <StackPanel Background="White" Opacity="0.5"  >
-                <Image DockPanel.Dock="Top" Source="images/mapa.png" Stretch="Fill" Width="1000" Height="550"></Image>
+                <Image DockPanel.Dock="Top" Source="images/mapa.png" Stretch="Fill" Width="903" Height="564"/>
             </StackPanel>
 
         </StackPanel>

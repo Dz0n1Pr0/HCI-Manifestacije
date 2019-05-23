@@ -9,10 +9,10 @@
         mc:Ignorable="d"
         Title="Dodavanje Etikete" Height="250" Width="480" WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
-    
+
     <Window.Resources>
 
-      
+
 
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
 
@@ -20,8 +20,7 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontFamily" Value="MS Gothic"/>
-            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Margin" Value="3"/>
         </Style>
@@ -30,8 +29,7 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontFamily" Value="MS Gothic"/>
-            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="Margin" Value="3"/>
 
             <Setter Property="Template">
@@ -62,42 +60,43 @@
             <WrapPanel Height="24">
                 <Image Width="17" Height="17" Stretch="Fill" Source="{Binding Photo}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                       FontSize="14" Foreground="Black" FontFamily="MS Gothic" FontStyle ="Oblique" />
+                       FontSize="14" Foreground="Black" FontFamily="Calibri"/>
             </WrapPanel>
         </DataTemplate>
 
     </Window.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="40" Margin="0,0,0.4,0">
+            <TextBlock x:Name="lblNaslov" Height="25" Text="Add Label" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}" HorizontalAlignment="Center"></TextBlock>
+        </StackPanel>
 
+        <DockPanel DockPanel.Dock="Top" Height="132" Margin="0,0,0.4,0">
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-        <TextBlock x:Name="lblNaslov" Height="25" Text="Dodavanje etikete" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}" HorizontalAlignment="Center"></TextBlock>
-        <StackPanel Orientation="Horizontal" Margin="5">
-
-            <Grid Background="{StaticResource TransparentWhite}">
+            <Grid Background="{StaticResource TransparentWhite}" RenderTransformOrigin="0.428,0.499" Width="426">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="15"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="15"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="15"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="7.2"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="4.8"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="0"/>
 
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="123*" />
+                    <ColumnDefinition Width="302*" />
 
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="ID oznaka :" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="Boja:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
-                <TextBlock Grid.Column="0" Grid.Row="4" Text="Opis:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" 
-                           VerticalAlignment="Top"/>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Label ID:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,5.2,2.6" Height="Auto" Width="90"  ></TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Color:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3.2,5.2,3.2" Height="Auto" Width="90" />
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,1,5.2,0" 
+                           VerticalAlignment="Top" Width="90"/>
 
-                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource ResourceKey=TextBoxStyle}" >
+                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="Auto" Margin="3.8,3,0.6,2.6" Width="Auto" >
                     <TextBox.Text>
                         <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
-                            
+
                         </Binding>
                     </TextBox.Text>
                     <Validation.ErrorTemplate>
@@ -120,38 +119,38 @@
                         </ControlTemplate>
                     </Validation.ErrorTemplate>
                 </TextBox>
-                <Border x:Name="borderBOJA" Grid.Column="1" Grid.Row="2" BorderThickness="1.5">
+                <Border x:Name="borderBOJA" Grid.Column="1" Grid.Row="2" BorderThickness="1.5" Margin="3.8,0.2,0.6,2.2">
                     <xctk1:ColorPicker Name="cp" DisplayColorAndName="True" SelectedColorChanged="Cp_SelectedColorChanged"
                                       AvailableColorsSortingMode="HueSaturationBrightness" 
-                                      SelectedColor="{Binding Path=Boja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedColor="{Binding Path=Boja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="-1.6,0.4,-1.6,-0.2">
                     </xctk1:ColorPicker>
 
                 </Border>
-                <TextBox x:Name="txtOPIS" Grid.Column="1" Grid.Row="4" Height="100" Style="{StaticResource ResourceKey=TextBoxStyle}"
+                <TextBox x:Name="txtOPIS" Grid.Column="1" Grid.Row="4" Height="Auto" Style="{StaticResource ResourceKey=TextBoxStyle}"
                      ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" Text="{Binding Path=Opis}" ></TextBox>
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" Text="{Binding Path=Opis}" Margin="3.8,0,0.6,0" Width="Auto" />
 
             </Grid>
+        </DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="{StaticResource TransparentWhite}" Margin="5,0,0.4,0" Height="56">
+            <Button Width="150"  Height="30" Foreground="Black" FontFamily="Calibri" FontSize="16"
+                        BorderBrush="Transparent" Margin="75,0,0,0"  Click="Potvrdi_Click">
 
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"><Run Text="Add"/></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Width="150" Height="30" Foreground="Black" FontFamily="Calibri" FontSize="16"
+                        BorderBrush="Transparent" Click="Nazad_Click" Margin="30,0,0,0" >
+                <StackPanel Orientation="Horizontal">
 
-            <StackPanel Orientation="Vertical" Background="{StaticResource TransparentWhite}" Margin="5,0,0,0">
-                <Button Width="150"  Height="40" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16"
-                        BorderBrush="Transparent" Margin="5"  Click="Potvrdi_Click">
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Potvrdi</TextBlock>
-                    </StackPanel>
-                </Button>
-                <Button Width="150" Height="40" Foreground="Black" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16"
-                        BorderBrush="Transparent" Click="Nazad_Click" >
-                    <StackPanel Orientation="Horizontal">
-                        
-                        <TextBlock VerticalAlignment="Center">Nazad</TextBlock>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-
+                    <TextBlock VerticalAlignment="Center"><Run Text="Cancel"/></TextBlock>
+                </StackPanel>
+            </Button>
         </StackPanel>
-    </StackPanel>
+
+    </DockPanel>
+
+
 
 </Window>
