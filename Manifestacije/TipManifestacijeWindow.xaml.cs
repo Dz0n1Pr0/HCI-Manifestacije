@@ -138,7 +138,13 @@ namespace Manifestacije
 
         private void Nazad_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            String message = "Data will be lost. Are you sure?";
+            MessageBoxResult mbr = MessageBox.Show(message, "Unfinished", MessageBoxButton.YesNo);
+
+            if (mbr == MessageBoxResult.Yes)
+            {
+                Close();
+            }
         }
 
         private void Ikonica_Click(object sender, RoutedEventArgs e)
@@ -167,14 +173,14 @@ namespace Manifestacije
 
         private void Potvrdi_Click(object sender, RoutedEventArgs e)
         {
-            if (ID == null || ID.Equals(""))
+            if (ID == null || ID.Equals("") || Ime == null || Ime.Equals("") || Opis == null || Opis.Equals("") || IkonicaP == null)
             {
-                MessageBox.Show("Pogrešan unos! Pokušajte ponovo.", "Greška");
+                MessageBox.Show("You must fill all fields", "Error");
                 return;
             }
             else if (ListaTipManifestacijecs.TipoviManifestacija.ContainsKey(ID) && Editing == false)
             {
-                MessageBox.Show("ID već postoji!", "Pogrešan ID");
+                MessageBox.Show("ID already exists!", "Wrong ID");
                 return;
             }
 

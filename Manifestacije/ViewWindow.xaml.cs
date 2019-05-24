@@ -162,19 +162,28 @@ namespace Manifestacije
         private void Obrisi_Click(object sender, RoutedEventArgs e)
         {
 
+
             if (trenutniPanel == pnlVrste)
             {
+                if ((Manifestacija)tabelaVrste.SelectedItem == null)
+                {
+                    MessageBox.Show("You must choose event from the list!");
+                    return;
+                }
                 String selektovanID = ((Manifestacija)tabelaVrste.SelectedItem).ID;
                 ListaManifestacija.Manifestacije.Remove(selektovanID);
                 popuniManifestacije();
             }
             else if (trenutniPanel == pnlEtikete)
             {
+                if ((Etiketa)tabelaEtikete.SelectedItem == null)
+                {
+                    MessageBox.Show("You must choose label from the list!");
+                    return;
+                }
                 String selektovanaID = ((Etiketa)tabelaEtikete.SelectedItem).ID;
-
-                String message = "Da li ste sigurni da želite da obrišete etiketu čiji je ID " + selektovanaID + "?\n\n"
-                    + "Njenim brisanjem ukloniće se i iz liste etiketa vrste kojoj pripada.";
-                MessageBoxResult mbr = MessageBox.Show(message, "Brisanje", MessageBoxButton.YesNo);
+                String message = "Are you sure?";
+                MessageBoxResult mbr = MessageBox.Show(message, "Delete", MessageBoxButton.YesNo);
 
                 if (mbr == MessageBoxResult.Yes)
                 {
@@ -204,6 +213,17 @@ namespace Manifestacije
             }
             else if (trenutniPanel == pnlTipoviVrsta)
             {
+                if ((TipManifestacije)tabelaTipoviVrsta.SelectedItem == null)
+                {
+                    MessageBox.Show("You must choose event type from the list!");
+                    return;
+                }
+                String selektovanID = ((TipManifestacije)tabelaTipoviVrsta.SelectedItem).ID;
+                ListaTipManifestacijecs.TipoviManifestacija.Remove(selektovanID);
+                popuniTipoveManifestacija();
+            }
+            else if (trenutniPanel == pnlTipoviVrsta)
+            {
                 String selektovanID = ((TipManifestacije)tabelaTipoviVrsta.SelectedItem).ID;
                 ListaTipManifestacijecs.TipoviManifestacija.Remove(selektovanID);
                 popuniTipoveManifestacija();
@@ -214,16 +234,31 @@ namespace Manifestacije
         {
             if (trenutniPanel == pnlVrste)
             {
+                if ((Manifestacija)tabelaVrste.SelectedItem == null)
+                {
+                    MessageBox.Show("You must choose event from the list!");
+                    return;
+                }
                 ManifestacijaWindow rsv = new ManifestacijaWindow(this, true, (Manifestacija)tabelaVrste.SelectedItem);
                 rsv.ShowDialog();
             }
             else if (trenutniPanel == pnlEtikete)
             {
+                if ((Etiketa)tabelaEtikete.SelectedItem == null)
+                {
+                    MessageBox.Show("You must choose label from the list!");
+                    return;
+                }
                 EtiketaWindow rse = new EtiketaWindow(this, true, (Etiketa)tabelaEtikete.SelectedItem);
                 rse.ShowDialog();
             }
             else if (trenutniPanel == pnlTipoviVrsta)
             {
+                if ((TipManifestacije)tabelaTipoviVrsta.SelectedItem == null)
+                {
+                    MessageBox.Show("You must choose event type from the list!");
+                    return;
+                }
                 TipManifestacijeWindow rstv = new TipManifestacijeWindow(this, true, (TipManifestacije)tabelaTipoviVrsta.SelectedItem);
                 rstv.ShowDialog();
             }

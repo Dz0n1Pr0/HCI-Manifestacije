@@ -79,7 +79,7 @@
 
         <StackPanel DockPanel.Dock="Top" Height="51" Margin="0,10,0.4,0">
             <StackPanel Orientation="Horizontal" Height="51" Margin="0,0,0,0">
-                <TextBlock Text="ID oznaka:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="80,4,0,0" Width="78" Height="19" VerticalAlignment="Top"  ></TextBlock>
+                <TextBlock Text="ID:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="80,4,0,0" Width="78" Height="19" VerticalAlignment="Top"  ></TextBlock>
                 <TextBox x:Name="txtID" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="6,0,20,25">
                     <TextBox.Text>
                         <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
@@ -106,7 +106,7 @@
                         </ControlTemplate>
                     </Validation.ErrorTemplate>
                 </TextBox>
-                <TextBlock Text="Ime:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,4,0,28.2" />
+                <TextBlock Text="Name:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,4,0,28.2" />
                 <TextBox x:Name="txtIME" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="6,0,20,25" >
                     <TextBox.Text>
                         <Binding Path="Ime" UpdateSourceTrigger="PropertyChanged">
@@ -133,7 +133,7 @@
                         </ControlTemplate>
                     </Validation.ErrorTemplate>
                 </TextBox>
-                <TextBlock Text="Tip:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,4,0,28.2"  ></TextBlock>
+                <TextBlock Text="Type:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,4,0,28.2"  ></TextBlock>
                 <Border x:Name="borderTIP" BorderThickness="1.5" Margin="6,0,6,25" Width="200" Height="20">
                     <ComboBox x:Name="txtTIP"  
                           FontSize="12" Foreground="Black" FontFamily="Calibri"
@@ -183,7 +183,7 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Text="Opis:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
+                <TextBlock Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
                 <TextBox x:Name="txtOPIS" Height="120" Style="{StaticResource ResourceKey=TextBoxStyle}"
                      ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" 
@@ -191,7 +191,7 @@
                 </TextBox>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Height="20" Style="{StaticResource ResourceKey=TextBlockStyle}" 
-                               Margin="3" VerticalAlignment="Top" >Etikete:</TextBlock>
+                               Margin="3" VerticalAlignment="Top" >Labels:</TextBlock>
                     <StackPanel Orientation="Vertical">
                         <ListBox x:Name="listaEtiketa" Height="100" Width="195" Margin="0,0,30,0" 
                              ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -211,12 +211,12 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Button Height="30" Width="96"  Click="DodajEtiketu_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock><Run Text="Add etiketa"/></TextBlock>
+                                    <TextBlock><Run Text="Add label"/></TextBlock>
                                 </StackPanel>
                             </Button>
                             <Button Height="30" Width="96"  Margin="5,0,30,0" Click="ObrisiEtiketu_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Delete etiketa</TextBlock>
+                                    <TextBlock>Delete label</TextBlock>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -227,13 +227,13 @@
 
         <StackPanel DockPanel.Dock="Top" Height="30">
             <StackPanel Orientation="Horizontal" Height="40" Margin="0,0,0,0">
-                <TextBlock Text="Status služenja alkohola:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="20,0,0,-5" Width="161" Height="36" VerticalAlignment="Bottom"  />
+                <TextBlock Text="Status of alcohol service:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="20,0,0,-5" Width="161" Height="36" VerticalAlignment="Bottom"  />
                 <Border x:Name="borderSTATUS" BorderThickness="1.5" Width="200" Height="20" Margin="0,0,0,0">
                     <ComboBox x:Name="txtSTATUS"  ItemsSource="{Binding StatusAlkohola}" 
                               FontSize="12" Foreground="Black" FontFamily="Calibri"
                               SelectedItem="{Binding StatusSluzenjaAlkohola}"  HorizontalAlignment="Left" Width="200"/>
                 </Border>
-                <TextBlock Text="Kategorija cene:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="20,0,0,-11" Width="110" Height="36"  ></TextBlock>
+                <TextBlock Text="Price category:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="20,0,0,-11" Width="110" Height="36"  ></TextBlock>
                 <Border x:Name="borderCENE" BorderThickness="1.5" Height="20" VerticalAlignment="Top" Width="200" Margin="0,8,0,0">
                     <ComboBox x:Name="txtCENE" ItemsSource="{Binding Path=StatusKategorije}" 
                           FontSize="12" Foreground="Black" FontFamily="Calibri"                              
@@ -290,12 +290,12 @@
 
 
 
-                    <TextBlock Grid.Column="0" Grid.Row="10" Text="Pogodna za hendikepirane:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="12" Text="Dozvoljeno pušenje:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Održava se na otvorenom:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="10" Text="Handicapped suitable" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="12" Text="Smoking allowed:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Is outdoors" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
 
-                    <TextBlock Grid.Column="0" Grid.Row="18" Text="Očekivani broj posetilaca:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="20" Text="Datum manifestacije:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="18" Text="Expected number of guests:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="20" Text="Date:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
 
 
 
@@ -381,13 +381,13 @@
 
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center">Potvrdi</TextBlock>
+                            <TextBlock VerticalAlignment="Center">Add</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button Width="150" Height="40" Foreground="Black" FontFamily="Calibri" FontSize="16"
                         BorderBrush="Transparent" Click="Odustani_Click"  >
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center">Nazad</TextBlock>
+                            <TextBlock VerticalAlignment="Center">Cancel</TextBlock>
                         </StackPanel>
                     </Button>
 

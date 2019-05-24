@@ -131,25 +131,40 @@ namespace Manifestacije
 
         private void Nazad_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            String message = "Data will be lost. Are you sure?";
+            MessageBoxResult mbr = MessageBox.Show(message, "Unfinished", MessageBoxButton.YesNo);
+
+            if (mbr == MessageBoxResult.Yes)
+            {
+                Close();
+            }
         }
 
 
         private void Potvrdi_Click(object sender, RoutedEventArgs e)
         {
 
+            if (Opis == null || Opis.Equals("") || ID == null || ID.Equals(""))
+            {
+                MessageBox.Show("You must fill all fields!", "Unfilled fields");
+                return;
+            }
+
             if (Editing)
             {
                 ListaEtiketa.Etikete[Selektovana.ID].Boja = Boja;
                 ListaEtiketa.Etikete[Selektovana.ID].Opis = Opis;
             }
+
             else
             {
+
                 if (ListaEtiketa.Etikete.ContainsKey(ID))
                 {
-                    MessageBox.Show("ID već postoji!", "Pogrešan ID");
+                    MessageBox.Show("ID already exists!", "Wrong ID");
                     return;
                 }
+
                 if (ParentWindow is ViewWindow)
                 {
                     ViewWindow p = (ViewWindow)Owner;
@@ -164,6 +179,7 @@ namespace Manifestacije
                     v.dodajEtiketu(new Etiketa(ID, (Color)cp.SelectedColor, Opis, b));
                     //v.Selektovan.Etikete.Add(new Etiketa(ID, (Color)cp.SelectedColor, Opis, b));
                 }
+
                 Color boja = (Color)cp.SelectedColor;
                 SolidColorBrush cb = new SolidColorBrush((Color)cp.SelectedColor);
                 ListaEtiketa.Etikete.Add(ID, new Etiketa(ID, boja, Opis, cb));

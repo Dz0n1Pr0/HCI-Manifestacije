@@ -50,6 +50,7 @@ namespace Manifestacije
 
         public string FileName { get; set; }
         public Random rnd;
+        public static string PoslednjaPretraga = "";
 
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
 
@@ -68,7 +69,14 @@ namespace Manifestacije
         {
             base.OnMouseLeftButtonDown(e);
             // Begin dragging the window
-            this.DragMove();
+            try
+            {
+                this.DragMove();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void SveManifestacije_Click(object sender, RoutedEventArgs e)
@@ -104,9 +112,17 @@ namespace Manifestacije
         //Metoda koja puni listu stringovima sa imenima vrsta
         public void setManifestacijeItems()
         {
-            this.lista.ItemsSource = null;
+            var pomocna = new ObservableCollection<Manifestacija>();
             Manifestacije = new ObservableCollection<Manifestacija>(ListaManifestacija.Manifestacije.Values);
-            this.lista.ItemsSource = Manifestacije;
+            foreach (Manifestacija m in Manifestacije)  //da se ne bi ponistavao search kada se klikne na dugme 'Nazad'
+            {
+                if (m.Ime.ToUpper().Contains(PoslednjaPretraga.ToUpper()))
+                {
+                    pomocna.Add(m);
+                }
+            }
+            this.lista.ItemsSource = null;
+            this.lista.ItemsSource = pomocna;
         }
 
 
@@ -117,7 +133,7 @@ namespace Manifestacije
 
             if (selekt == null)
             {
-                MessageBox.Show("Označite iz liste manifestaciju za izmenu izmenite!");
+                MessageBox.Show("You must choose event from the list!");
                 return;
             }
 
@@ -133,7 +149,7 @@ namespace Manifestacije
 
             if (selekt == null)
             {
-                MessageBox.Show("Označite iz liste manifestaciju za brisanje!");
+                MessageBox.Show("You must choose event from the list!");
                 return;
             }
 
@@ -145,15 +161,20 @@ namespace Manifestacije
             this.setManifestacijeItems();
         }
 
-        private void Lista_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListViewItem_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Manifestacija selekt = (Manifestacija)lista.SelectedItem;
-            if (ListaManifestacija.Manifestacije.ContainsKey(selekt.ID))
-            {
-                ManifestacijaWindow rsv = new ManifestacijaWindow(this, true, selekt);
-                rsv.ShowDialog();
-            }
 
+            Manifestacija selekt = (Manifestacija)lista.SelectedItem;
+            var item = sender as ListViewItem;
+
+            if (item != null && item.IsSelected)
+            {
+                if (ListaManifestacija.Manifestacije.ContainsKey(selekt.ID))
+                {
+                    ManifestacijaWindow rsv = new ManifestacijaWindow(this, true, selekt);
+                    rsv.ShowDialog();
+                }
+            }
         }
 
         private void Export_Click(object sender, RoutedEventArgs e)
@@ -214,8 +235,8 @@ namespace Manifestacije
 
         private void BrisanjeSvihManifestacija_Click(object sender, RoutedEventArgs e)
         {
-            String message = "Da li ste sigurni da želite da obrišete sve manifestacije?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih manifestacija", MessageBoxButton.YesNo);
+            String message = "Are you sure?\n\n";
+            MessageBoxResult mbr = MessageBox.Show(message, "Delete all events", MessageBoxButton.YesNo);
 
             if (mbr == MessageBoxResult.Yes)
             {
@@ -227,8 +248,8 @@ namespace Manifestacije
 
         private void BrisanjeSvihTipovaManifestacija_Click(object sender, RoutedEventArgs e)
         {
-            String message = "Da li ste sigurni da želite da obrišete sve unete tipove manifestacija?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih tipova manifestacija", MessageBoxButton.YesNo);
+            String message = "Are you sure?\n\n";
+            MessageBoxResult mbr = MessageBox.Show(message, "Delete all event types", MessageBoxButton.YesNo);
 
             if (mbr == MessageBoxResult.Yes)
             {
@@ -241,8 +262,8 @@ namespace Manifestacije
 
         private void BrisanjeSvihEtiketa_Click(object sender, RoutedEventArgs e)
         {
-            String message = "Da li ste sigurni da želite da obrišete sve unete etikete?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih etiketa", MessageBoxButton.YesNo);
+            String message = "Are you sure?\n\n";
+            MessageBoxResult mbr = MessageBox.Show(message, "Delete all labels", MessageBoxButton.YesNo);
 
             if (mbr == MessageBoxResult.Yes)
             {
@@ -256,5 +277,59 @@ namespace Manifestacije
                 }
             }
         }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            this.lista.ItemsSource = null;
+            string parametar = this.txtPRETRAGA.Text;
+            if (this.txtPRETRAGA.FontStyle == FontStyles.Oblique)
+            {
+                parametar = "";
+                this.txtPRETRAGA.FontStyle = FontStyles.Normal;
+                this.txtPRETRAGA.Foreground = Brushes.Black;
+            }
+            ObservableCollection<Manifestacija> pomocna = new ObservableCollection<Manifestacija>();
+            foreach (Manifestacija m in this.Manifestacije)
+            {
+                if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
+                {
+                    pomocna.Add(m);
+                }
+            }
+            PoslednjaPretraga = parametar;
+            this.lista.ItemsSource = pomocna;
+            this.txtPRETRAGA.Text = "";
+        }
+
+        private void txtPRETRAGA_Enter(object sender, RoutedEventArgs e)
+        {
+            if (this.txtPRETRAGA.FontStyle == FontStyles.Oblique)
+            {
+                this.txtPRETRAGA.Text = "";
+                txtPRETRAGA.Foreground = Brushes.Black;
+                txtPRETRAGA.FontStyle = FontStyles.Normal;
+            }
+        }
+
+        private void txtPRETRAGA_Leave(object sender, RoutedEventArgs e)
+        {
+            if (txtPRETRAGA.Text == "" && this.Search_Button.IsMouseOver == false)
+            {
+                this.txtPRETRAGA.Text = "Search...";
+                txtPRETRAGA.Foreground = Brushes.Silver;
+                txtPRETRAGA.FontStyle = FontStyles.Oblique;
+            }
+        }
+
+        private void Search_Button_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtPRETRAGA.IsMouseOver == false)
+            {
+                this.txtPRETRAGA.Text = "Search...";
+                txtPRETRAGA.Foreground = Brushes.Silver;
+                txtPRETRAGA.FontStyle = FontStyles.Oblique;
+            }
+        }
+
     }
 }

@@ -267,22 +267,22 @@ namespace Manifestacije
 
 
             StatusAlkohola = new ObservableCollection<string>();
-            StatusAlkohola.Add("Nema alkohola");
-            StatusAlkohola.Add("Alkohol se moze doneti");
-            StatusAlkohola.Add("Alkohol se moze kupiti");
+            StatusAlkohola.Add("No alcohol");
+            StatusAlkohola.Add("You can bring alcohol");
+            StatusAlkohola.Add("You can buy alcohol");
             StatusSluzenjaAlkohola = StatusAlkohola[0];
 
             StatusKategorije = new ObservableCollection<string>();
-            StatusKategorije.Add("Besplatno");
-            StatusKategorije.Add("Niske cene");
-            StatusKategorije.Add("Srednje cene");
-            StatusKategorije.Add("Visoke cene");
+            StatusKategorije.Add("Free");
+            StatusKategorije.Add("Low prices");
+            StatusKategorije.Add("Meduim prices");
+            StatusKategorije.Add("High prices");
             KategorijaCene = StatusKategorije[0];
 
             Etikete = new ObservableCollection<Etiketa>();
             if (Editing)
             {
-                lblNaslov.Text = "Izmena vrste";
+                lblNaslov.Text = "Edit event";
                 popuniPolja();
                 txtID.IsEnabled = false;        //ID se ne moze menjati
                 NapuniEtikete();
@@ -362,19 +362,41 @@ namespace Manifestacije
 
         private void Odustani_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            String message = "Data will be lost. Are you sure?";
+            MessageBoxResult mbr = MessageBox.Show(message, "Unfinished", MessageBoxButton.YesNo);
+
+            if (mbr == MessageBoxResult.Yes)
+            {
+                Close();
+            }
         }
 
         private void Dodaj_Click(object sender, RoutedEventArgs e)
         {
-            if (ID == null || ID.Equals("") || Ime == null || Ime.Equals(""))
+            if (ID == null || ID.Equals("") || Ime == null || Ime.Equals("") || Opis == null || Opis.Equals("") || Datum == null || IkonicaP == null)
             {
-                MessageBox.Show("Popunite sva obavezna polja!", "Greška");
+                MessageBox.Show("You must fill all fields!", "Error");
                 return;
             }
+
+            int brojPosetilaca = 0;
+            if (!int.TryParse(this.txtPRIHOD.Text, out brojPosetilaca))
+            {
+                MessageBox.Show("Expected number of guests must be a number", "Error");
+                return;
+            }
+
+            DateTime myDate = DateTime.ParseExact(Datum, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+            if (myDate.Date < DateTime.Now.Date)
+            {
+                Console.WriteLine(DateTime.Now);
+                MessageBox.Show("You can only add future events.", "Erroe");
+                return;
+            }
+
             else if (ListaManifestacija.Manifestacije.ContainsKey(ID) && Editing == false)
             {
-                MessageBox.Show("ID već postoji!", "Pogrešan ID");
+                MessageBox.Show("ID already exists!", "Wrong ID");
                 return;
             }
 
@@ -385,9 +407,9 @@ namespace Manifestacije
                 ListaManifestacija.Manifestacije[Selektovan.ID].Tip = Tip;
                 ListaManifestacija.Manifestacije[Selektovan.ID].StatusSluzenjaAlkohola = StatusSluzenjaAlkohola;
                 ListaManifestacija.Manifestacije[Selektovan.ID].KategorijaCene = KategorijaCene;
-                ListaManifestacija.Manifestacije[Selektovan.ID].Hendikepirani =Hendikepirani;
-                ListaManifestacija.Manifestacije[Selektovan.ID].Pusenje =Pusenje;
-                ListaManifestacija.Manifestacije[Selektovan.ID].Napolju =Napolju;
+                ListaManifestacija.Manifestacije[Selektovan.ID].Hendikepirani = Hendikepirani;
+                ListaManifestacija.Manifestacije[Selektovan.ID].Pusenje = Pusenje;
+                ListaManifestacija.Manifestacije[Selektovan.ID].Napolju = Napolju;
                 ListaManifestacija.Manifestacije[Selektovan.ID].OcekivanaPublika = OcekivanaPublika;
                 ListaManifestacija.Manifestacije[Selektovan.ID].Opis = Opis;
                 ListaManifestacija.Manifestacije[Selektovan.ID].Datum = Datum;
@@ -402,7 +424,7 @@ namespace Manifestacije
             }
             else
             {
-                
+
                 if (IkonicaP == null)
                 {
                     string idTipa = "";
@@ -443,6 +465,8 @@ namespace Manifestacije
             {
                 ViewWindow parentWindow = (ViewWindow)Owner;
                 parentWindow.dodajManifestaciju(new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip));
+                MainWindow main = parentWindow.ParentWindow;
+                main.setManifestacijeItems();
             }
 
             Selektovan = null;

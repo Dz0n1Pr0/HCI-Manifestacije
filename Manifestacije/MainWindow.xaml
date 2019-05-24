@@ -94,12 +94,12 @@
                     <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,1,0,-73" Height="60" Width="266">
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="txtPRETRAGA" Text="Search..."  Height="25" Width="210" FontFamily="Calibri" 
+                            <TextBox x:Name="txtPRETRAGA" Text="Search..." FontStyle="Oblique" Foreground="Silver"   Height="25" Width="210" FontFamily="Calibri" 
                                 FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"
-                                Background="{StaticResource TransparentWhite}" Cursor="IBeam"/>
-                            <Button Height="25" Width="42" BorderBrush="Transparent" ToolTip="Searching for events"
+                                Background="{StaticResource TransparentWhite}" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" ToolTip="Search by event name"/>
+                            <Button  x:Name="Search_Button"  Height="25" Width="42" BorderBrush="Transparent" ToolTip="Searching for events"  Click="Search_Click" LostFocus="Search_Button_LostFocus"
                                         >
-                                <TextBlock><Run Text="Search"/></TextBlock>
+                                <TextBlock x:Name="Search"><Run Text="Search"/></TextBlock>
                             </Button>
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -131,7 +131,7 @@
                         Height="518"
                         ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        MouseDoubleClick="Lista_MouseDoubleClick" Margin="10,-2,10.4,0" Width="266" >
+                        Margin="10,-2,10.4,0" Width="266" >
                         <ListView.Resources>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -157,7 +157,11 @@
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
-
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="PreviewMouseDoubleClick" Handler="ListViewItem_PreviewMouseDoubleClick" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
                     </ListView>
 
                 </DockPanel>
