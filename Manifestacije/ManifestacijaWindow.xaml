@@ -7,18 +7,16 @@
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         
-        Title="Dodavanje vrste" Height="560" Width="960" WindowStyle="None" WindowStartupLocation="CenterScreen"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1" >
+        Title="Dodavanje vrste" Height="446.4" Width="848" WindowStartupLocation="CenterScreen"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1" >
 
 
     <Window.Resources>
 
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontSize" Value="15" />
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontFamily" Value="Calibri"/>
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="Margin" Value="3"/>
         </Style>
 
         <Style x:Key="ListBoxStyle" TargetType="ListBox">
@@ -69,337 +67,234 @@
         </Style>
 
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
-
     </Window.Resources>
 
-    <DockPanel>
+
+    <DockPanel Margin="0,0,0,0">
         <StackPanel DockPanel.Dock="Top">
-            <TextBlock x:Name="lblNaslov" Text="Add Event" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}" HorizontalAlignment="Center"></TextBlock>
-        </StackPanel>
-
-        <StackPanel DockPanel.Dock="Top" Height="51" Margin="0,10,0.4,0">
-            <StackPanel Orientation="Horizontal" Height="51" Margin="0,0,0,0">
-                <TextBlock Text="ID:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="80,4,0,0" Width="78" Height="19" VerticalAlignment="Top"  ></TextBlock>
-                <TextBox x:Name="txtID" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="6,0,20,25">
-                    <TextBox.Text>
-                        <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
-
-                        </Binding>
-                    </TextBox.Text>
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <AdornedElementPlaceholder x:Name="textBox"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
-                </TextBox>
-                <TextBlock Text="Name:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,4,0,28.2" />
-                <TextBox x:Name="txtIME" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="6,0,20,25" >
-                    <TextBox.Text>
-                        <Binding Path="Ime" UpdateSourceTrigger="PropertyChanged">
-
-                        </Binding>
-                    </TextBox.Text>
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <AdornedElementPlaceholder x:Name="textBox"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
-                </TextBox>
-                <TextBlock Text="Type:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,4,0,28.2"  ></TextBlock>
-                <Border x:Name="borderTIP" BorderThickness="1.5" Margin="6,0,6,25" Width="200" Height="20">
-                    <ComboBox x:Name="txtTIP"  
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <TextBlock Text="ID:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,15,90,0"></TextBlock>
+                            <TextBox x:Name="txtID" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="0,15,0,9">
+                                <TextBox.Text>
+                                    <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Name:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,65,0" />
+                            <TextBox x:Name="txtIME" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="0,0,0,9" >
+                                <TextBox.Text>
+                                    <Binding Path="Ime" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <TextBlock Text="Type:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,68,11"></TextBlock>
+                            <Border x:Name="borderTIP" BorderThickness="1.5" Margin="6,0,6,9" Width="200" Height="20">
+                                <ComboBox x:Name="txtTIP"  
                           FontSize="12" Foreground="Black" FontFamily="Calibri"
                           ItemsSource="{Binding Path=TipoviManifestacijeString}"
                           SelectedItem="{Binding Path=Tip}" Margin="-1.6" HorizontalAlignment="Left" Width="200">
-                        <ComboBox.Text>
-                            <Binding Path="Tip" UpdateSourceTrigger="PropertyChanged">
-
-                            </Binding>
-                        </ComboBox.Text>
-                        <Validation.ErrorTemplate>
-                            <ControlTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <AdornedElementPlaceholder x:Name="textBox"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Validation.ErrorTemplate>
-                    </ComboBox>
-                </Border>
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel DockPanel.Dock="Top" Height="140" Margin="0,0,0,0">
-            <StackPanel Orientation="Horizontal" Height="140" Margin="0,0,0,0">
-                <StackPanel Orientation="Vertical" Width="390" Margin="-10,0,0,0">
-                    <Border  Height="100" BorderBrush="Green" BorderThickness="1"
-                             Margin="180,0,75,3" CornerRadius="10" >
-                        <Image x:Name="Ikonica" Source="{Binding IkonicaP}" Margin="1,1,1,1"/>
-                    </Border>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,-0.2,0">
-                        <TextBox x:Name="txtIKONICA" Width="160" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="20" FontSize="12"
-                              Text="{Binding IkonicaP}" />
-                        <Button Background="Transparent" BorderBrush="Transparent" Width="60" Height="20" Click="Ikonica_Click" Margin="0,0,0,0">
-                            <TextBlock><Run Text="Upload"/></TextBlock>
-                        </Button>
+                                    <ComboBox.Text>
+                                        <Binding Path="Tip" UpdateSourceTrigger="PropertyChanged">
+                                        </Binding>
+                                    </ComboBox.Text>
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,21">
+                            <TextBlock Text="Date:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,2,72,0"></TextBlock>
+                            <Border x:Name="borderDATUM" BorderThickness="1.5" Margin="0,0,0,0" Grid.RowSpan="2">
+                                <DatePicker x:Name="dDATUM"  Width="200" FirstDayOfWeek="Monday" 
+                                SelectedDate="{Binding Path=Datum}">
+                                </DatePicker>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,25,0"/>
+                            <TextBox x:Name="txtOPIS" Height="120" Style="{StaticResource ResourceKey=TextBoxStyle}"
+                            ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" 
+                            Text="{Binding Path=Opis}" Margin="5,0,0,9">
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Alcohol service:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,6,0"/>
+                            <Border x:Name="borderSTATUS" BorderThickness="1.5" Width="200" Height="24" Margin="0,0,0,0">
+                                <ComboBox x:Name="txtSTATUS"  ItemsSource="{Binding StatusAlkohola}" 
+                              FontSize="12" Foreground="Black" FontFamily="Calibri"
+                              SelectedItem="{Binding StatusSluzenjaAlkohola}"  HorizontalAlignment="Left" Width="200" Margin="0,0,-3,0"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Price category:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,10,12,0"></TextBlock>
+                            <Border x:Name="borderCENE" BorderThickness="1.5" Height="24" VerticalAlignment="Top" Width="200" Margin="0,8,0,0">
+                                <ComboBox x:Name="txtCENE" ItemsSource="{Binding Path=StatusKategorije}" 
+                          FontSize="12" Foreground="Black" FontFamily="Calibri"                              
+                          SelectedItem="{Binding Path=KategorijaCene}" HorizontalAlignment="Left" Width="200" Margin="0,0,-3,0">
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3" />
-                <TextBox x:Name="txtOPIS" Height="120" Style="{StaticResource ResourceKey=TextBoxStyle}"
-                     ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" 
-                     Text="{Binding Path=Opis}" Margin="5,0,0,9">
-                </TextBox>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Height="20" Style="{StaticResource ResourceKey=TextBlockStyle}" 
-                               Margin="3" VerticalAlignment="Top" >Labels:</TextBlock>
-                    <StackPanel Orientation="Vertical">
-                        <ListBox x:Name="listaEtiketa" Height="100" Width="195" Margin="0,0,30,0" 
+
+
+                <StackPanel DockPanel.Dock="Right" Margin="35,15,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Width="173" >
+                            <Border Height="100" BorderBrush="Green" BorderThickness="1"
+                             Margin="20,0,20,0" CornerRadius="10" >
+                                <Image x:Name="Ikonica" Source="{Binding IkonicaP}" Margin="1,1,1,1"/>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <TextBox x:Name="txtIKONICA" Width="160" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="20" FontSize="12"
+                              Text="{Binding IkonicaP}" Visibility="Hidden" />
+                                <Button Background="Transparent" BorderBrush="Transparent" Width="80" Height="20" Click="Ikonica_Click" Margin="-250,0,0,0">
+                                    <TextBlock><Run Text="Upload Image"/></TextBlock>
+                                </Button>
+                                <Button Background="Transparent" BorderBrush="Transparent" Width="83" Height="20" Click="Ikonica_ClickRmv" Margin="-80,0,0,0">
+                                    <TextBlock><Run Text="Remove Image"/></TextBlock>
+                                </Button>
+
+                            </StackPanel>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="17,15,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
+                                <TextBlock Text="Handicapped suitable:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,59,0"  ></TextBlock>
+                                <CheckBox x:Name="chcHend" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Hendikepirani}"></CheckBox>
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
+                                <TextBlock Text="Smoking allowed:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,87,0"></TextBlock>
+                                <CheckBox x:Name="chcPusenje" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Pusenje}" Height="15.2" Width="16"></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
+                                <TextBlock Text="Is outdoors: " Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,119,0"  ></TextBlock>
+                                <CheckBox x:Name="chcOut" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Napolju}"></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
+                                <TextBlock Text="Expected No of guests:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,23,0"></TextBlock>
+                                <TextBox x:Name="txtGosti" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="0,0,0,0" Width="75">
+                                    <TextBox.Text>
+                                        <Binding Path="OcekivanaPublika" UpdateSourceTrigger="PropertyChanged">
+
+                                        </Binding>
+                                    </TextBox.Text>
+                                    <Validation.ErrorTemplate>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
+                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
+                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
+                                           HorizontalAlignment="Left" FontSize="12"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Validation.ErrorTemplate>
+                                </TextBox>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <StackPanel Orientation="Vertical">
+                            <ListBox x:Name="listaEtiketa" Height="180" Width="175" Margin="0,0,15,0" 
                              ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
                              ItemsSource="{Binding Path=Etikete, UpdateSourceTrigger=PropertyChanged}" >
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <WrapPanel Height="24">
-                                        <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                        <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel Height="24">
+                                            <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                         FontSize="14" Foreground="Black" FontFamily="Calibri" />
-                                    </WrapPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Height="30" Width="96"  Click="DodajEtiketu_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock><Run Text="Add label"/></TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button Height="30" Width="96"  Margin="5,0,30,0" Click="ObrisiEtiketu_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Delete label</TextBlock>
-                                </StackPanel>
-                            </Button>
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Button Height="30" Width="96" Margin="0,50,30,20" Click="DodajEtiketu_Click" ToolTip="Select label from the list on the right">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock><Run Text="Add label"/></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Height="30" Width="96"  Margin="0,0,30,0" Click="ObrisiEtiketu_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>Delete label</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="-20,0,0,0">
+                            <ListBox x:Name="listaPostojecihEtiketa" Height="180" Width="175" Margin="0,0,0,0" 
+                             ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ItemsSource="{Binding Path=Etikete, UpdateSourceTrigger=PropertyChanged}" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel Height="24">
+                                            <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                        FontSize="14" Foreground="Black" FontFamily="Calibri" />
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
                         </StackPanel>
                     </StackPanel>
+
                 </StackPanel>
-            </StackPanel>
+            </DockPanel>
         </StackPanel>
-
-        <StackPanel DockPanel.Dock="Top" Height="30">
-            <StackPanel Orientation="Horizontal" Height="40" Margin="0,0,0,0">
-                <TextBlock Text="Status of alcohol service:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="20,0,0,-5" Width="161" Height="36" VerticalAlignment="Bottom"  />
-                <Border x:Name="borderSTATUS" BorderThickness="1.5" Width="200" Height="20" Margin="0,0,0,0">
-                    <ComboBox x:Name="txtSTATUS"  ItemsSource="{Binding StatusAlkohola}" 
-                              FontSize="12" Foreground="Black" FontFamily="Calibri"
-                              SelectedItem="{Binding StatusSluzenjaAlkohola}"  HorizontalAlignment="Left" Width="200"/>
-                </Border>
-                <TextBlock Text="Price category:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="20,0,0,-11" Width="110" Height="36"  ></TextBlock>
-                <Border x:Name="borderCENE" BorderThickness="1.5" Height="20" VerticalAlignment="Top" Width="200" Margin="0,8,0,0">
-                    <ComboBox x:Name="txtCENE" ItemsSource="{Binding Path=StatusKategorije}" 
-                          FontSize="12" Foreground="Black" FontFamily="Calibri"                              
-                          SelectedItem="{Binding Path=KategorijaCene}" HorizontalAlignment="Left" Width="200">
-                    </ComboBox>
-                </Border>
-
-            </StackPanel>
-
-
-        </StackPanel>
-
-
-        <StackPanel Orientation="Vertical">
+        <StackPanel DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="{StaticResource TransparentWhite}" Margin="5,8,5,0">
+                <Button x:Name="btnAddMore" Width="150"  Height="40" Foreground="Black" FontFamily="Calibri"
+                        FontSize="16" BorderBrush="Transparent" Margin="0,17,30,0" Click="DodajJos_Click" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Add more</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnPotvrdi" Width="150"  Height="40" Foreground="Black" FontFamily="Calibri"
+                        FontSize="16" BorderBrush="Transparent" Margin="0,17,30,0" Click="Dodaj_Click" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Add</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Width="150" Height="40" Foreground="Black" FontFamily="Calibri" FontSize="16"
+                        BorderBrush="Transparent" Click="Odustani_Click" Margin="0,17,0,0" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Cancel</TextBlock>
+                    </StackPanel>
+                </Button>
 
 
-            <StackPanel Orientation="Horizontal" Margin="5">
-
-                <Grid Background="{StaticResource TransparentWhite}">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="2*" />
-
-                    </Grid.ColumnDefinitions>
-
-
-
-
-
-
-                    <TextBlock Grid.Column="0" Grid.Row="10" Text="Handicapped suitable" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="12" Text="Smoking allowed:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Is outdoors" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-
-                    <TextBlock Grid.Column="0" Grid.Row="18" Text="Expected number of guests:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="20" Text="Date:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,3,3,3"  ></TextBlock>
-
-
-
-
-
-
-
-                    <Border x:Name="borderOPASNA" BorderThickness="1.5" Grid.Column="1" Grid.Row="10">
-                        <CheckBox x:Name="chcOPASNA" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" 
-                              HorizontalAlignment="Center"  Margin="0,4"
-                              IsChecked="{Binding Path=Hendikepirani}"></CheckBox>
-                    </Border>
-                    <Border x:Name="borderLISTA" BorderThickness="1.5" Grid.Column="1" Grid.Row="12">
-                        <CheckBox x:Name="chcLISTA"  VerticalAlignment="Center" HorizontalAlignment="Center"
-                               Margin="0,4"
-                              IsChecked="{Binding Path=Pusenje}"></CheckBox>
-                    </Border>
-                    <Border x:Name="borderNASELJE" BorderThickness="1.5" Grid.Column="1" Grid.Row="14" >
-                        <CheckBox x:Name="chcNASELJE" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4"
-                              
-                              IsChecked="{Binding Path=Napolju}"></CheckBox>
-                    </Border>
-
-                    <TextBox x:Name="txtPRIHOD" Grid.Column="1" Grid.Row="18" Style="{StaticResource ResourceKey=TextBoxStyle}" >
-                        <TextBox.Text>
-                            <Binding Path="OcekivanaPublika" UpdateSourceTrigger="PropertyChanged">
-
-                            </Binding>
-                        </TextBox.Text>
-                        <Validation.ErrorTemplate>
-                            <ControlTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Validation.ErrorTemplate>
-                    </TextBox>
-                    <Border x:Name="borderDATUM" BorderThickness="1.5" Grid.Column="1" Grid.Row="20">
-                        <DatePicker x:Name="dDATUM"  Width="200" FirstDayOfWeek="Monday" 
-                                SelectedDate="{Binding Path=Datum}">
-                        </DatePicker>
-                    </Border>
-
-                </Grid>
-
-                <StackPanel Orientation="Vertical" Width="350" Background="{StaticResource TransparentWhite}"  >
-                    <Grid >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="5*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="2*"/>
-                        </Grid.ColumnDefinitions>
-
-
-
-
-
-
-
-                    </Grid>
-                </StackPanel>
-
-                <StackPanel Orientation="Vertical" Background="{StaticResource TransparentWhite}" Margin="5,0,5,0">
-                    <Button x:Name="btnPotvrdi" Width="150"  Height="40" Foreground="Black" FontFamily="Calibri"
-                        FontSize="16" BorderBrush="Transparent" Margin="5" Click="Dodaj_Click" >
-
-
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center">Add</TextBlock>
-                        </StackPanel>
-                    </Button>
-                    <Button Width="150" Height="40" Foreground="Black" FontFamily="Calibri" FontSize="16"
-                        BorderBrush="Transparent" Click="Odustani_Click"  >
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center">Cancel</TextBlock>
-                        </StackPanel>
-                    </Button>
-
-
-
-                </StackPanel>
 
             </StackPanel>
         </StackPanel>
-
 
 
     </DockPanel>
 
+
 </Window>
+
+    
+    

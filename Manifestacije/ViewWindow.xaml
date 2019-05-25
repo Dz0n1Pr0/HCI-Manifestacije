@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
          mc:Ignorable="d"
-        Title="Pregled" Height="460" Width="960" WindowStyle="None" WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="Pregled" Height="460" Width="960" WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
 
     <Window.Resources>

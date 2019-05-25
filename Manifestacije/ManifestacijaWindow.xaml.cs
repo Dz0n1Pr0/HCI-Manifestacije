@@ -279,10 +279,14 @@ namespace Manifestacije
             StatusKategorije.Add("High prices");
             KategorijaCene = StatusKategorije[0];
 
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1));
+            dDATUM.BlackoutDates.Add(cdr);
+            
+
             Etikete = new ObservableCollection<Etiketa>();
             if (Editing)
             {
-                lblNaslov.Text = "Edit event";
+                Title = "Edit Event";
                 popuniPolja();
                 txtID.IsEnabled = false;        //ID se ne moze menjati
                 NapuniEtikete();
@@ -297,7 +301,7 @@ namespace Manifestacije
             // Etikete = Selektovan.Etikete;
             Etikete = null;
             Etikete = new ObservableCollection<Etiketa>();
-            foreach (Etiketa etiketa in Selektovan.Etikete)
+            foreach (Etiketa etiketa in ListaEtiketa.Etikete.Values)
             {
                 Etikete.Add(etiketa);
             }
@@ -380,7 +384,7 @@ namespace Manifestacije
             }
 
             int brojPosetilaca = 0;
-            if (!int.TryParse(this.txtPRIHOD.Text, out brojPosetilaca))
+            if (!int.TryParse(this.txtGosti.Text, out brojPosetilaca))
             {
                 MessageBox.Show("Expected number of guests must be a number", "Error");
                 return;
@@ -500,7 +504,16 @@ namespace Manifestacije
             }
         }
 
-        
+        private void Ikonica_ClickRmv(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void DodajJos_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         private void DodajEtiketu_Click(object sender, RoutedEventArgs e)
         {

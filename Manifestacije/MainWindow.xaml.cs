@@ -125,7 +125,7 @@ namespace Manifestacije
             this.lista.ItemsSource = pomocna;
         }
 
-
+       
         //Izmena vrsta
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
@@ -177,7 +177,7 @@ namespace Manifestacije
             }
         }
 
-        private void Export_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.FileName = "unknown.txt";
@@ -193,16 +193,16 @@ namespace Manifestacije
                 {
                     using (TextWriter tw = new StreamWriter(fs))
                     {
-                        export_Manifestacije(tw, FileName);
-                        export_TipoviManifestacija(tw, FileName);
-                        export_Etikete(tw, FileName);
+                        Save_Manifestacije(tw, FileName);
+                        Save_etikete(tw, FileName);
+                        Save_TipoviManifestacija(tw, FileName);
                     }
                 }
             }
 
         }
 
-        private void export_Etikete(TextWriter tw, string file)
+        private void Save_etikete(TextWriter tw, string file)
         {
             foreach (KeyValuePair<String, Etiketa> kvp in ListaEtiketa.Etikete)
             {
@@ -211,15 +211,15 @@ namespace Manifestacije
             }
         }
 
-        private void export_TipoviManifestacija(TextWriter tw, string file)
+        private void Save_TipoviManifestacija(TextWriter tw, string file)
         {
             foreach (KeyValuePair<string, TipManifestacije> kvp in ListaTipManifestacijecs.TipoviManifestacija)
             {
-                tw.WriteLine(string.Format("{0};{1}", "TIPMANIF" + kvp.Key, kvp.Value));          
+                tw.WriteLine(string.Format("{0};{1}", "TIP" + kvp.Key, kvp.Value));          
             }
         }
 
-        private void export_Manifestacije(TextWriter tw, string file)
+        private void Save_Manifestacije(TextWriter tw, string file)
         {
             foreach (KeyValuePair<string, Manifestacija> kvp in ListaManifestacija.Manifestacije)
             {
@@ -232,51 +232,7 @@ namespace Manifestacije
             }
         }
 
-
-        private void BrisanjeSvihManifestacija_Click(object sender, RoutedEventArgs e)
-        {
-            String message = "Are you sure?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Delete all events", MessageBoxButton.YesNo);
-
-            if (mbr == MessageBoxResult.Yes)
-            {
-                ListaManifestacija.Manifestacije = null;
-                ListaManifestacija.Manifestacije = new Dictionary<string, Manifestacija>();
-                setManifestacijeItems();
-            }
-        }
-
-        private void BrisanjeSvihTipovaManifestacija_Click(object sender, RoutedEventArgs e)
-        {
-            String message = "Are you sure?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Delete all event types", MessageBoxButton.YesNo);
-
-            if (mbr == MessageBoxResult.Yes)
-            {
-                
-                ListaTipManifestacijecs.TipoviManifestacija = null;
-                ListaTipManifestacijecs.TipoviManifestacija = new Dictionary<string, TipManifestacije>();
-                setManifestacijeItems();
-            }
-        }
-
-        private void BrisanjeSvihEtiketa_Click(object sender, RoutedEventArgs e)
-        {
-            String message = "Are you sure?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Delete all labels", MessageBoxButton.YesNo);
-
-            if (mbr == MessageBoxResult.Yes)
-            {
-                ListaEtiketa.Etikete = null;
-                ListaEtiketa.Etikete = new Dictionary<string, Etiketa>();
-
-                foreach (KeyValuePair<string, Manifestacija> pair in ListaManifestacija.Manifestacije)
-                {
-                    pair.Value.Etikete = null;
-                    pair.Value.Etikete = new List<Etiketa>();
-                }
-            }
-        }
+       
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -331,5 +287,12 @@ namespace Manifestacije
             }
         }
 
+        private void Filter_Click(object sender, RoutedEventArgs e)
+        {
+            Filter filter = new Filter(this);
+            filter.ShowDialog();
+            //this.lista.ItemsSource = filter.getFiltrirano();
+
+        }
     }
 }

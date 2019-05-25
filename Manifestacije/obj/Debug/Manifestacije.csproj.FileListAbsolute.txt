@@ -111,3 +111,5 @@ C:\Users\mica\Desktop\hci projekat 2 za upload\HCI-Manifestacije\Manifestacije\o
 C:\Users\mica\Desktop\hci projekat 2 za upload\HCI-Manifestacije\Manifestacije\obj\Debug\Manifestacije.csproj.CopyComplete
 C:\Users\mica\Desktop\hci projekat 2 za upload\HCI-Manifestacije\Manifestacije\obj\Debug\Manifestacije.exe
 C:\Users\mica\Desktop\hci projekat 2 za upload\HCI-Manifestacije\Manifestacije\obj\Debug\Manifestacije.pdb
+C:\Users\Anci\Source\Repos\HCI-manifestacije\Manifestacije\obj\Debug\Filter.g.cs
+C:\Users\Anci\Source\Repos\HCI-manifestacije\Manifestacije\obj\Debug\Filter.baml

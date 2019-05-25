@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
          mc:Ignorable="d"
-        Title="Dodavanje tipa vrste" Height="265" Width="490" WindowStyle="None" WindowStartupLocation="CenterScreen"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="NoResize" BorderBrush="Green" BorderThickness="1">
+        Title="Dodavanje tipa vrste" Height="265" Width="490" WindowStartupLocation="CenterScreen"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1">
 
     <Window.Resources>
 

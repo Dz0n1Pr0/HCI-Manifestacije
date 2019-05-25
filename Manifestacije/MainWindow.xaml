@@ -4,9 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
+        xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
         Title="Manifestacije" Height="680" Width="1200" WindowStartupLocation="CenterScreen"
-        WindowStyle="None" ResizeMode="NoResize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        ResizeMode="CanMinimize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.NewEventType}" Executed="DodajTipManifestacije_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.NewEvent}" Executed="DodajManifestaciju_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.NewLabel}" Executed="DodajEtiketu_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Edit}" Executed="Edit_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.ViewAll}" Executed="SveManifestacije_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.DeleteCommand}" Executed="Delete_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Exit_Click"/>
+
+    </Window.CommandBindings>
 
     <Window.Resources>
 
@@ -24,11 +36,6 @@
 
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Height="20" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Width="20" Background="Transparent" BorderBrush="Transparent" Click="Exit_Click">
-                <Image Source="images/robot.png"></Image>
-            </Button>
-        </StackPanel>
         <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="Calibri" Height="27">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -37,26 +44,17 @@
             </Menu.ItemsPanel>
             <MenuItem Header="File" Width="38">
                 <MenuItem Header="Add">
-                    <MenuItem Header="Event Type" Click="DodajTipManifestacije_Click"></MenuItem>
-                    <MenuItem Header="Event" Click="DodajManifestaciju_Click"></MenuItem>
-                    <MenuItem Header="Label" Click="DodajEtiketu_Click"></MenuItem>
+                    <MenuItem Header="Event Type (Ctrl+T)" Click="DodajTipManifestacije_Click"></MenuItem>
+                    <MenuItem Header="Event (Ctrl+E)" Click="DodajManifestaciju_Click"></MenuItem>
+                    <MenuItem Header="Label (Ctrl+L)" Click="DodajEtiketu_Click"></MenuItem>
                 </MenuItem>
-                <MenuItem Header="Delete">
-                    <MenuItem Header="Event Type" Click="BrisanjeSvihTipovaManifestacija_Click"></MenuItem>
-                    <MenuItem Header="Event" Click="BrisanjeSvihManifestacija_Click"></MenuItem>
-                    <MenuItem Header="Label" Click="BrisanjeSvihEtiketa_Click"></MenuItem>
-                </MenuItem>
-                <MenuItem Header="Load">
-                    <MenuItem Header="Event Type"></MenuItem>
-                    <MenuItem Header="Event"></MenuItem>
-                    <MenuItem Header="Label"></MenuItem>
-                </MenuItem>
-                <MenuItem Header="Save"></MenuItem>
+                <MenuItem Header="Delete (Del)" Click="Delete_Click" ToolTip="Delete selected event"></MenuItem>
+                <MenuItem Header="Edit (Ctrl+M)" Click="Edit_Click" ToolTip="Edit selected event"></MenuItem>
+                <MenuItem Header="Save (Ctrl+S)" Click="Save_Click" ToolTip="Saving data"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Edit" Width="38" Click="Edit_Click">
-            </MenuItem>
-            <MenuItem Header="View All" Width="54" Click="SveManifestacije_Click"></MenuItem>
-            <MenuItem Header="Help" Width="39"></MenuItem>         
+
+            <MenuItem Header="View All (F3)" Width="70" Click="SveManifestacije_Click" ToolTip="Tabular presentation of all the data"></MenuItem>
+            <MenuItem Header="Help (F1)" Width="55"></MenuItem>         
             <Separator Width="1058" Background="Transparent"></Separator>
 
 
@@ -66,21 +64,21 @@
 
             <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
                     FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" 
-                    Click="DodajTipManifestacije_Click" >
+                    Click="DodajTipManifestacije_Click" ToolTip="Create new event type (Ctrl+T)" >
 
                 <TextBlock VerticalAlignment="Center">Add Event Type</TextBlock>
 
             </Button>
             <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black"  Margin="0,0,20,0"
                     FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" Click="DodajManifestaciju_Click"
-                   >
+                   ToolTip="Create new event (Ctrl+E)">
 
                 <TextBlock VerticalAlignment="Center">Add Event</TextBlock>
 
             </Button>
             <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
                     FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" 
-                    Click="DodajEtiketu_Click" >
+                    Click="DodajEtiketu_Click" ToolTip="Create new label (Ctrl+L)" >
 
                 <TextBlock VerticalAlignment="Center">Add Label</TextBlock>
 
@@ -88,7 +86,7 @@
 
 
         </StackPanel>
-        <StackPanel Margin="0,-40,0,0">
+        <StackPanel Margin="0,-50,0,0">
             <Grid x:Name="left" Background="{StaticResource TransparentWhite}" Margin="0,0,0,0" Height="644" Width="287">
                 <DockPanel Width ="286" Margin="0,0,1,0">
                     <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,1,0,-73" Height="60" Width="266">
@@ -103,25 +101,26 @@
                             </Button>
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Loading data"
-                                Background="{StaticResource TransparentWhite}"  Margin="-4,0,0,0"
-                                       >
-                                <TextBlock VerticalAlignment="Center"><Run Text="Load"/></TextBlock>
-                            </Button>
-                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Saving data"
+                            
+                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Saving data (Ctrl+S)"
                                 Background="{StaticResource TransparentWhite}"  Margin="0,0,0,0"
-                                         >
+                                Click="Save_Click">
                                 <TextBlock VerticalAlignment="Center"><Run Text="Save"/></TextBlock>
                             </Button>
-                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Edit selected event"
+                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Edit selected event (Ctrl+M)"
                                 Background="{StaticResource TransparentWhite}"  Margin="0,0,0,0"
                                 Click="Edit_Click" >
                                 <TextBlock VerticalAlignment="Center"><Run Text="Edit"/></TextBlock>
                             </Button>
-                            <Button Height="30" Width="67" ToolTip="Delete selected event"
+                            <Button Height="30" Width="67" ToolTip="Delete selected event (Del)"
                                 Background="{StaticResource TransparentWhite}" Margin="0,0,0,0" BorderBrush="Transparent"
                                 Click="Delete_Click" >
                                 <TextBlock VerticalAlignment="Center"><Run Text="Delete"/></TextBlock>
+                            </Button>
+                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Filtering data (Ctrl+F)"
+                                Background="{StaticResource TransparentWhite}"  Margin="-4,0,0,0" Click="Filter_Click"
+                                       >
+                                <TextBlock VerticalAlignment="Center"><Run Text="Filter"/></TextBlock>
                             </Button>
                         </StackPanel>
 
@@ -167,7 +166,7 @@
                 </DockPanel>
                 <Button x:Name="sveBtn" Width="264" Height="28" Foreground="Black" Margin="13,586,10,30" 
                     FontFamily="Calibri" FontSize="16" Click="SveManifestacije_Click"
-                    ToolTip="Tabular presentation of all the data" >
+                    ToolTip="Tabular presentation of all the data (F3)" >
                     <TextBlock VerticalAlignment="Center">View All</TextBlock>
                 </Button>
 

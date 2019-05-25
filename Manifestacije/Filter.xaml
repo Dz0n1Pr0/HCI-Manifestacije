@@ -1,0 +1,143 @@
+﻿<Window x:Class="Manifestacije.Filter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manifestacije"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Filter" Height="292" Width="220" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="110" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal">
+                <ListBox Name="TypesCbx" ItemsSource="{Binding TipoviManifestacije}" Height="109" Background="Azure" Margin="0,0,0,0" Width="110">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="CheckBoxZoneTypes" Content="{Binding Ime}"
+                            Tag="{Binding ID}" Checked="CheckBoxZoneTypes_Checked"  Unchecked="CheckBoxZoneTypes_unchecked"  
+                            Margin="0,5,0,0"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox Name="LabelsCbx" ItemsSource="{Binding Etikete}" Height="109" Background="Azure" Margin="0,0,0,0" Width="110">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="CheckBoxZoneLabels" Content="{Binding ID}"
+                            Tag="{Binding ID}" Checked="CheckBoxZoneLabels_Checked" Unchecked="CheckBoxZoneLabels_unchecked" 
+                            Margin="0,5,0,0"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Height="21" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="From" FontSize="10" Margin="0,2,-8,0"></TextBlock>
+                <DatePicker x:Name="DateFrom" Height="20" Width="85" FirstDayOfWeek="Monday" 
+                                SelectedDateChanged="DateFromChanged" FontSize="8" Margin="10,0,10,0" 
+                            >
+                </DatePicker>
+                <TextBlock Text="To" FontSize="10" Margin="-5,2,4,0"></TextBlock>
+                <DatePicker x:Name="DateTo" Height="20" Width="85" FirstDayOfWeek="Monday" 
+                                SelectedDateChanged="DateToChanged" FontSize="8" IsEnabled="False">
+                </DatePicker>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal"  Margin="0,0,0,0">
+                <TextBlock Text="Alcohol:" FontSize="10" Margin="4,0,15,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="No " FontSize="10" Margin="18,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="chcNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" ></CheckBox>
+                <TextBlock Text="Bring " FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="chcBring" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                <TextBlock Text="Buy " FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="chcBuy" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+            </StackPanel>
+
+
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Height="34" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Width="50">
+                    <TextBlock Text="Price:" FontSize="10" Margin="4,10,0,0" Height="16" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="Free " FontSize="10" Margin="40,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcFree" Height="15" Width="15" Margin="0,0,17,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                        <TextBlock Text="Low " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcLow" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Medium " FontSize="10" Margin="22,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcMedium" Height="15" Width="15" Margin="0,0,14,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                        <TextBlock Text="High " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcHigh" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            
+
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Handicapped:" FontSize="10" Margin="4,0,20,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="Yes " FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="HandYes" Height="15" Width="15" Margin="0,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                <TextBlock Text="No " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="HandNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+            </StackPanel>
+
+
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Smoking:" FontSize="10" Margin="4,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="Yes " FontSize="10" Margin="50,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="SmokingYes" Height="15" Width="15" Margin="0,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                <TextBlock Text="No " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="SmokingNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Outdoors:" FontSize="10" Margin="4,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="Yes " FontSize="10" Margin="48,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="OutdoorsYes" Height="15" Width="15" Margin="0,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked"/>
+                <TextBlock Text="No " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="OutdoorsNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Top" Margin="0,8,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Height="15" Name="filterBtn" Width="70" Margin="35,0,13,0" Click="DoFilter">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="10" VerticalAlignment="Center">Filter</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Height="15" Width="70"  Margin="5,0,30,0" Click="Cancel_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="10" VerticalAlignment="Center">Cancel</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            
+        </StackPanel>
+
+
+
+
+
+
+    </DockPanel>
+</Window>
