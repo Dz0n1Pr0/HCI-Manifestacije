@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Manifestacije.Modeli
@@ -33,6 +34,7 @@ namespace Manifestacije.Modeli
         private int _ocekivanaPublika;
         private string _tip { get; set; }
         private string _datum { get; set; }
+        private Point _tacka;
 
         private List<Etiketa> _etikete { get; set; }
 
@@ -229,6 +231,21 @@ namespace Manifestacije.Modeli
                 }
             }
         }
+        public Point Tacka
+        {
+            get
+            {
+                return _tacka;
+            }
+            set
+            {
+                if (value != _tacka)
+                {
+                    _tacka = value;
+                    OnPropertyChanged("Pozicija");
+                }
+            }
+        }
 
         /*
          private string _id;
@@ -255,7 +272,8 @@ namespace Manifestacije.Modeli
                      int ocekivanaPublika,
                      string datum,
                      ImageSource ikonica,
-                     string tip)
+                     string tip,
+                     Point tacka)
         {
             ID = id;
             Ime = ime;
@@ -269,6 +287,7 @@ namespace Manifestacije.Modeli
             Datum = datum;
             Ikonica = ikonica;
             Tip = tip;
+            Tacka = tacka;
             Etikete = new List<Etiketa>();
         }
 
@@ -296,7 +315,8 @@ namespace Manifestacije.Modeli
                    this.OcekivanaPublika + ";" +
                    this.Datum + ";" +
                    this.Ikonica + ";" +
-                   this.Tip;
+                   this.Tip + ";" + 
+                   this.Tacka;
         }
 
 

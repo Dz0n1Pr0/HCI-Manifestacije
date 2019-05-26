@@ -51,8 +51,10 @@ namespace Manifestacije
         public string FileName { get; set; }
         public Random rnd;
         public static string PoslednjaPretraga = "";
+        private Point startPoint = new Point();
 
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
+        private ObservableCollection<Manifestacija> ManifestacijeNaMapi { get; set; }
 
         public MainWindow()
         {
@@ -63,6 +65,9 @@ namespace Manifestacije
             //punjenje liste
             setManifestacijeItems();
             rnd = new Random();
+            ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
+            MapaGrada.ItemsSource = null;
+            MapaGrada.ItemsSource = ManifestacijeNaMapi;
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -294,5 +299,89 @@ namespace Manifestacije
             //this.lista.ItemsSource = filter.getFiltrirano();
 
         }
+
+
+        #region Drag & Drop
+
+        private void Mapa_Grada_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(null);
+        }
+
+        private void Lista_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(null);
+        }
+
+        private void Lista_OnItemSelected(object sender, RoutedEventArgs e)
+        {
+            lista.Tag = e.OriginalSource;
+        }
+
+        private void Lista_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            Point position = e.GetPosition(null);
+            Vector diff = startPoint - position;
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance) &&
+                lista.SelectedItem is Manifestacija)
+            {
+                Manifestacija selectedMan = (Manifestacija)lista.SelectedItem;
+                ListViewItem tvi = lista.Tag as ListViewItem;
+
+                DataObject dragData = new DataObject("manifestacija", selectedMan);
+                DragDrop.DoDragDrop(tvi, dragData, DragDropEffects.Move);
+            }
+        }
+
+        private void Mapa_Grada_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("manifestacija"))
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        private void Mapa_Grada_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("manifestacija"))
+            {
+                Manifestacija man = e.Data.GetData("manifestacija") as Manifestacija;
+                Console.WriteLine(man.Tacka);
+                man.Tacka = e.GetPosition(MapaGrada);
+                if (!ManifestacijeNaMapi.Contains(man))
+                {
+                    ManifestacijeNaMapi.Add(man);
+                }
+                else
+                {
+                    Console.WriteLine(man.Tacka);
+                    ManifestacijeNaMapi.Remove(man);
+                    ManifestacijeNaMapi.Add(man);
+                }
+            }
+        }
+
+        private void Mapa_Grada_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            Point position = e.GetPosition(null);
+            Vector diff = startPoint - position;
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance) &&
+                MapaGrada.SelectedItem is Manifestacija)    
+            {
+                Manifestacija selectedItem = (Manifestacija)MapaGrada.SelectedItem;
+                ListBoxItem listBoxItem = (ListBoxItem)MapaGrada.ItemContainerGenerator.ContainerFromItem(selectedItem);
+                
+                DataObject dragData = new DataObject("manifestacija", selectedItem);
+                DragDrop.DoDragDrop(listBoxItem, dragData, DragDropEffects.Move);
+            }
+        }
+
+        #endregion
+
+
     }
 }

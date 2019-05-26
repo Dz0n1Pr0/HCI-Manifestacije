@@ -130,7 +130,9 @@
                         Height="518"
                         ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        Margin="10,-2,10.4,0" Width="266" >
+                        Margin="10,-2,10.4,0" Width="266"
+                        PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
+                        PreviewMouseMove="Lista_PreviewMouseMove">
                         <ListView.Resources>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -159,6 +161,7 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <EventSetter Event="PreviewMouseDoubleClick" Handler="ListViewItem_PreviewMouseDoubleClick" />
+                                <EventSetter Event="Selected" Handler="Lista_OnItemSelected" />
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
@@ -175,13 +178,39 @@
         </StackPanel>
 
 
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,10,5,10">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,10,5,10">
 
-            <StackPanel Background="White" Opacity="0.5"  >
-                <Image DockPanel.Dock="Top" Source="images/mapa.png" Stretch="Fill" Width="903" Height="564"/>
-            </StackPanel>
+            <ListBox x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single" AllowDrop="True" PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" DragEnter="Mapa_Grada_DragEnter" Drop="Mapa_Grada_Drop" PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
+                <ListBox.Template>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Canvas Name="CanvasPanel" IsItemsHost="True" >
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="pack://application:,,,/images/minasanor.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </ControlTemplate>
+                </ListBox.Template >
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Canvas.Top" Value="{Binding Tacka.Y}"></Setter>
+                        <Setter Property="Canvas.Left" Value="{Binding Tacka.X}"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel AllowDrop="False" Width="50" Height="50" HorizontalAlignment="Left" Orientation="Horizontal">
+                            <Grid>
+                                <Image Width="40" Height="40" Margin="5 5 5 5" Source="{Binding Ikonica}" VerticalAlignment="Center">
 
-        </StackPanel>
+                                </Image>
+                                <Image Width="20" Height="20" Margin="0 0 0 0" Source="images/strelica.png" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </DockPanel>
 
 
     </DockPanel>

@@ -448,7 +448,7 @@ namespace Manifestacije
                     Opis = "";
                 }
 
-                Manifestacija novaManifestacija = new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip);
+                Manifestacija novaManifestacija = new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip, new Point());
                 novaManifestacija.Etikete = new List<Etiketa>();
                 foreach (Etiketa etiketa in this.Etikete)
                 {
@@ -468,7 +468,7 @@ namespace Manifestacije
             else if (ParWindow is ViewWindow)
             {
                 ViewWindow parentWindow = (ViewWindow)Owner;
-                parentWindow.dodajManifestaciju(new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip));
+                parentWindow.dodajManifestaciju(new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip, new Point()));
                 MainWindow main = parentWindow.ParentWindow;
                 main.setManifestacijeItems();
             }
