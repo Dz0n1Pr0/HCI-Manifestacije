@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -63,15 +64,22 @@ namespace Manifestacije
 
 
             //punjenje liste
-            setManifestacijeItems();
+            //setManifestacijeItems();
             rnd = new Random();
             ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
             MapaGrada.ItemsSource = null;
             MapaGrada.ItemsSource = ManifestacijeNaMapi;
+            Load();
+            setManifestacijeItems();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //brise selekciju
+            HitTestResult r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
+            if (r.VisualHit.GetType() != typeof(ListBoxItem))
+                lista.UnselectAll();
+
             base.OnMouseLeftButtonDown(e);
             // Begin dragging the window
             try
@@ -141,6 +149,11 @@ namespace Manifestacije
                 MessageBox.Show("You must choose event from the list!");
                 return;
             }
+            if (lista.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Choose only one event!", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
             ManifestacijaWindow dv = new ManifestacijaWindow(this, true, selekt);     //true jer se edituje
             dv.ShowDialog();
@@ -156,6 +169,24 @@ namespace Manifestacije
             {
                 MessageBox.Show("You must choose event from the list!");
                 return;
+            }
+            
+            if (lista.SelectedItems.Count > 1)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete all the selected events?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    foreach (Manifestacija m in lista.SelectedItems)
+                    {
+                        ListaManifestacija.Manifestacije.Remove(m.ID);
+                    }
+                    this.setManifestacijeItems();
+                    return;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             ListaManifestacija.Manifestacije.Remove(selekt.ID);
@@ -182,11 +213,130 @@ namespace Manifestacije
             }
         }
 
+        private void Load()
+        {
+            bool nadjeno = true;
+            StreamReader sr = null;
+            OpenFileDialog openFile = null;
+            string line;
+
+            while (nadjeno)
+            {
+                openFile = new OpenFileDialog();
+                openFile.Title = "Open Text File";
+                openFile.Filter = "TXT files|*.txt";
+                if (openFile.ShowDialog() == true)
+                {
+                    try
+                    {
+                        sr = new StreamReader(openFile.FileName);
+
+                    }
+                    catch (SecurityException ex)
+                    {
+                        MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                        $"Details:\n\n{ex.StackTrace}");
+                    }
+                }
+                
+
+                string line1 = File.ReadLines(openFile.FileName).First();
+                if (!(line1.Equals("MAP-EVENTS")))
+                {
+                    MessageBoxResult result = MessageBox.Show("Not Supported File");
+                }else
+                {
+                    nadjeno = false;
+                }
+
+            }
+
+            sr.ReadLine();
+            int i = 0;
+            ListaEtiketa.Etikete = new Dictionary<string, Etiketa>();
+            ListaTipManifestacijecs.TipoviManifestacija = new Dictionary<string, TipManifestacije>();
+            ListaManifestacija.Manifestacije = new Dictionary<string, Manifestacija>();
+            while ((line = sr.ReadLine()) != null)
+            {
+
+
+                if (line == "")
+                {
+                    i++;
+                    if (sr.ReadLine() != null && i<3)
+                    {
+                        line = sr.ReadLine();
+                    }
+                    }
+                    if (i == 0)
+                    {
+                        string[] et = line.Split('|');
+                        Color color = (Color)ColorConverter.ConvertFromString(et[2]);
+                        Etiketa novaE = new Etiketa(et[0], color, et[1], new SolidColorBrush(color));
+                        ListaEtiketa.Etikete.Add(et[0], novaE);
+
+                    } else if (i == 1)
+                    {
+                        string[] et = line.Split('|');
+                        ImageSource slika = null;
+                        slika = new BitmapImage(new Uri(et[3]));
+                        TipManifestacije tipM = new TipManifestacije(et[0], et[1], et[2], slika);
+                        ListaTipManifestacijecs.TipoviManifestacija.Add(et[0], tipM);
+                    }
+                    else
+                    {
+                    bool a = true;
+                    Manifestacija m = null;
+                    //line = sr.ReadLine();
+                    while (a) {
+                        
+                        if (line == null)
+                        {
+                            ListaManifestacija.Manifestacije.Add(m.ID, m);
+                            return;
+                        }
+                        string[] manif = line.Split('|');
+
+                        ImageSource slika = null;
+                        slika = new BitmapImage(new Uri(manif[10]));
+                        TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
+                        string[] koord = manif[15].Split(',');
+                        Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
+                        m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
+                            tipM, tacka);
+                        m.Etikete = new List<Etiketa>();
+                        while ((line = sr.ReadLine())!=null)
+                        {
+                            if((line.StartsWith(manif[0] + "#E"))){
+                                string[] l1 = line.Split('|');
+                                Etiketa et1 = ListaEtiketa.Etikete[l1[1]];
+                                m.Etikete.Add(et1);
+                            }else
+                            {
+                                ListaManifestacija.Manifestacije.Add(m.ID, m);
+                                break;
+                            }
+                            
+
+                        }
+
+                    }
+                        
+                            
+                    }
+
+                    
+                
+            }
+
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.FileName = "unknown.txt";
-            savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            savefile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            savefile.DefaultExt = "txt";
 
 
 
@@ -198,9 +348,13 @@ namespace Manifestacije
                 {
                     using (TextWriter tw = new StreamWriter(fs))
                     {
-                        Save_Manifestacije(tw, FileName);
+                        tw.WriteLine("MAP-EVENTS");
                         Save_etikete(tw, FileName);
+                        tw.WriteLine("\n");
                         Save_TipoviManifestacija(tw, FileName);
+                        tw.WriteLine("\n");
+                        Save_Manifestacije(tw, FileName);
+                        
                     }
                 }
             }
@@ -212,7 +366,7 @@ namespace Manifestacije
             foreach (KeyValuePair<String, Etiketa> kvp in ListaEtiketa.Etikete)
             {
                 
-                tw.WriteLine(string.Format("{0};{1}", "ETIKETA" + kvp.Key, kvp.Value));
+                tw.WriteLine(string.Format("{0}|{1}", kvp.Key, kvp.Value));
             }
         }
 
@@ -220,7 +374,7 @@ namespace Manifestacije
         {
             foreach (KeyValuePair<string, TipManifestacije> kvp in ListaTipManifestacijecs.TipoviManifestacija)
             {
-                tw.WriteLine(string.Format("{0};{1}", "TIP" + kvp.Key, kvp.Value));          
+                tw.WriteLine(string.Format("{0}", kvp.Value));          
             }
         }
 
@@ -228,11 +382,10 @@ namespace Manifestacije
         {
             foreach (KeyValuePair<string, Manifestacija> kvp in ListaManifestacija.Manifestacije)
             {
-                tw.WriteLine(string.Format("{0};{1}", "MANIF" + kvp.Key, kvp.Value)); 
+                tw.WriteLine(string.Format("{0}|{1}",kvp.Key, kvp.Value)); 
                 foreach (Etiketa etiketa in kvp.Value.Etikete)
                 {
-                    tw.WriteLine(string.Format("{0};{1}", kvp.Key + ",ETIKETA" + etiketa.ID, etiketa));
-                    ListaEtiketa.Etikete.Remove(etiketa.ID);
+                    tw.WriteLine(string.Format("{0}", kvp.Key + "#E|" + etiketa.ID));
                 }
             }
         }
@@ -247,7 +400,8 @@ namespace Manifestacije
             {
                 parametar = "";
                 this.txtPRETRAGA.FontStyle = FontStyles.Normal;
-                this.txtPRETRAGA.Foreground = Brushes.Black;
+                SolidColorBrush color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F1DED7"));
+                this.txtPRETRAGA.Foreground = color;
             }
             ObservableCollection<Manifestacija> pomocna = new ObservableCollection<Manifestacija>();
             foreach (Manifestacija m in this.Manifestacije)
@@ -267,7 +421,8 @@ namespace Manifestacije
             if (this.txtPRETRAGA.FontStyle == FontStyles.Oblique)
             {
                 this.txtPRETRAGA.Text = "";
-                txtPRETRAGA.Foreground = Brushes.Black;
+                SolidColorBrush color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F1DED7"));
+                this.txtPRETRAGA.Foreground = color;
                 txtPRETRAGA.FontStyle = FontStyles.Normal;
             }
         }
@@ -277,7 +432,8 @@ namespace Manifestacije
             if (txtPRETRAGA.Text == "" && this.Search_Button.IsMouseOver == false)
             {
                 this.txtPRETRAGA.Text = "Search...";
-                txtPRETRAGA.Foreground = Brushes.Silver;
+                SolidColorBrush color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F1DED7"));
+                this.txtPRETRAGA.Foreground = color;
                 txtPRETRAGA.FontStyle = FontStyles.Oblique;
             }
         }
@@ -287,7 +443,8 @@ namespace Manifestacije
             if (txtPRETRAGA.IsMouseOver == false)
             {
                 this.txtPRETRAGA.Text = "Search...";
-                txtPRETRAGA.Foreground = Brushes.Silver;
+                SolidColorBrush color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F1DED7"));
+                this.txtPRETRAGA.Foreground = color;
                 txtPRETRAGA.FontStyle = FontStyles.Oblique;
             }
         }
@@ -315,6 +472,7 @@ namespace Manifestacije
 
         private void Lista_OnItemSelected(object sender, RoutedEventArgs e)
         {
+
             lista.Tag = e.OriginalSource;
         }
 

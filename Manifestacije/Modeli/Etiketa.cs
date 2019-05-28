@@ -21,6 +21,7 @@ namespace Manifestacije.Modeli
         }
 
         private string id;
+        [DisplayName("ID")]
         public string ID
         {
             get
@@ -37,6 +38,7 @@ namespace Manifestacije.Modeli
             }
         }
         private Color boja;
+        [DisplayName("Color")]
         public Color Boja
         {
             get
@@ -53,6 +55,7 @@ namespace Manifestacije.Modeli
             }
         }
         private string opis;
+        [DisplayName("Description")]
         public string Opis
         {
             get
@@ -96,7 +99,7 @@ namespace Manifestacije.Modeli
 
         public override string ToString()
         {
-            return this.Opis + ";" +
+            return this.Opis + "|" +
                    this.BojaBrush;
         }
     }

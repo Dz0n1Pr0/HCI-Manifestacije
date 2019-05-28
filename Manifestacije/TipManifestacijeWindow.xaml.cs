@@ -115,7 +115,7 @@ namespace Manifestacije
 
             if (Editing)
             {
-                lblNaslov.Text = "Izmena tipa vrste";
+                Title = "Change type of event";
                 popuniPolja();
                 txtID.IsEnabled = false;
             }

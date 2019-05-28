@@ -18,12 +18,12 @@ namespace Manifestacije.Modeli
             {
                 if (manifestacije == null)
                 {
-                    manifestacije = new Dictionary<string, Manifestacija>();
+                    //manifestacije = new Dictionary<string, Manifestacija>();
                     //new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip);
-                    manifestacije.Add("1", new Manifestacija("1", "Primer1", "Opis1", "Alkohol se moze doneti", "Besplatno", true, true, false, 5000, "5/25/2019 12:00:00 AM",
-                        new BitmapImage(new Uri("images/slanina.png", UriKind.Relative)), "Tip1", new Point()));
-                    manifestacije.Add("2", new Manifestacija("2", "Primer2", "Opis2", "Nema alkohola", "Visoke cene", false, true, false, 100, "5/25/2019 12:00:00 AM",
-                         new BitmapImage(new Uri("images/robot.png", UriKind.Relative)), "Tip2", new Point()));
+                   /* manifestacije.Add("1", new Manifestacija("1", "Primer1", "Opis1", "Alkohol se moze doneti", "Besplatno", true, true, false, 5000, "6/25/2019 12:00:00 AM",
+                        new BitmapImage(new Uri("images/slanina.png", UriKind.Relative)), null, new Point()));
+                    manifestacije.Add("2", new Manifestacija("2", "Primer2", "Opis2", "Nema alkohola", "Visoke cene", false, true, false, 100, "6/25/2019 12:00:00 AM",
+                         new BitmapImage(new Uri("images/robot.png", UriKind.Relative)), null, new Point()));*/
 
                 }
                 return manifestacije;
@@ -38,7 +38,8 @@ namespace Manifestacije.Modeli
         }
 
         //Konstruktor
-        public ListaManifestacija() { }
+        public ListaManifestacija() {
+        }
 
     }
 }

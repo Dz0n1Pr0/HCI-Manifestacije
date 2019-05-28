@@ -11,7 +11,6 @@ namespace Manifestacije.Controller
     {
         public static RoutedCommand DeleteCommand { get; set; }
         public static RoutedCommand NewEventType { get; set; }
-
         public static RoutedCommand NewEvent { get; set; }
         public static RoutedCommand NewLabel { get; set; }
         public static RoutedCommand SaveCommand { get; set; }
@@ -21,10 +20,38 @@ namespace Manifestacije.Controller
         public static RoutedCommand Exit { get; set; }
         public static RoutedCommand Accept { get; set; }
         public static RoutedCommand Return { get; set; }
+        public static RoutedCommand NewCommand { get; set; }
+        public static RoutedCommand AddMore { get; set; }
+        public static RoutedCommand Event { get; set; }
+        public static RoutedCommand EventType { get; set; }
+        public static RoutedCommand Label { get; set; }
+        public static RoutedCommand AddLabel { get; set; }
+        public static RoutedCommand RmvLabel { get; set; }
 
         //ovde ovako mozete dodati svoje komande i specifisati im precice ima i ovo ModifierKeys.Control da se ubaci
         static Commands()
         {
+            AddLabel = new RoutedCommand();
+            AddLabel.InputGestures.Add(new KeyGesture(Key.Left));
+
+            RmvLabel = new RoutedCommand();
+            RmvLabel.InputGestures.Add(new KeyGesture(Key.Right));
+
+            Event = new RoutedCommand();
+            Event.InputGestures.Add(new KeyGesture(Key.D1, ModifierKeys.Alt));
+
+            EventType = new RoutedCommand();
+            EventType.InputGestures.Add(new KeyGesture(Key.D2, ModifierKeys.Alt));
+
+            Label = new RoutedCommand();
+            Label.InputGestures.Add(new KeyGesture(Key.D3, ModifierKeys.Alt));
+
+            AddMore = new RoutedCommand();
+            AddMore.InputGestures.Add(new KeyGesture(Key.N, ModifierKeys.Alt));
+
+            NewCommand = new RoutedCommand();
+            NewCommand.InputGestures.Add(new KeyGesture(Key.N, ModifierKeys.Control));
+
             DeleteCommand = new RoutedCommand();
             DeleteCommand.InputGestures.Add(new KeyGesture(Key.Delete));
 

@@ -4,24 +4,58 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
+        xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         
-        Title="Dodavanje vrste" Height="446.4" Width="848" WindowStartupLocation="CenterScreen"
+        Title="Add Event" Height="484.8" Icon="images/ikonica.png" Width="875.6" WindowStartupLocation="CenterScreen"
         MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1" >
 
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Odustani_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.AddLabel}" Executed="DodajEtiketu_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.RmvLabel}" Executed="ObrisiEtiketu_Click"/>
+    </Window.CommandBindings>
+    <Window.Background>
+        <ImageBrush ImageSource="images/ManifestacijaWindow/pozadine.png"></ImageBrush>
+    </Window.Background>
 
     <Window.Resources>
+        
+        <Style TargetType="{x:Type CheckBox}" x:Key="myCheckboxStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="checkboxImage" Source="images/FilterWindow/checkbox emty.png" Height="15" Width="27" />
+                            <ContentPresenter/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="checkboxImage" Property="Source" Value="images/FilterWindow/znak.png"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="checkboxImage" Property="Source" Value="images/FilterWindow/checkbox checked.png"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="15" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="FontFamily" Value="Calibri"/>
         </Style>
 
         <Style x:Key="ListBoxStyle" TargetType="ListBox">
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
@@ -30,12 +64,15 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="Width" Value="200" />
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#EFB39D"/>
             <Setter Property="Margin" Value="3"/>
 
             <Setter Property="Template">
                 <Setter.Value>
+
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
@@ -45,11 +82,11 @@
                                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
                             </Trigger>
                             <Trigger Property="IsFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="Blue"/>
-                                <Setter Property="BorderThickness" TargetName="border" Value="1.5" />
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -67,6 +104,23 @@
         </Style>
 
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+
+        <ContextMenu x:Key="menu">
+            <MenuItem Header="Choose" x:Name="MenuItemChoose"
+                                Click="DodajEtiketu_Click"/>
+        </ContextMenu>
+        <ContextMenu x:Key="menuR">
+            <MenuItem Header="Remove" x:Name="MenuItemRmv"
+                                Click="ObrisiEtiketu_Click"/>
+        </ContextMenu>
+        <Style TargetType="ListBoxItem" x:Key="itemStyle">
+            <Setter Property="ContextMenu.ContextMenu" Value="{StaticResource menu}"/>
+        </Style>
+        <Style TargetType="ListBoxItem" x:Key="itemStyleR">
+            <Setter Property="ContextMenu.ContextMenu" Value="{StaticResource menuR}"/>
+        </Style>
+
+
     </Window.Resources>
 
 
@@ -96,14 +150,17 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <TextBlock Text="Type:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,68,11"></TextBlock>
                             <Border x:Name="borderTIP" BorderThickness="1.5" Margin="6,0,6,9" Width="200" Height="20">
-                                <ComboBox x:Name="txtTIP"  
+                                <ComboBox x:Name="txtTIP" Background="Transparent" 
                           FontSize="12" Foreground="Black" FontFamily="Calibri"
-                          ItemsSource="{Binding Path=TipoviManifestacijeString}"
+                          ItemsSource="{Binding Path=TipoviManifestacije}"
                           SelectedItem="{Binding Path=Tip}" Margin="-1.6" HorizontalAlignment="Left" Width="200">
                                     <ComboBox.Text>
                                         <Binding Path="Tip" UpdateSourceTrigger="PropertyChanged">
                                         </Binding>
                                     </ComboBox.Text>
+                                    <ComboBox.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#EFB39D" Opacity="0.6"/>
+                                    </ComboBox.Resources>
                                 </ComboBox>
                             </Border>
                         </StackPanel>
@@ -116,19 +173,25 @@
                             </Border>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,25,0"/>
-                            <TextBox x:Name="txtOPIS" Height="120" Style="{StaticResource ResourceKey=TextBoxStyle}"
+                            <GroupBox BorderThickness="1" Header="Description" Foreground="White" Margin="10,0,0,9" Padding="1" BorderBrush="#EFB39D" >
+                                <TextBox x:Name="txtOPIS" BorderBrush="#EFB39D" Background="#AC6D6F" Height="120" Width="295" Style="{StaticResource ResourceKey=TextBoxStyle}"
                             ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             ScrollViewer.HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" 
-                            Text="{Binding Path=Opis}" Margin="5,0,0,9">
-                            </TextBox>
+                            Text="{Binding Path=Opis}" Margin="0,0,0,9">
+                                </TextBox>
+                            </GroupBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Alcohol service:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,0,6,0"/>
                             <Border x:Name="borderSTATUS" BorderThickness="1.5" Width="200" Height="24" Margin="0,0,0,0">
                                 <ComboBox x:Name="txtSTATUS"  ItemsSource="{Binding StatusAlkohola}" 
                               FontSize="12" Foreground="Black" FontFamily="Calibri"
-                              SelectedItem="{Binding StatusSluzenjaAlkohola}"  HorizontalAlignment="Left" Width="200" Margin="0,0,-3,0"/>
+                              SelectedItem="{Binding StatusSluzenjaAlkohola}"  HorizontalAlignment="Left" Width="200" Margin="0,0,-3,0">
+                                    <ComboBox.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#EFB39D" Opacity="0.6"/>
+                                    </ComboBox.Resources>
+                                </ComboBox>
+                                
                             </Border>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
@@ -137,6 +200,9 @@
                                 <ComboBox x:Name="txtCENE" ItemsSource="{Binding Path=StatusKategorije}" 
                           FontSize="12" Foreground="Black" FontFamily="Calibri"                              
                           SelectedItem="{Binding Path=KategorijaCene}" HorizontalAlignment="Left" Width="200" Margin="0,0,-3,0">
+                                    <ComboBox.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#EFB39D" Opacity="0.6"/>
+                                    </ComboBox.Resources>
                                 </ComboBox>
                             </Border>
                         </StackPanel>
@@ -147,17 +213,17 @@
                 <StackPanel DockPanel.Dock="Right" Margin="35,15,0,0">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="173" >
-                            <Border Height="100" BorderBrush="Green" BorderThickness="1"
+                            <Border Height="100" BorderBrush="Black" BorderThickness="1"
                              Margin="20,0,20,0" CornerRadius="10" >
                                 <Image x:Name="Ikonica" Source="{Binding IkonicaP}" Margin="1,1,1,1"/>
                             </Border>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                 <TextBox x:Name="txtIKONICA" Width="160" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="20" FontSize="12"
                               Text="{Binding IkonicaP}" Visibility="Hidden" />
-                                <Button Background="Transparent" BorderBrush="Transparent" Width="80" Height="20" Click="Ikonica_Click" Margin="-250,0,0,0">
+                                <Button Background="Transparent" BorderBrush="Transparent" Foreground="WhiteSmoke" Width="80" Height="20" Click="Ikonica_Click" Margin="-250,0,0,0">
                                     <TextBlock><Run Text="Upload Image"/></TextBlock>
                                 </Button>
-                                <Button Background="Transparent" BorderBrush="Transparent" Width="83" Height="20" Click="Ikonica_ClickRmv" Margin="-80,0,0,0">
+                                <Button Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" Width="83" Height="20" Click="Ikonica_ClickRmv" Margin="-80,0,0,0">
                                     <TextBlock><Run Text="Remove Image"/></TextBlock>
                                 </Button>
 
@@ -166,17 +232,17 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="17,15,0,0">
                             <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
-                                <TextBlock Text="Handicapped suitable:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,59,0"  ></TextBlock>
-                                <CheckBox x:Name="chcHend" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Hendikepirani}"></CheckBox>
+                                <TextBlock Text="Handicapped suitable:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,54,0"  ></TextBlock>
+                                <CheckBox x:Name="chcHend" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Hendikepirani}" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
 
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
-                                <TextBlock Text="Smoking allowed:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,87,0"></TextBlock>
-                                <CheckBox x:Name="chcPusenje" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Pusenje}" Height="15.2" Width="16"></CheckBox>
+                                <TextBlock Text="Smoking allowed:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,82,0"></TextBlock>
+                                <CheckBox x:Name="chcPusenje" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Pusenje}" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
-                                <TextBlock Text="Is outdoors: " Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,119,0"  ></TextBlock>
-                                <CheckBox x:Name="chcOut" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Napolju}"></CheckBox>
+                                <TextBlock Text="Is outdoors: " Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,114,0"  ></TextBlock>
+                                <CheckBox x:Name="chcOut" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=Napolju}" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
                                 <TextBlock Text="Expected No of guests:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,23,0"></TextBlock>
@@ -212,51 +278,68 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <StackPanel Orientation="Vertical">
-                            <ListBox x:Name="listaEtiketa" Height="180" Width="175" Margin="0,0,15,0" 
-                             ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                             ItemsSource="{Binding Path=Etikete, UpdateSourceTrigger=PropertyChanged}" >
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <WrapPanel Height="24">
-                                            <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                            <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                        FontSize="14" Foreground="Black" FontFamily="Calibri" />
-                                        </WrapPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <GroupBox BorderThickness="1" Header="Choosen Labels" Foreground="White" Margin="0,0,15,0" Padding="1" BorderBrush="#EFB39D">
+                                <ListBox x:Name="listaEtiketa" BorderBrush="#EFB39D" Background="#AC6D6F" Height="180" Width="175" SelectionChanged="listaEtiketa_SelectionChanged" ItemContainerStyle="{StaticResource itemStyleR}" >
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel Height="24">
+                                                <Rectangle Width="40" Height="22" Fill="{Binding BojaBrush}" Stroke="Black" StrokeThickness="1" />
+                                                <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                FontSize="14" Foreground="Black" FontFamily="Calibri" />
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+
 
                         </StackPanel>
                         <StackPanel>
                             <StackPanel Orientation="Vertical">
-                                <Button Height="30" Width="96" Margin="0,50,30,20" Click="DodajEtiketu_Click" ToolTip="Select label from the list on the right">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock><Run Text="Add label"/></TextBlock>
-                                    </StackPanel>
+                                <Button Name="AddLbl"  Height="30" Width="96" Margin="0,80,30,20" Click="DodajEtiketu_Click" ToolTip="Choosing label from the list on the right (Left arrow)">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image x:Name="slika" Source="images/ManifestacijaWindow/Add label1.png"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="slika" Property="Source" Value="images/ManifestacijaWindow/Add label2.png" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
                                 </Button>
-                                <Button Height="30" Width="96"  Margin="0,0,30,0" Click="ObrisiEtiketu_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock>Delete label</TextBlock>
-                                    </StackPanel>
+                                <Button Name="RmvLbl" Height="30" Width="96"  Margin="0,0,30,0" Click="ObrisiEtiketu_Click" ToolTip="Remove choosen label (Right arrow)">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image x:Name="slika" Source="images/ManifestacijaWindow/Delete label.png"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="slika" Property="Source" Value="images/ManifestacijaWindow/DElete label2.png" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
                                 </Button>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="-20,0,0,0">
-                            <ListBox x:Name="listaPostojecihEtiketa" Height="180" Width="175" Margin="0,0,0,0" 
-                             ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                             ItemsSource="{Binding Path=Etikete, UpdateSourceTrigger=PropertyChanged}" >
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <WrapPanel Height="24">
-                                            <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                            <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                            <GroupBox BorderThickness="1" Foreground="White" Header="Available Labels" Margin="0,0,15,0" Padding="1" BorderBrush="#EFB39D">
+                                <ListBox x:Name="listaPostojecihEtiketa" BorderBrush="#EFB39D" Background="#AC6D6F" Height="180" Width="175" SelectionChanged="listaPostojecihEtiketa_SelectionChanged" ItemContainerStyle="{StaticResource itemStyle}">
+
+
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel Height="24">
+                                                <Rectangle Width="40" Height="22" Fill="{Binding BojaBrush}" Stroke="Black" StrokeThickness="1" />
+                                                <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                         FontSize="14" Foreground="Black" FontFamily="Calibri" />
-                                        </WrapPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+
+
 
                         </StackPanel>
                     </StackPanel>
@@ -265,24 +348,45 @@
             </DockPanel>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="{StaticResource TransparentWhite}" Margin="5,8,5,0">
-                <Button x:Name="btnAddMore" Width="150"  Height="40" Foreground="Black" FontFamily="Calibri"
-                        FontSize="16" BorderBrush="Transparent" Margin="0,17,30,0" Click="DodajJos_Click" >
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Add more</TextBlock>
-                    </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="Transparent" Margin="5,8,5,0">
+                <Button x:Name="AddMore" Width="145"  Height="40" Foreground="Black" FontFamily="Calibri"
+                        FontSize="16" BorderBrush="Transparent" Margin="0,17,30,0" Click="Dodaj_Click" >
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ManifestacijaWindow/AddMore.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika" Property="Source" Value="images/ManifestacijaWindow/AddMoree2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
                 <Button x:Name="btnPotvrdi" Width="150"  Height="40" Foreground="Black" FontFamily="Calibri"
                         FontSize="16" BorderBrush="Transparent" Margin="0,17,30,0" Click="Dodaj_Click" >
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Add</TextBlock>
-                    </StackPanel>
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ManifestacijaWindow/Save.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika" Property="Source" Value="images/ManifestacijaWindow/save2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
                 <Button Width="150" Height="40" Foreground="Black" FontFamily="Calibri" FontSize="16"
                         BorderBrush="Transparent" Click="Odustani_Click" Margin="0,17,0,0" >
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Cancel</TextBlock>
-                    </StackPanel>
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ManifestacijaWindow/Cancel.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika" Property="Source" Value="images/ManifestacijaWindow/cancel2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
 

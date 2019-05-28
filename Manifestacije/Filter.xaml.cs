@@ -299,7 +299,11 @@ namespace Manifestacije
                 {
                     foreach(Manifestacija m in ListaManifestacija.Manifestacije.Values)
                     {
-                        if (m.Tip.Equals(tip.Ime))
+                        if (m.Tip == null)
+                        {
+                            continue;
+                        }
+                        if (m.Tip.Equals(tip))
                         {
                             pomocna.Add(m);
                         }

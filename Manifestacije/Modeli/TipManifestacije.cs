@@ -21,6 +21,7 @@ namespace Manifestacije.Modeli
         }
 
         private string id;
+        [DisplayName("ID")]
         public string ID
         {
             get
@@ -37,6 +38,7 @@ namespace Manifestacije.Modeli
             }
         }
         private string ime;
+        [DisplayName("Name")]
         public string Ime
         {
             get
@@ -53,6 +55,7 @@ namespace Manifestacije.Modeli
             }
         }
         private string opis;
+        [DisplayName("Description")]
         public string Opis
         {
             get
@@ -69,6 +72,7 @@ namespace Manifestacije.Modeli
             }
         }
         private ImageSource _ikonica;
+        [DisplayName("Icon")]
         public ImageSource Ikonica
         {
             get
@@ -96,8 +100,9 @@ namespace Manifestacije.Modeli
         public override string ToString()
         {
             //(Ikonica as BitmapImage).UriSource;
-            return this.Ime + ";" +
-                   this.Opis + ";" +
+            return this.ID + "|"+ 
+                   this.Ime + "|" +
+                   this.Opis + "|" +
                    this.Ikonica;
         }
 

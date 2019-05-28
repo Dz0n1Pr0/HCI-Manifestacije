@@ -105,7 +105,7 @@ namespace Manifestacije
 
             if (Editing)
             {
-                lblNaslov.Text = "Izmena etikete";
+                Title = "Edit Label";
                 txtID.IsEnabled = false;
                 popuniPolja();
             }
@@ -176,7 +176,7 @@ namespace Manifestacije
                 {
                     ManifestacijaWindow v = (ManifestacijaWindow)Owner;
                     SolidColorBrush b = new SolidColorBrush((Color)cp.SelectedColor);
-                    v.dodajEtiketu(new Etiketa(ID, (Color)cp.SelectedColor, Opis, b));
+                    //v.dodajEtiketu(new Etiketa(ID, (Color)cp.SelectedColor, Opis, b));
                     //v.Selektovan.Etikete.Add(new Etiketa(ID, (Color)cp.SelectedColor, Opis, b));
                 }
 

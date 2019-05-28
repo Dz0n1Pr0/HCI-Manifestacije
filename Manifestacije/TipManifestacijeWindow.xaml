@@ -4,15 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
-         mc:Ignorable="d"
-        Title="Dodavanje tipa vrste" Height="265" Width="490" WindowStartupLocation="CenterScreen"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown" ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1">
+        xmlns:Controller="clr-namespace:Manifestacije.Controller"
+        mc:Ignorable="d"
+        Title="Add Event Type" Height="277.663" Width="508.994" WindowStartupLocation="CenterScreen"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" Icon="images/ikonica.png" ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1">
+
+    <Window.Background>
+        <ImageBrush ImageSource="images/TipWindow/pozadina.png"></ImageBrush>
+    </Window.Background>   
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.SaveCommand}" Executed="Potvrdi_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Nazad_Click"/>
+    </Window.CommandBindings>
 
     <Window.Resources>
 
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="FontStyle" Value="Normal" />
             <Setter Property="HorizontalAlignment" Value="Right" />
@@ -22,15 +32,17 @@
             <Setter Property="Width" Value="20" />
             <Setter Property="Width" Value="200" />
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="Foreground" Value="Transparent"/>
             <Setter Property="FontStyle" Value="Normal" />
             <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderBrush" Value="#EFB39D"/>
 
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -38,17 +50,17 @@
                                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
                             </Trigger>
                             <Trigger Property="IsFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="Blue"/>
-                                <Setter Property="BorderThickness" TargetName="border" Value="1.5" />
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-
         </Style>
 
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
@@ -57,11 +69,10 @@
 
 
     <StackPanel Orientation="Vertical" >
-        <TextBlock x:Name="lblNaslov" HorizontalAlignment="Center" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}">Add Event Type</TextBlock>
 
-        <StackPanel Orientation="Horizontal" Margin="5">
+        <StackPanel Orientation="Horizontal" Margin="6,13,0,5">
 
-            <Grid Background="{StaticResource TransparentWhite}">
+            <Grid Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="15"/>
@@ -138,8 +149,8 @@
                      Text="{Binding Path=Opis}"></TextBox>
 
             </Grid>
-            <StackPanel Orientation="Vertical" Width="192" Background="{StaticResource TransparentWhite}" Margin="5,0,5,0">
-                <Border Height="100" Width="100" BorderBrush="Green" BorderThickness="2"
+            <StackPanel Orientation="Vertical" Width="192" Background="Transparent" Margin="5,0,5,0">
+                <Border Height="100" Width="100" BorderBrush="#EFB39D" BorderThickness="2"
                              HorizontalAlignment="Center" Margin="47,10,45,5">
                     <Image x:Name="Ikonica"  Opacity="1" Source="{Binding IkonicaP}" Margin="-1,1.2,-1.2,-1.6" />
                 </Border>
@@ -168,23 +179,51 @@
                         </Validation.ErrorTemplate>
                     </TextBox>
                     <Button Foreground="Black" FontFamily="Calibri" 
-                    BorderBrush="Transparent" Width="41" Height="25" Click="Ikonica_Click">
-                        <TextBlock><Run Text="Upload"/></TextBlock>
+                    BorderBrush="Transparent" Width="40" Height="17" Click="Ikonica_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/TipWindow/Upload.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/TipWindow/Upload2.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                 </StackPanel>
                 <StackPanel Orientation = "Horizontal" Height="54" Margin="13,20,0,0">
                     <Button Foreground="Black" FontFamily="Calibri" FontSize="16" 
-                    BorderBrush="Transparent" Margin="10,12,90.6,10.4" Click="Potvrdi_Click" Width="67">
-
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center"><Run Text="Add"/></TextBlock>
-                        </StackPanel>
+                    BorderBrush="Transparent" Margin="30,12,90.6,10.4" Click="Potvrdi_Click" Width="52" ToolTip="Save type (Ctrl+S)">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/TipWindow/Add.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/TipWindow/Add2.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                     <Button Foreground="Black" FontFamily="Calibri" FontSize="16" 
-                    BorderBrush="Transparent" Click="Nazad_Click" Margin="-70,12,90.6,10.4" Width="67" >
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center"><Run Text="Cancel"/></TextBlock>
-                        </StackPanel>
+                    BorderBrush="Transparent" Click="Nazad_Click" Margin="-70,12,90.6,10.4" Width="52" ToolTip="Return (Esc)">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/TipWindow/Cancel.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/TipWindow/Cancel2.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                 </StackPanel>
 
