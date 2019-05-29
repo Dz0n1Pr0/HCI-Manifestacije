@@ -381,8 +381,8 @@
 
         <DockPanel DockPanel.Dock="Bottom" Margin="0,45,9.6,10" Height="547">
 
-            <DockPanel DockPanel.Dock="Left" Width="700" >
-                <ListBox Margin="38,0,0,0" x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single"
+            <DockPanel DockPanel.Dock="Left" Width="770" >
+                <ListBox Margin="10,0,0,10" x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single"
                     AllowDrop="True" 
                     PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" 
                     DragEnter="Mapa_Grada_DragEnter" 
@@ -420,24 +420,31 @@
             </ListBox>
             </DockPanel>
 
-            <DockPanel DockPanel.Dock="Right" Margin="10,0,0,0">
+            <DockPanel DockPanel.Dock="Right" Margin="9,0,0,0">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Margin="0,60,0,0" Width="168">
-                        <Canvas Name="Mapa2" Width="130" Height="120">
+                    <StackPanel Margin="0,15,0,0" Width="118">
+                        <Canvas Name="Mapa1" Width="110" Height="110">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="images/GlavniProzor/MapaNS.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </StackPanel>
+                    <StackPanel Margin="0,25,0,0" Width="118">
+                        <Canvas Name="Mapa2" Width="110" Height="110">
                             <Canvas.Background>
                                 <ImageBrush ImageSource="images/GlavniProzor/MapaUE.png"/>
                             </Canvas.Background>
                         </Canvas>
                     </StackPanel>
-                    <StackPanel Margin="0,40,0,0" Width="168">
-                        <Canvas Name="Mapa3" Width="130" Height="120">
+                    <StackPanel Margin="0,25,0,0" Width="118">
+                        <Canvas Name="Mapa3" Width="110" Height="110">
                             <Canvas.Background>
                                 <ImageBrush ImageSource="images/GlavniProzor/MapaSU.png"/>
                             </Canvas.Background>
                         </Canvas>
                     </StackPanel>
-                    <StackPanel Margin="0,40,0,0" Width="168">
-                        <Canvas Name="Mapa4" Width="130" Height="120">
+                    <StackPanel Margin="0,25,0,0" Width="118">
+                        <Canvas Name="Mapa4" Width="110" Height="110">
                             <Canvas.Background>
                                 <ImageBrush ImageSource="images/GlavniProzor/MapaBG.png"/>
                             </Canvas.Background>
