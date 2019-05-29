@@ -310,8 +310,12 @@
                         <ListView x:Name="lista" DockPanel.Dock="Bottom" ItemsSource="{Binding Manifestacije, UpdateSourceTrigger=PropertyChanged}"
                         ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        Margin="6,10,8,11" Width="250" Background="#EFB39D" PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
-                       PreviewMouseMove="Lista_PreviewMouseMove">
+                        Margin="6,10,8,11" Width="250" Background="#EFB39D"
+                        PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
+                        PreviewMouseMove="Lista_PreviewMouseMove"
+                        AllowDrop="True"
+                        DragEnter="Lista_DragEnter" 
+                        Drop="Lista_Drop" >
                             <ListView.Resources>
                                 <Style TargetType="{x:Type GridViewColumnHeader}">
                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -385,56 +389,70 @@
 
         <DockPanel DockPanel.Dock="Bottom" Margin="0,45,9.6,10" Height="547">
 
-            <DockPanel DockPanel.Dock="Left" Width="700" >
-                <ListBox Margin="38,0,0,0" x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single" AllowDrop="True" PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" DragEnter="Mapa_Grada_DragEnter" Drop="Mapa_Grada_Drop" PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="{x:Type ListBox}">
-                            <Canvas Name="CanvasPanel" IsItemsHost="True" >
+            <DockPanel DockPanel.Dock="Left" Width="770" >
+                <ListBox Margin="10,0,0,10" x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single"
+                    AllowDrop="True" 
+                    PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" 
+                    DragEnter="Mapa_Grada_DragEnter" 
+                    Drop="Mapa_Grada_Drop" 
+                    PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
+                <ListBox.Template>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <ScrollViewer Name="CanvasScroller">
+                            <Canvas x:Name="CanvasPanel" IsItemsHost="True" Width="1025" Height="725">
                                 <Canvas.Background>
                                     <ImageBrush ImageSource="images/GlavniProzor/mapaNS.png"/>
                                 </Canvas.Background>
                             </Canvas>
-                        </ControlTemplate>
-                    </ListBox.Template >
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Canvas.Top" Value="{Binding Tacka.Y}"></Setter>
-                            <Setter Property="Canvas.Left" Value="{Binding Tacka.X}"></Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel AllowDrop="False" Width="50" Height="50" HorizontalAlignment="Left" Orientation="Horizontal">
-                                <Grid>
-                                    <Image Width="40" Height="40" Margin="5 5 5 5" Source="{Binding Ikonica}" VerticalAlignment="Center">
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ListBox.Template >
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Canvas.Top" Value="{Binding Tacka.Y}"></Setter>
+                        <Setter Property="Canvas.Left" Value="{Binding Tacka.X}"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel AllowDrop="False" Width="50" Height="50" HorizontalAlignment="Left" Orientation="Horizontal">
+                            <Grid>
+                                <Image Width="40" Height="40" Margin="5 5 5 5" Source="{Binding Ikonica}" VerticalAlignment="Center">
 
-                                    </Image>
-                                    <Image Width="20" Height="20" Margin="0 0 0 0" Source="images/strelica.png" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                                </Image>
+                                <Image Width="20" Height="20" Margin="0 0 0 0" Source="images/strelica.png" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             </DockPanel>
 
-            <DockPanel DockPanel.Dock="Right" Margin="10,0,0,0">
+            <DockPanel DockPanel.Dock="Right" Margin="9,0,0,0">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Margin="0,60,0,0" Width="168">
-                        <Canvas Name="Mapa2" Width="130" Height="120">
+                    <StackPanel Margin="0,15,0,0" Width="118">
+                        <Canvas Name="Mapa1" Width="110" Height="110">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="images/GlavniProzor/MapaNS.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </StackPanel>
+                    <StackPanel Margin="0,25,0,0" Width="118">
+                        <Canvas Name="Mapa2" Width="110" Height="110">
                             <Canvas.Background>
                                 <ImageBrush ImageSource="images/GlavniProzor/MapaUE.png"/>
                             </Canvas.Background>
                         </Canvas>
                     </StackPanel>
-                    <StackPanel Margin="0,40,0,0" Width="168">
-                        <Canvas Name="Mapa3" Width="130" Height="120">
+                    <StackPanel Margin="0,25,0,0" Width="118">
+                        <Canvas Name="Mapa3" Width="110" Height="110">
                             <Canvas.Background>
                                 <ImageBrush ImageSource="images/GlavniProzor/MapaSU.png"/>
                             </Canvas.Background>
                         </Canvas>
                     </StackPanel>
-                    <StackPanel Margin="0,40,0,0" Width="168">
-                        <Canvas Name="Mapa4" Width="130" Height="120">
+                    <StackPanel Margin="0,25,0,0" Width="118">
+                        <Canvas Name="Mapa4" Width="110" Height="110">
                             <Canvas.Background>
                                 <ImageBrush ImageSource="images/GlavniProzor/MapaBG.png"/>
                             </Canvas.Background>
