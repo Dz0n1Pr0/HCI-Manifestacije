@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Manifestacije
 {
@@ -53,7 +54,9 @@ namespace Manifestacije
         public Random rnd;
         public static string PoslednjaPretraga = "";
         private Point startPoint = new Point();
-        
+        public DispatcherTimer timer;
+        public int tajmer;
+
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
         private ObservableCollection<Manifestacija> ManifestacijeNaMapi { get; set; }
 
@@ -131,7 +134,6 @@ namespace Manifestacije
             manif.ShowDialog();
         }
 
-        //Metoda koja puni listu stringovima sa imenima vrsta
         public void setManifestacijeItems()
         {
             var pomocna = new ObservableCollection<Manifestacija>();
@@ -148,7 +150,6 @@ namespace Manifestacije
         }
 
        
-        //Izmena vrsta
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Manifestacija selekt = (Manifestacija)lista.SelectedItem;
@@ -159,7 +160,6 @@ namespace Manifestacije
         }
 
 
-        //Brisanje vrsta
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             if (lista.SelectedItems.Count > 1)
@@ -233,15 +233,15 @@ namespace Manifestacije
                         $"Details:\n\n{ex.StackTrace}");
                     }
                 }
-                
+
 
                 string line1 = File.ReadLines(openFile.FileName).First();
                 if (!(line1.Equals("MAP-EVENTS")))
                 {
-                    MessageBoxResult result = MessageBox.Show("Not Supported File");
+                MessageBoxResult result = MessageBox.Show("Not Supported File");
                 }else
                 {
-                    nadjeno = false;
+                nadjeno = false;
                 }
 
             }
@@ -452,6 +452,46 @@ namespace Manifestacije
 
         }
 
+        private void DemoStart_Click(object sender, RoutedEventArgs e)
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += timer_Tick;
+           
+            if (mePlayer.Source != null)
+            {
+                if (mePlayer.Visibility.Equals(Visibility.Collapsed))
+                {
+                    mePlayer.Visibility = Visibility.Visible;
+
+                    mePlayer.Play();
+                    Cursor = Cursors.None;
+                    timer.Start();
+                }
+                else
+                {
+                    mePlayer.Visibility = Visibility.Collapsed;
+                    mePlayer.Stop();
+                    Cursor = Cursors.Arrow;
+                    timer.Stop();
+                }
+            }
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            if (mePlayer.Source != null)
+            {
+                Console.WriteLine("{0}", mePlayer.Position.ToString(@"mm\:ss"));
+                if (mePlayer.Position.ToString(@"mm\:ss").Equals(mePlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss")))
+                {
+                    mePlayer.Visibility = Visibility.Collapsed;
+                    mePlayer.Stop();
+                    Cursor = Cursors.Arrow;
+                    timer.Stop();
+                }
+            }
+        }
 
         #region Drag & Drop
 

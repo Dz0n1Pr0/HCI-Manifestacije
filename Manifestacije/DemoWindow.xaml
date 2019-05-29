@@ -1,0 +1,24 @@
+﻿<Window x:Class="Manifestacije.DemoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manifestacije"
+        mc:Ignorable="d"
+        Title="DemoWindow" Height="300" Width="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <MediaElement Source="C:\Users\Dz0n1Pr0\Desktop\HCI\Manifestacije\HCTest.webm" LoadedBehavior="Manual" Name="mePlayer" />
+        <StackPanel Grid.Row="1">
+            <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
+            <WrapPanel HorizontalAlignment="Center">
+                <Button Name="btnPlay" Click="btnPlay_Click">Play</Button>
+                <Button Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
+                <Button Name="btnStop" Click="btnStop_Click">Stop</Button>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</Window>

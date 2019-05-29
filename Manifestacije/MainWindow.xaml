@@ -22,7 +22,8 @@
         <CommandBinding Command="{x:Static Controller:Commands.DeleteCommand}" Executed="Delete_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Exit_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.SaveCommand}" Executed="Save_Click"/>
-
+        <CommandBinding Command="{x:Static Controller:Commands.Demo}" Executed="DemoStart_Click"/>
+        
     </Window.CommandBindings>
 
     <Window.Resources>
@@ -54,7 +55,7 @@
                 <MenuItem Header="Help" Background="#EFB39D"/>
             </ContextMenu>
         </DockPanel.ContextMenu>
-
+        <MediaElement Source="C:\Users\Dz0n1Pr0\Desktop\HCI\Manifestacije\testProzor.webm" LoadedBehavior="Manual" Name="mePlayer"  Visibility="Collapsed" Width="1400"/>
         <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="Calibri" Height="17">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -128,6 +129,13 @@
                 </MenuItem.Style>
             </MenuItem>
             <MenuItem Header="Help (F1)" Width="55">
+                <MenuItem.Style>
+                    <Style>
+                        <Setter Property="MenuItem.Foreground" Value="#F1DED7" />
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <MenuItem Header="Demo (Ctrl+D)" Click="DemoStart_Click" Width="83">
                 <MenuItem.Style>
                     <Style>
                         <Setter Property="MenuItem.Foreground" Value="#F1DED7" />
