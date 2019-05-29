@@ -132,7 +132,10 @@
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                         Margin="10,-2,10.4,0" Width="266"
                         PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
-                        PreviewMouseMove="Lista_PreviewMouseMove">
+                        PreviewMouseMove="Lista_PreviewMouseMove"
+                        AllowDrop="True"
+                        DragEnter="Lista_DragEnter" 
+                        Drop="Lista_Drop" >
                         <ListView.Resources>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -180,14 +183,23 @@
 
         <DockPanel DockPanel.Dock="Bottom" Margin="0,10,5,10">
 
-            <ListBox x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single" AllowDrop="True" PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" DragEnter="Mapa_Grada_DragEnter" Drop="Mapa_Grada_Drop" PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
+            <ListBox x:Name="MapaGrada" 
+                     ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" 
+                     Visibility="Visible" SelectionMode="Single" 
+                     AllowDrop="True" 
+                     PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" 
+                     DragEnter="Mapa_Grada_DragEnter" 
+                     Drop="Mapa_Grada_Drop" 
+                     PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
-                        <Canvas Name="CanvasPanel" IsItemsHost="True" >
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="pack://application:,,,/images/minasanor.png"/>
-                            </Canvas.Background>
-                        </Canvas>
+                        <ScrollViewer Name="CanvasScroller">
+                            <Canvas x:Name="CanvasPanel" IsItemsHost="True" Width="1313" Height="995">
+                                <Canvas.Background>
+                                    <ImageBrush ImageSource="pack://application:,,,/images/minasanor.png"/>
+                                </Canvas.Background>
+                            </Canvas>
+                        </ScrollViewer>
                     </ControlTemplate>
                 </ListBox.Template >
                 <ListBox.ItemContainerStyle>

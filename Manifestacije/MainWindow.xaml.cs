@@ -52,7 +52,7 @@ namespace Manifestacije
         public Random rnd;
         public static string PoslednjaPretraga = "";
         private Point startPoint = new Point();
-
+        
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
         private ObservableCollection<Manifestacija> ManifestacijeNaMapi { get; set; }
 
@@ -68,6 +68,7 @@ namespace Manifestacije
             ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
             MapaGrada.ItemsSource = null;
             MapaGrada.ItemsSource = ManifestacijeNaMapi;
+            
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -318,6 +319,29 @@ namespace Manifestacije
             lista.Tag = e.OriginalSource;
         }
 
+        private void Lista_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("manifestacijaMapa"))
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        private void Lista_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("manifestacijaMapa"))
+            {
+                Manifestacija man = e.Data.GetData("manifestacijaMapa") as Manifestacija;
+                Console.WriteLine(man.Tacka);
+                man.Tacka = e.GetPosition(MapaGrada);
+               
+
+                ListaManifestacija.Manifestacije.Add(man.ID, man);
+                this.setManifestacijeItems();
+                ManifestacijeNaMapi.Remove(man);
+            }
+        }
+
         private void Lista_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             Point position = e.GetPosition(null);
@@ -337,7 +361,7 @@ namespace Manifestacije
 
         private void Mapa_Grada_DragEnter(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent("manifestacija"))
+            if (!e.Data.GetDataPresent("manifestacija") && !e.Data.GetDataPresent("manifestacijaMapa"))
             {
                 e.Effects = DragDropEffects.None;
             }
@@ -345,13 +369,21 @@ namespace Manifestacije
 
         private void Mapa_Grada_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent("manifestacija"))
+            if (e.Data.GetDataPresent("manifestacija") || e.Data.GetDataPresent("manifestacijaMapa"))
             {
-                Manifestacija man = e.Data.GetData("manifestacija") as Manifestacija;
+                Manifestacija man = e.Data.GetDataPresent("manifestacija") ? e.Data.GetData("manifestacija") as Manifestacija :
+                    e.Data.GetData("manifestacijaMapa") as Manifestacija;
                 Console.WriteLine(man.Tacka);
+                
                 man.Tacka = e.GetPosition(MapaGrada);
+                Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
+                if (canvas != null)
+                    man.Tacka = e.GetPosition(canvas);
+                
                 if (!ManifestacijeNaMapi.Contains(man))
                 {
+                    ListaManifestacija.Manifestacije.Remove(man.ID);
+                    this.setManifestacijeItems();
                     ManifestacijeNaMapi.Add(man);
                 }
                 else
@@ -375,7 +407,7 @@ namespace Manifestacije
                 Manifestacija selectedItem = (Manifestacija)MapaGrada.SelectedItem;
                 ListBoxItem listBoxItem = (ListBoxItem)MapaGrada.ItemContainerGenerator.ContainerFromItem(selectedItem);
                 
-                DataObject dragData = new DataObject("manifestacija", selectedItem);
+                DataObject dragData = new DataObject("manifestacijaMapa", selectedItem);
                 DragDrop.DoDragDrop(listBoxItem, dragData, DragDropEffects.Move);
             }
         }
