@@ -23,7 +23,10 @@
         <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Exit_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.SaveCommand}" Executed="Save_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.Demo}" Executed="DemoStart_Click"/>
-        
+        <CommandBinding Command="{x:Static Controller:Commands.Mapa1}" Executed="Mapa1_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Mapa2}" Executed="Mapa2_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Mapa3}" Executed="Mapa3_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Mapa4}" Executed="Mapa4_Click"/>
     </Window.CommandBindings>
 
     <Window.Resources>
@@ -430,34 +433,63 @@
 
             <DockPanel DockPanel.Dock="Right" Margin="9,0,0,0">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Margin="0,15,0,0" Width="118">
-                        <Canvas Name="Mapa1" Width="110" Height="110">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="images/GlavniProzor/MapaNS.png"/>
-                            </Canvas.Background>
-                        </Canvas>
-                    </StackPanel>
-                    <StackPanel Margin="0,25,0,0" Width="118">
-                        <Canvas Name="Mapa2" Width="110" Height="110">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="images/GlavniProzor/MapaUE.png"/>
-                            </Canvas.Background>
-                        </Canvas>
-                    </StackPanel>
-                    <StackPanel Margin="0,25,0,0" Width="118">
-                        <Canvas Name="Mapa3" Width="110" Height="110">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="images/GlavniProzor/MapaSU.png"/>
-                            </Canvas.Background>
-                        </Canvas>
-                    </StackPanel>
-                    <StackPanel Margin="0,25,0,0" Width="118">
-                        <Canvas Name="Mapa4" Width="110" Height="110">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="images/GlavniProzor/MapaBG.png"/>
-                            </Canvas.Background>
-                        </Canvas>
-                    </StackPanel>
+                    <Button Margin="9,15,0,0" Width="110" Height="110" Click="Mapa1_Click" ToolTip="Switch to map of Novi Sad (Ctrl+1)" >
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/MapaNS.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                                                Property="Source"
+                                                Value="images/GlavniProzor/temp.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa2_Click" ToolTip="Switch to map of Uzice (Ctrl+2)" >
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/MapaUE.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                                                Property="Source"
+                                                Value="images/GlavniProzor/temp.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa3_Click" ToolTip="Switch to map of Uzice (Ctrl+3)" >
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/MapaSU.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                                                Property="Source"
+                                                Value="images/GlavniProzor/temp.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa4_Click" ToolTip="Switch to map of Beograd (Ctrl+4)" >
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/MapaBG.png"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="slika"
+                                                Property="Source"
+                                                Value="images/GlavniProzor/temp.png" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    
 
                 </StackPanel>
             </DockPanel>
