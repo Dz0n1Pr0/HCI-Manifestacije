@@ -28,6 +28,10 @@ namespace Manifestacije.Controller
         public static RoutedCommand AddLabel { get; set; }
         public static RoutedCommand RmvLabel { get; set; }
         public static RoutedCommand Demo { get; set; }
+        public static RoutedCommand Mapa1 { get; set; }
+        public static RoutedCommand Mapa2 { get; set; }
+        public static RoutedCommand Mapa3 { get; set; }
+        public static RoutedCommand Mapa4 { get; set; }
         //ovde ovako mozete dodati svoje komande i specifisati im precice ima i ovo ModifierKeys.Control da se ubaci
         static Commands()
         {
@@ -87,6 +91,18 @@ namespace Manifestacije.Controller
 
             Demo = new RoutedCommand();
             Demo.InputGestures.Add(new KeyGesture(Key.D, ModifierKeys.Control));
+
+            Mapa1 = new RoutedCommand();
+            Mapa1.InputGestures.Add(new KeyGesture(Key.D1, ModifierKeys.Control));
+
+            Mapa2 = new RoutedCommand();
+            Mapa2.InputGestures.Add(new KeyGesture(Key.D2, ModifierKeys.Control));
+
+            Mapa3 = new RoutedCommand();
+            Mapa3.InputGestures.Add(new KeyGesture(Key.D3, ModifierKeys.Control));
+
+            Mapa4 = new RoutedCommand();
+            Mapa4.InputGestures.Add(new KeyGesture(Key.D4, ModifierKeys.Control));
         }
     }
 

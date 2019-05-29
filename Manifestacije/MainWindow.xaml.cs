@@ -56,9 +56,15 @@ namespace Manifestacije
         private Point startPoint = new Point();
         public DispatcherTimer timer;
         public int tajmer;
+        private int aktivnaMapa;
 
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
         private ObservableCollection<Manifestacija> ManifestacijeNaMapi { get; set; }
+
+        private ObservableCollection<Manifestacija> SacuvaneNaMapi1 { get; set; }
+        private ObservableCollection<Manifestacija> SacuvaneNaMapi2 { get; set; }
+        private ObservableCollection<Manifestacija> SacuvaneNaMapi3 { get; set; }
+        private ObservableCollection<Manifestacija> SacuvaneNaMapi4 { get; set; }
 
         public MainWindow()
         {
@@ -69,11 +75,12 @@ namespace Manifestacije
             //punjenje liste
             //setManifestacijeItems();
             rnd = new Random();
-            ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
-            MapaGrada.ItemsSource = null;
-            MapaGrada.ItemsSource = ManifestacijeNaMapi;
+            
+            initMapLists(); //SAMO ZA TESTIRANJE, INACE SE PUNI PODACIMA PRILIKOM LOAD
 
             Load();
+            aktivnaMapa = 1;
+            loadMapEvents(aktivnaMapa);
             setManifestacijeItems();
         }
 
@@ -602,6 +609,102 @@ namespace Manifestacije
                 DataObject dragData = new DataObject("manifestacijaMapa", selectedItem);
                 DragDrop.DoDragDrop(listBoxItem, dragData, DragDropEffects.Move);
             }
+        }
+
+        private void Mapa1_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
+            var uriSource = new Uri("../../images/GlavniProzor/MapaNS.png", UriKind.Relative);
+            canvas.Background = new ImageBrush(new BitmapImage(uriSource));
+
+            saveMapEvents(aktivnaMapa);
+            aktivnaMapa = 1;
+            loadMapEvents(aktivnaMapa);
+        }
+
+        private void Mapa2_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
+            var uriSource = new Uri("../../images/GlavniProzor/MapaUE.png", UriKind.Relative);
+            canvas.Background = new ImageBrush(new BitmapImage(uriSource));
+
+            saveMapEvents(aktivnaMapa);
+            aktivnaMapa = 2;
+            loadMapEvents(aktivnaMapa);
+        }
+
+        private void Mapa3_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
+            var uriSource = new Uri("../../images/GlavniProzor/MapaSU.png", UriKind.Relative);
+            canvas.Background = new ImageBrush(new BitmapImage(uriSource));
+
+            saveMapEvents(aktivnaMapa);
+            aktivnaMapa = 3;
+            loadMapEvents(aktivnaMapa);
+        }
+
+        private void Mapa4_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
+            var uriSource = new Uri("../../images/GlavniProzor/MapaBG.png", UriKind.Relative);
+            canvas.Background = new ImageBrush(new BitmapImage(uriSource));
+
+            saveMapEvents(aktivnaMapa);
+            aktivnaMapa = 4;
+            loadMapEvents(aktivnaMapa);
+        }
+
+        private void saveMapEvents(int map)
+        {
+            switch (map)
+            {
+                case 1:
+                    SacuvaneNaMapi1 = ManifestacijeNaMapi;
+                    break;
+                case 2:
+                    SacuvaneNaMapi2 = ManifestacijeNaMapi;
+                    break;
+                case 3:
+                    SacuvaneNaMapi3 = ManifestacijeNaMapi;
+                    break;
+                case 4:
+                    SacuvaneNaMapi4 = ManifestacijeNaMapi;
+                    break;
+                default:
+                    throw new Exception("Trying to acces an out of bounds map. Only 4 exist.");
+            }
+        }
+
+        private void loadMapEvents(int map)
+        {
+            switch (map)
+            {
+                case 1:
+                    ManifestacijeNaMapi = SacuvaneNaMapi1;
+                    break;
+                case 2:
+                    ManifestacijeNaMapi = SacuvaneNaMapi2;
+                    break;
+                case 3:
+                    ManifestacijeNaMapi = SacuvaneNaMapi3;
+                    break;
+                case 4:
+                    ManifestacijeNaMapi = SacuvaneNaMapi4;
+                    break;
+                default:
+                    throw new Exception("Trying to acces an out of bounds map. Only 4 exist.");
+            }
+            MapaGrada.ItemsSource = ManifestacijeNaMapi;
+        }
+
+        private void initMapLists()
+        {
+            ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
+            SacuvaneNaMapi1 = new ObservableCollection<Manifestacija>();
+            SacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
+            SacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();
+            SacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
         }
 
         #endregion
