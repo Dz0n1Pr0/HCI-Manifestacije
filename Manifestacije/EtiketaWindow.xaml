@@ -6,20 +6,27 @@
         xmlns:xctk="http://schemas/xceed.com/wpf/xaml/toolkit"
         xmlns:xctk1="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Manifestacije"
+        xmlns:custom="clr-namespace:Manifestacije.Validation"
+        xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
-        Title="Dodavanje Etikete" Height="250" Width="480" WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
+        Title="Add Label" Height="262.152" Width="480" WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1" Icon="images/ikonica.png" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
+
+    <Window.Background>
+        <ImageBrush ImageSource="images/EtiketaWindow/pozadina.png"></ImageBrush>
+    </Window.Background>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.SaveCommand}" Executed="Potvrdi_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Nazad_Click"/>
+    </Window.CommandBindings>
 
     <Window.Resources>
-
-
-
-        <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
 
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
             <Setter Property="Height" Value="20" />
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="#EFB39D" />
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Margin" Value="3"/>
@@ -28,14 +35,14 @@
             <Setter Property="Width" Value="200" />
             <Setter Property="Height" Value="20" />
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="#EFB39D" />
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="Margin" Value="3"/>
-
+            <Setter Property="BorderBrush" Value="#EFB39D"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -43,11 +50,12 @@
                                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
                             </Trigger>
                             <Trigger Property="IsFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="Blue"/>
-                                <Setter Property="BorderThickness" TargetName="border" Value="1.5" />
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -64,15 +72,60 @@
             </WrapPanel>
         </DataTemplate>
 
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#EFB39D" />
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderBrush" Value="#EFB39D"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="White" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+
+
     </Window.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Height="40" Margin="0,0,0.4,0">
-            <TextBlock x:Name="lblNaslov" Height="25" Text="Add Label" FontSize="22" Style="{StaticResource ResourceKey=TextBlockStyle}" HorizontalAlignment="Center"></TextBlock>
-        </StackPanel>
 
-        <DockPanel DockPanel.Dock="Top" Height="132" Margin="0,0,0.4,0">
 
-            <Grid Background="{StaticResource TransparentWhite}" RenderTransformOrigin="0.428,0.499" Width="426">
+        <DockPanel DockPanel.Dock="Top" Height="132" Margin="0,15,0.4,0">
+
+            <Grid Background="Transparent" RenderTransformOrigin="0.428,0.499" Width="426">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="7.2"/>
@@ -93,36 +146,20 @@
                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,1,5.2,0" 
                            VerticalAlignment="Top" Width="90"/>
 
-                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="Auto" Margin="3.8,3,0.6,2.6" Width="Auto" >
+                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource textBoxInError}" Validation.ErrorTemplate="{StaticResource validationTemplate}" Height="Auto" Margin="3.8,3,0.6,2.6" Width="Auto" >
                     <TextBox.Text>
                         <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
-
+                            <Binding.ValidationRules>
+                                <custom:IDValidation  Min="0" Max="99999"/>
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
                 </TextBox>
                 <Border x:Name="borderBOJA" Grid.Column="1" Grid.Row="2" BorderThickness="1.5" Margin="3.8,0.2,0.6,2.2">
-                    <xctk1:ColorPicker Name="cp" DisplayColorAndName="True" SelectedColorChanged="Cp_SelectedColorChanged"
-                                      AvailableColorsSortingMode="HueSaturationBrightness" 
+                    <xctk1:ColorPicker Name="cp" DisplayColorAndName="False" SelectedColorChanged="Cp_SelectedColorChanged" BorderBrush="#EFB39D" Background="Transparent"
+                                      ColorMode="ColorCanvas" AvailableColorsSortingMode="HueSaturationBrightness" 
                                       SelectedColor="{Binding Path=Boja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="-1.6,0.4,-1.6,-0.2">
+                        
                     </xctk1:ColorPicker>
 
                 </Border>
@@ -132,20 +169,46 @@
 
             </Grid>
         </DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="{StaticResource TransparentWhite}" Margin="5,0,0.4,0" Height="56">
-            <Button Width="150"  Height="30" Foreground="Black" FontFamily="Calibri" FontSize="16"
-                        BorderBrush="Transparent" Margin="75,0,0,0"  Click="Potvrdi_Click">
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center"><Run Text="Add"/></TextBlock>
-                </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="Transparent" Margin="5,0,0.4,0" Height="56">
+            <Button Width="150" Height="30" Margin="75,0,0,0"  Click="Potvrdi_Click" ToolTip="Save Label (Ctrl+S)">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image x:Name="slika" Source="images/EtiketaWindow/Add.png"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/EtiketaWindow/add2.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=txtID, Path=Text.Length, Mode=OneWay}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=txtID}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
-            <Button Width="150" Height="30" Foreground="Black" FontFamily="Calibri" FontSize="16"
-                        BorderBrush="Transparent" Click="Nazad_Click" Margin="30,0,0,0" >
-                <StackPanel Orientation="Horizontal">
-
-                    <TextBlock VerticalAlignment="Center"><Run Text="Cancel"/></TextBlock>
-                </StackPanel>
+            <Button Width="150" Height="30" Click="Nazad_Click" Margin="30,0,0,0" ToolTip="Return (Esc)" >
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image x:Name="slika" Source="images/EtiketaWindow/Cancel.png"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/EtiketaWindow/cancel2.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
         </StackPanel>
 

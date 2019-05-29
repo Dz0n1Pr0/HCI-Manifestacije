@@ -32,7 +32,7 @@ namespace Manifestacije.Modeli
         private bool _pusenje;
         private bool _napolju;
         private int _ocekivanaPublika;
-        private string _tip { get; set; }
+        private TipManifestacije _tip { get; set; }
         private string _datum { get; set; }
         private Point _tacka;
 
@@ -50,7 +50,7 @@ namespace Manifestacije.Modeli
             }
         }
 
-
+        [DisplayName("ID")]
         public string ID
         {
             get
@@ -66,6 +66,7 @@ namespace Manifestacije.Modeli
                 }
             }
         }
+        [DisplayName("Name")]
         public string Ime
         {
             get
@@ -81,7 +82,7 @@ namespace Manifestacije.Modeli
                 }
             }
         }
-        public String Tip
+        public TipManifestacije Tip
         {
             get
             {
@@ -96,81 +97,15 @@ namespace Manifestacije.Modeli
                 }
             }
         }
-        public bool Hendikepirani
+        [DisplayName("Type")]
+        public string TipName
         {
             get
             {
-                return _hendikepirani;
-            }
-            set
-            {
-                if (value != _hendikepirani)
-                {
-                    _hendikepirani = value;
-                    OnPropertyChanged("Pogodno za hendikepirane");
-                }
+                return _tip.Ime;
             }
         }
-        public bool Pusenje
-        {
-            get
-            {
-                return _pusenje;
-            }
-            set
-            {
-                if (value != _pusenje)
-                {
-                    _pusenje = value;
-                    OnPropertyChanged("Dozvoljeno je pušenje cigara");
-                }
-            }
-        }
-        public bool Napolju
-        {
-            get
-            {
-                return _napolju;
-            }
-            set
-            {
-                if (value != _napolju)
-                {
-                    _napolju = value;
-                    OnPropertyChanged("Održava se napolju");
-                }
-            }
-        }
-        public string Opis
-        {
-            get
-            {
-                return _opis;
-            }
-            set
-            {
-                if (value != _opis)
-                {
-                    _opis = value;
-                    OnPropertyChanged("Opis");
-                }
-            }
-        }
-        public int OcekivanaPublika
-        {
-            get
-            {
-                return _ocekivanaPublika;
-            }
-            set
-            {
-                if (value != _ocekivanaPublika)
-                {
-                    _ocekivanaPublika = value;
-                    OnPropertyChanged("Prihod");
-                }
-            }
-        }
+        [DisplayName("Date")]
         public string Datum
         {
             get
@@ -186,36 +121,23 @@ namespace Manifestacije.Modeli
                 }
             }
         }
-        public string StatusSluzenjaAlkohola
+        [DisplayName("Description")]
+        public string Opis
         {
             get
             {
-                return _statusSluzenjaAlkohola;
+                return _opis;
             }
             set
             {
-                if (value != _statusSluzenjaAlkohola)
+                if (value != _opis)
                 {
-                    _statusSluzenjaAlkohola = value;
-                    OnPropertyChanged("Status služenja alkohola");
+                    _opis = value;
+                    OnPropertyChanged("Opis");
                 }
             }
         }
-        public string KategorijaCene
-        {
-            get
-            {
-                return _kategorijaCene;
-            }
-            set
-            {
-                if (value != _kategorijaCene)
-                {
-                    _kategorijaCene = value;
-                    OnPropertyChanged("Turistički status");
-                }
-            }
-        }
+        [DisplayName("Icon")]
         public ImageSource Ikonica
         {
             get
@@ -231,6 +153,103 @@ namespace Manifestacije.Modeli
                 }
             }
         }
+        [DisplayName("Handicapped Accessible")]
+        public bool Hendikepirani
+        {
+            get
+            {
+                return _hendikepirani;
+            }
+            set
+            {
+                if (value != _hendikepirani)
+                {
+                    _hendikepirani = value;
+                    OnPropertyChanged("Pogodno za hendikepirane");
+                }
+            }
+        }
+        [DisplayName("Smoking Allowed")]
+        public bool Pusenje
+        {
+            get
+            {
+                return _pusenje;
+            }
+            set
+            {
+                if (value != _pusenje)
+                {
+                    _pusenje = value;
+                    OnPropertyChanged("Dozvoljeno je pušenje cigara");
+                }
+            }
+        }
+        [DisplayName("Outside")]
+        public bool Napolju
+        {
+            get
+            {
+                return _napolju;
+            }
+            set
+            {
+                if (value != _napolju)
+                {
+                    _napolju = value;
+                    OnPropertyChanged("Održava se napolju");
+                }
+            }
+        }
+        [DisplayName("Expected Audience")]
+        public int OcekivanaPublika
+        {
+            get
+            {
+                return _ocekivanaPublika;
+            }
+            set
+            {
+                if (value != _ocekivanaPublika)
+                {
+                    _ocekivanaPublika = value;
+                    OnPropertyChanged("Publika");
+                }
+            }
+        }
+        [DisplayName("Alcohol Status")]
+        public string StatusSluzenjaAlkohola
+        {
+            get
+            {
+                return _statusSluzenjaAlkohola;
+            }
+            set
+            {
+                if (value != _statusSluzenjaAlkohola)
+                {
+                    _statusSluzenjaAlkohola = value;
+                    OnPropertyChanged("Status služenja alkohola");
+                }
+            }
+        }
+        [DisplayName("Price Category")]
+        public string KategorijaCene
+        {
+            get
+            {
+                return _kategorijaCene;
+            }
+            set
+            {
+                if (value != _kategorijaCene)
+                {
+                    _kategorijaCene = value;
+                    OnPropertyChanged("Kategorija cena");
+                }
+            }
+        }
+        
         public Point Tacka
         {
             get
@@ -272,7 +291,7 @@ namespace Manifestacije.Modeli
                      int ocekivanaPublika,
                      string datum,
                      ImageSource ikonica,
-                     string tip,
+                     TipManifestacije tip,
                      Point tacka)
         {
             ID = id;
@@ -305,17 +324,17 @@ namespace Manifestacije.Modeli
         public override string ToString()
         {
             //(Ikonica as BitmapImage).UriSource
-            return this.Ime + ";" +
-                   this.Opis + ";" +
-                   this.StatusSluzenjaAlkohola + ";" +
-                   this.KategorijaCene + ";" +
-                   this.Hendikepirani + ";" +
-                   this.Pusenje + ";" +
-                   this.Napolju + ";" +
-                   this.OcekivanaPublika + ";" +
-                   this.Datum + ";" +
-                   this.Ikonica + ";" +
-                   this.Tip + ";" + 
+            return this.Ime + "|" +
+                   this.Opis + "|" +
+                   this.StatusSluzenjaAlkohola + "|" +
+                   this.KategorijaCene + "|" +
+                   this.Hendikepirani + "|" +
+                   this.Pusenje + "|" +
+                   this.Napolju + "|" +
+                   this.OcekivanaPublika + "|" +
+                   this.Datum + "|" +
+                   this.Ikonica + "|" +
+                   this.Tip + "|" + 
                    this.Tacka;
         }
 

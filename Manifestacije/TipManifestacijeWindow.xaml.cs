@@ -115,7 +115,7 @@ namespace Manifestacije
 
             if (Editing)
             {
-                lblNaslov.Text = "Izmena tipa vrste";
+                Title = "Change type of event";
                 popuniPolja();
                 txtID.IsEnabled = false;
             }
@@ -173,18 +173,6 @@ namespace Manifestacije
 
         private void Potvrdi_Click(object sender, RoutedEventArgs e)
         {
-            if (ID == null || ID.Equals("") || Ime == null || Ime.Equals("") || Opis == null || Opis.Equals("") || IkonicaP == null)
-            {
-                MessageBox.Show("You must fill all fields", "Error");
-                return;
-            }
-            else if (ListaTipManifestacijecs.TipoviManifestacija.ContainsKey(ID) && Editing == false)
-            {
-                MessageBox.Show("ID already exists!", "Wrong ID");
-                return;
-            }
-
-
             if (Editing == true)
             {
                 //SpisakVrsta.Vrste[stariID].Ime = Ime;

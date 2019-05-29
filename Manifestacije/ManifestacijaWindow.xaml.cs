@@ -40,8 +40,9 @@ namespace Manifestacije
 
         public ObservableCollection<String> StatusAlkohola { get; set; }
         public ObservableCollection<String> StatusKategorije { get; set; }
-        public ObservableCollection<string> TipoviManifestacijeString { get; set; }
-        public ObservableCollection<Etiketa> Etikete { get; set; }
+        public ObservableCollection<String> TipoviManifestacije { get; set; }
+        public ObservableCollection<Etiketa> SveEtikete { get; set; }
+        public ObservableCollection<Etiketa> IzabraneEtikete { get; set; }
 
         public Window ParWindow { get; set; }
 
@@ -90,7 +91,7 @@ namespace Manifestacije
                 }
             }
         }
-        public String Tip
+        public string Tip
         {
             get
             {
@@ -246,23 +247,35 @@ namespace Manifestacije
         {
             InitializeComponent();
             this.DataContext = this;
-
             this.Editing = edit;
-            this.Selektovan = sel;
 
             ParWindow = parent;
             this.Owner = parent;
 
-
-            TipoviManifestacijeString = new ObservableCollection<string>();
-            foreach (TipManifestacije tip in ListaTipManifestacijecs.TipoviManifestacija.Values)
+            if (sel == null)
             {
-                TipoviManifestacijeString.Add(tip.Ime);
+                Selektovan = new Manifestacija();
+                Selektovan.Etikete = new List<Etiketa>();
+            }
+            else
+            {
+                Selektovan = sel;
+                if (sel.Etikete == null)
+                {
+                    Selektovan.Etikete = new List<Etiketa>();
+                }
             }
 
-            if (TipoviManifestacijeString.Count > 0)
+
+            TipoviManifestacije = new ObservableCollection<String>();
+            foreach (TipManifestacije tip in ListaTipManifestacijecs.TipoviManifestacija.Values)
             {
-                Tip = TipoviManifestacijeString[0];
+                TipoviManifestacije.Add(tip.Ime);
+            }
+
+            if (TipoviManifestacije.Count > 0)
+            {
+                Tip = TipoviManifestacije[0];
             }
 
 
@@ -281,15 +294,30 @@ namespace Manifestacije
 
             CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1));
             dDATUM.BlackoutDates.Add(cdr);
-            
 
-            Etikete = new ObservableCollection<Etiketa>();
+            AddLbl.IsEnabled = false;
+            RmvLbl.IsEnabled = false;
+
+            SveEtikete = new ObservableCollection<Etiketa>();
+            IzabraneEtikete = new ObservableCollection<Etiketa>();
+
+            //napunimo listu svim etiketama koje imamo 
+            foreach (Etiketa e in ListaEtiketa.Etikete.Values)
+            {
+                SveEtikete.Add(e);
+            }
+
+            listaPostojecihEtiketa.ItemsSource = SveEtikete;
+            listaEtiketa.ItemsSource = IzabraneEtikete;
+
             if (Editing)
             {
                 Title = "Edit Event";
                 popuniPolja();
                 txtID.IsEnabled = false;        //ID se ne moze menjati
                 NapuniEtikete();
+                AddMore.Visibility = Visibility.Collapsed;
+                
             }
 
 
@@ -298,22 +326,16 @@ namespace Manifestacije
 
         private void NapuniEtikete()
         {
-            // Etikete = Selektovan.Etikete;
-            Etikete = null;
-            Etikete = new ObservableCollection<Etiketa>();
-            foreach (Etiketa etiketa in ListaEtiketa.Etikete.Values)
+            foreach (Etiketa etiketa in Selektovan.Etikete)
             {
-                Etikete.Add(etiketa);
+                IzabraneEtikete.Add(etiketa);
+                SveEtikete.Remove(etiketa);
             }
-            listaEtiketa.ItemsSource = Etikete;
+            listaEtiketa.ItemsSource = IzabraneEtikete;
+            listaPostojecihEtiketa.ItemsSource = SveEtikete;
 
         }
 
-        public void dodajEtiketu(Etiketa e)
-        {
-            Etikete.Add(e);
-            listaEtiketa.ItemsSource = Etikete;
-        }
 
         private void popuniPolja()
         {
@@ -322,6 +344,7 @@ namespace Manifestacije
                 if (s.Equals(Selektovan.StatusSluzenjaAlkohola))
                 {
                     StatusSluzenjaAlkohola = s;
+                    break;
                 }
             }
 
@@ -330,18 +353,24 @@ namespace Manifestacije
                 if (s.Equals(Selektovan.KategorijaCene))
                 {
                     KategorijaCene = s;
+                    break;
                 }
             }
 
-            foreach (string s in TipoviManifestacijeString)
+            foreach (string s in TipoviManifestacije)
             {
-                if (s.Equals(Selektovan.Tip))
+                if (Selektovan.Tip == null)
+                {
+                    Tip = TipoviManifestacije[0];
+                    break;
+                }
+                else if (s.Equals(Selektovan.Tip.Ime))
                 {
                     Tip = s;
+                    break;
+
                 }
             }
-
-
 
             ID = Selektovan.ID;
             Ime = Selektovan.Ime;
@@ -355,6 +384,9 @@ namespace Manifestacije
             Opis = Selektovan.Opis;
             IkonicaP = Selektovan.Ikonica;
             Datum = Selektovan.Datum;
+
+
+
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -377,38 +409,21 @@ namespace Manifestacije
 
         private void Dodaj_Click(object sender, RoutedEventArgs e)
         {
-            if (ID == null || ID.Equals("") || Ime == null || Ime.Equals("") || Opis == null || Opis.Equals("") || Datum == null || IkonicaP == null)
+            TipManifestacije tip = null;
+            foreach (TipManifestacije tm in ListaTipManifestacijecs.TipoviManifestacija.Values)
             {
-                MessageBox.Show("You must fill all fields!", "Error");
-                return;
-            }
+                if (tm.Ime.Equals(Tip))
+                {
+                    tip = tm;
 
-            int brojPosetilaca = 0;
-            if (!int.TryParse(this.txtGosti.Text, out brojPosetilaca))
-            {
-                MessageBox.Show("Expected number of guests must be a number", "Error");
-                return;
-            }
-
-            DateTime myDate = DateTime.ParseExact(Datum, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
-            if (myDate.Date < DateTime.Now.Date)
-            {
-                Console.WriteLine(DateTime.Now);
-                MessageBox.Show("You can only add future events.", "Erroe");
-                return;
-            }
-
-            else if (ListaManifestacija.Manifestacije.ContainsKey(ID) && Editing == false)
-            {
-                MessageBox.Show("ID already exists!", "Wrong ID");
-                return;
+                }
             }
 
             if (Editing == true)
             {
 
+                ListaManifestacija.Manifestacije[Selektovan.ID].Tip = tip;
                 ListaManifestacija.Manifestacije[Selektovan.ID].Ime = Ime;
-                ListaManifestacija.Manifestacije[Selektovan.ID].Tip = Tip;
                 ListaManifestacija.Manifestacije[Selektovan.ID].StatusSluzenjaAlkohola = StatusSluzenjaAlkohola;
                 ListaManifestacija.Manifestacije[Selektovan.ID].KategorijaCene = KategorijaCene;
                 ListaManifestacija.Manifestacije[Selektovan.ID].Hendikepirani = Hendikepirani;
@@ -420,7 +435,7 @@ namespace Manifestacije
                 ListaManifestacija.Manifestacije[Selektovan.ID].Ikonica = IkonicaP;
                 ListaManifestacija.Manifestacije[Selektovan.ID].Etikete = null;
                 ListaManifestacija.Manifestacije[Selektovan.ID].Etikete = new List<Etiketa>();
-                foreach (Etiketa etiketa in this.Etikete)
+                foreach (Etiketa etiketa in this.IzabraneEtikete)
                 {
                     ListaManifestacija.Manifestacije[Selektovan.ID].Etikete.Add(etiketa);
                 }
@@ -448,12 +463,20 @@ namespace Manifestacije
                     Opis = "";
                 }
 
-                Manifestacija novaManifestacija = new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip, new Point());
+
+                Manifestacija novaManifestacija = new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, tip, new Point());
                 novaManifestacija.Etikete = new List<Etiketa>();
-                foreach (Etiketa etiketa in this.Etikete)
+                if (this.IzabraneEtikete != null)
                 {
-                    novaManifestacija.Etikete.Add(etiketa);
+                    if (this.IzabraneEtikete.Count != 0)
+                    {
+                        foreach (Etiketa etiketa in this.IzabraneEtikete)
+                        {
+                            novaManifestacija.Etikete.Add(etiketa);
+                        }
+                    }
                 }
+                
                 ListaManifestacija.Manifestacije.Add(ID, novaManifestacija);
             }
 
@@ -468,15 +491,28 @@ namespace Manifestacije
             else if (ParWindow is ViewWindow)
             {
                 ViewWindow parentWindow = (ViewWindow)Owner;
-                parentWindow.dodajManifestaciju(new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, Tip, new Point()));
+                parentWindow.dodajManifestaciju(new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, tip, new Point()));
                 MainWindow main = parentWindow.ParentWindow;
                 main.setManifestacijeItems();
             }
 
             Selektovan = null;
-            Etikete = null;
+            IzabraneEtikete = null;
 
-            Close();
+            if (((Button)sender).Name.Equals("AddMore"))
+            {
+                Selektovan = new Manifestacija();
+                Selektovan.Etikete = new List<Etiketa>();
+
+                popuniPolja();
+                NapuniEtikete();
+
+            }
+            else
+            {
+                Close();
+            }
+
         }
 
         private void Ikonica_Click(object sender, RoutedEventArgs e)
@@ -497,7 +533,7 @@ namespace Manifestacije
 
             if (result == true)
             {
-                txtIKONICA.Text = dlg.FileName;
+
                 string url = dlg.FileName;
                 Ikonica.Source = new BitmapImage(new Uri(url, UriKind.Absolute));   // za prikaz
                 IkonicaP = new BitmapImage(new Uri(url, UriKind.Absolute));
@@ -506,56 +542,51 @@ namespace Manifestacije
 
         private void Ikonica_ClickRmv(object sender, RoutedEventArgs e)
         {
-           
+
+            Ikonica.Source = null;   // za prikaz
+            IkonicaP = null;
         }
 
-        private void DodajJos_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
 
         private void DodajEtiketu_Click(object sender, RoutedEventArgs e)
         {
 
-            //TODO: ovo treba menjati
-            //if (!ListaManifestacija.Manifestacije.ContainsKey(ID))
-            //{
-            //    MessageBoxResult mbx = MessageBox.Show("Prvo sačuvajte vrstu bez etiketa, a zatim joj dodajte etikete.", "Sačuvajte vrstu",
-            //        MessageBoxButton.OK);
-            //    return;
-            //}
+            if (listaPostojecihEtiketa.SelectedItem != null)
+            {
 
-            EtiketaWindow et = new EtiketaWindow(this, false, null);
-            et.ShowDialog();
+                Selektovan.Etikete.Add((Etiketa)listaPostojecihEtiketa.SelectedItem);
+                IzabraneEtikete.Add((Etiketa)listaPostojecihEtiketa.SelectedItem);
+                SveEtikete.Remove((Etiketa)listaPostojecihEtiketa.SelectedItem);
+                AddLbl.IsEnabled = false;
+                RmvLbl.IsEnabled = false;
+
+            }
         }
 
         private void ObrisiEtiketu_Click(object sender, RoutedEventArgs e)
         {
-            Etiketa selektovana = (Etiketa)listaEtiketa.SelectedItem;
-
-            if (selektovana == null)
+            if (listaEtiketa.SelectedItem != null)
             {
-                MessageBox.Show("Označite iz liste etiketu za brisanje");
-                return;
+                SveEtikete.Add((Etiketa)listaEtiketa.SelectedItem);
+                Selektovan.Etikete.Remove((Etiketa)listaEtiketa.SelectedItem);
+                IzabraneEtikete.Remove((Etiketa)listaEtiketa.SelectedItem);
+                AddLbl.IsEnabled = false;
+                RmvLbl.IsEnabled = false;
             }
-
-            Etikete.Remove(selektovana);
-
-            foreach (KeyValuePair<string, Etiketa> pair in ListaEtiketa.Etikete)    //brisanje iz spiska etiketa
-            {
-                if (pair.Key.Equals(selektovana.ID))
-                {
-                    ListaEtiketa.Etikete.Remove(pair.Key);
-                    break;
-                }
-            }
-
-            Selektovan.Etikete.Remove(selektovana);
-
-            NapuniEtikete();
         }
 
+        private void listaPostojecihEtiketa_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AddLbl.IsEnabled = true;
+            RmvLbl.IsEnabled = false;
+        }
+
+        private void listaEtiketa_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RmvLbl.IsEnabled = true;
+            AddLbl.IsEnabled = false;
+        }
 
     }
 }

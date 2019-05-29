@@ -5,94 +5,129 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Filter" Height="292" Width="220" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
-
+        Title="Filter" Height="345.494" Width="270.4" Icon="images/ikonica.png"  Background="#5A1F37" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Cancel_Click"/>
+    </Window.CommandBindings>
+    
+    <Window.Resources>
+        <Style TargetType="{x:Type CheckBox}" x:Key="myCheckboxStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="checkboxImage" Source="images/FilterWindow/checkbox emty.png" Height="15" Width="27" />
+                            <ContentPresenter/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="checkboxImage" Property="Source" Value="images/FilterWindow/znak.png"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="checkboxImage" Property="Source" Value="images/FilterWindow/checkbox checked.png"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </Window.Resources>
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Height="110" Margin="0,0,0,5">
+        <StackPanel DockPanel.Dock="Top" Height="120" Margin="0,0,0,8">
             <StackPanel Orientation="Horizontal">
-                <ListBox Name="TypesCbx" ItemsSource="{Binding TipoviManifestacije}" Height="109" Background="Azure" Margin="0,0,0,0" Width="110">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Name="CheckBoxZoneTypes" Content="{Binding Ime}"
+                <GroupBox BorderThickness="1" Header="Types" Foreground="White" Margin="0,-4,0,0" Padding="1" BorderBrush="#EFB39D" Width="130" Height="120">
+                    <ListBox x:Name="TypesCbx" ItemsSource="{Binding TipoviManifestacije}" BorderBrush="#EFB39D" Background="#AC6D6F" Margin="0,0,0,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox x:Name="CheckBoxZoneTypes" Content="{Binding Ime}"
                             Tag="{Binding ID}" Checked="CheckBoxZoneTypes_Checked"  Unchecked="CheckBoxZoneTypes_unchecked"  
-                            Margin="0,5,0,0"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <ListBox Name="LabelsCbx" ItemsSource="{Binding Etikete}" Height="109" Background="Azure" Margin="0,0,0,0" Width="110">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Name="CheckBoxZoneLabels" Content="{Binding ID}"
+                            Margin="0,5,0,0" FontWeight="Normal" Foreground="White" Style="{StaticResource ResourceKey=myCheckboxStyle}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+                <GroupBox BorderThickness="1" Header="Labels" Foreground="White" Margin="0,-4,0,0" Padding="1" BorderBrush="#EFB39D" Width="130">
+                    <ListBox x:Name="LabelsCbx" ItemsSource="{Binding Etikete}" Background="#AC6D6F" BorderBrush="#EFB39D" Margin="0,0,0,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox x:Name="CheckBoxZoneLabels" Content="{Binding ID}"
                             Tag="{Binding ID}" Checked="CheckBoxZoneLabels_Checked" Unchecked="CheckBoxZoneLabels_unchecked" 
-                            Margin="0,5,0,0"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                            Margin="0,5,0,0" FontWeight="Normal" Foreground="White" Style="{StaticResource ResourceKey=myCheckboxStyle}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
             </StackPanel>
 
         </StackPanel>
-        <StackPanel DockPanel.Dock="Top" Height="21" Margin="0,0,0,5">
+        <StackPanel DockPanel.Dock="Top" Height="23" Margin="0,0,0,5" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="From" FontSize="10" Margin="0,2,-8,0"></TextBlock>
-                <DatePicker x:Name="DateFrom" Height="20" Width="85" FirstDayOfWeek="Monday" 
-                                SelectedDateChanged="DateFromChanged" FontSize="8" Margin="10,0,10,0" 
-                            >
+                <TextBlock Text="From" Foreground="White" FontSize="10" Margin="0,2,3,0"></TextBlock>
+                <DatePicker x:Name="DateFrom" Height="21" Width="85" FirstDayOfWeek="Monday" BorderBrush="#EFB39D"
+                                SelectedDateChanged="DateFromChanged" FontSize="8" Margin="0,0,32,0">
+                   
                 </DatePicker>
-                <TextBlock Text="To" FontSize="10" Margin="-5,2,4,0"></TextBlock>
-                <DatePicker x:Name="DateTo" Height="20" Width="85" FirstDayOfWeek="Monday" 
+                <TextBlock Text="To" Foreground="White" FontSize="10" Margin="0,2,4,0"></TextBlock>
+                <DatePicker x:Name="DateTo" Height="21" Width="85" FirstDayOfWeek="Monday" BorderBrush="#EFB39D"
                                 SelectedDateChanged="DateToChanged" FontSize="8" IsEnabled="False">
                 </DatePicker>
             </StackPanel>
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal"  Margin="0,0,0,0">
-                <TextBlock Text="Alcohol:" FontSize="10" Margin="4,0,15,0" Height="16" VerticalAlignment="Bottom"/>
-                <TextBlock Text="No " FontSize="10" Margin="18,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="chcNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" ></CheckBox>
-                <TextBlock Text="Bring " FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="chcBring" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
-                <TextBlock Text="Buy " FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="chcBuy" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                <TextBlock Text="Alcohol:" Foreground="White" FontSize="10" Margin="4,0,45,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="No " Foreground="White" FontSize="10" Margin="18,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="chcNo" Height="15" Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
+                <TextBlock Text="Bring " Foreground="White" FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="chcBring" Height="15"  Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}">></CheckBox>
+                <TextBlock Text="Buy " Foreground="White" FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="chcBuy" Height="15"  Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}">></CheckBox>
             </StackPanel>
 
 
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Height="34" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal">
-                <StackPanel Width="50">
-                    <TextBlock Text="Price:" FontSize="10" Margin="4,10,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <StackPanel Width="50" Margin="0,0,30,0">
+                    <TextBlock Text="Price:" Foreground="White" FontSize="10" Margin="4,10,0,0" Height="16" VerticalAlignment="Bottom"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
 
-                        <TextBlock Text="Free " FontSize="10" Margin="40,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                        <CheckBox x:Name="chcFree" Height="15" Width="15" Margin="0,0,17,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
-                        <TextBlock Text="Low " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                        <CheckBox x:Name="chcLow" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                        <TextBlock Text="Free " Foreground="White" FontSize="10" Margin="40,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcFree" Height="15" Width="27" Margin="-7,0,17,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
+                        <TextBlock Text="Low " Foreground="White" FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcLow" Height="15" Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
 
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Medium " FontSize="10" Margin="22,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                        <CheckBox x:Name="chcMedium" Height="15" Width="15" Margin="0,0,14,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
-                        <TextBlock Text="High " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                        <CheckBox x:Name="chcHigh" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                        <TextBlock Text="Medium " Foreground="White" FontSize="10" Margin="22,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcMedium" Height="15" Width="27" Margin="-7,0,14,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
+                        <TextBlock Text="High " Foreground="White" FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                        <CheckBox x:Name="chcHigh" Height="15" Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            
+
 
         </StackPanel>
 
         <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Handicapped:" FontSize="10" Margin="4,0,20,0" Height="16" VerticalAlignment="Bottom"/>
-                <TextBlock Text="Yes " FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="HandYes" Height="15" Width="15" Margin="0,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
-                <TextBlock Text="No " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="HandNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                <TextBlock Text="Handicapped:" Foreground="White" FontSize="10" Margin="4,0,50,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="Yes " Foreground="White" FontSize="10" Margin="10,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="HandYes" Height="15" Width="27" Margin="-7,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
+                <TextBlock Text="No " Foreground="White" FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="HandNo" Height="15" Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
             </StackPanel>
 
 
@@ -100,38 +135,56 @@
 
         <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Smoking:" FontSize="10" Margin="4,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <TextBlock Text="Yes " FontSize="10" Margin="50,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="SmokingYes" Height="15" Width="15" Margin="0,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
-                <TextBlock Text="No " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="SmokingNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"></CheckBox>
+                <TextBlock Text="Smoking:" Foreground="White" FontSize="10" Margin="4,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="Yes " Foreground="White" FontSize="10" Margin="81,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="SmokingYes" Height="15" Width="27" Margin="-7,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
+                <TextBlock Text="No " Foreground="White" FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="SmokingNo" Height="15" Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"></CheckBox>
             </StackPanel>
         </StackPanel>
 
         <StackPanel DockPanel.Dock="Top" Height="17" Margin="0,0,0,0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Outdoors:" FontSize="10" Margin="4,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <TextBlock Text="Yes " FontSize="10" Margin="48,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="OutdoorsYes" Height="15" Width="15" Margin="0,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked"/>
-                <TextBlock Text="No " FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
-                <CheckBox x:Name="OutdoorsNo" Height="15" Width="15" Margin="0,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked"/>
+                <TextBlock Text="Outdoors:" Foreground="White" FontSize="10" Margin="4,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <TextBlock Text="Yes " Foreground="White" FontSize="10" Margin="78,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="OutdoorsYes" Height="15" Width="27" Margin="-7,0,20,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"/>
+                <TextBlock Text="No " Foreground="White" FontSize="10" Margin="6,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+                <CheckBox x:Name="OutdoorsNo" Height="15" Width="27" Margin="-7,0,0,0" Checked="CbxChecked" Unchecked="CbxUnchecked" Style="{StaticResource ResourceKey=myCheckboxStyle}"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel DockPanel.Dock="Top" Margin="0,8,0,0">
-            <StackPanel Orientation="Horizontal">
-                <Button Height="15" Name="filterBtn" Width="70" Margin="35,0,13,0" Click="DoFilter">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="10" VerticalAlignment="Center">Filter</TextBlock>
-                    </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="43,0,10,0" Width="211" Height="26">
+                <Button Height="15" Name="filterBtn" Width="70" Margin="5,0,35,0" Click="DoFilter" ToolTip="Apply Filter">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/FilterWindow/Filter.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/FilterWindow/filter2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
-                <Button Height="15" Width="70"  Margin="5,0,30,0" Click="Cancel_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="10" VerticalAlignment="Center">Cancel</TextBlock>
-                    </StackPanel>
+                <Button Height="15" Width="70"  Margin="0,0,30,0" Click="Cancel_Click" ToolTip="Return (Esc)">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/FilterWindow/Cancel.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/FilterWindow/cancel2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </StackPanel>
-            
+
         </StackPanel>
 
 

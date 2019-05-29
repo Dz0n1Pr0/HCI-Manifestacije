@@ -6,8 +6,12 @@
         xmlns:local="clr-namespace:Manifestacije"
         xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
-        Title="Manifestacije" Height="680" Width="1200" WindowStartupLocation="CenterScreen"
+        Title="Map Events" Height="689.6" Width="1200" Icon="images/ikonica.png" WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Window.Background>
+        <ImageBrush ImageSource="images/GlavniProzor/pozadina.png"></ImageBrush>
+    </Window.Background>
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static Controller:Commands.NewEventType}" Executed="DodajTipManifestacije_Click"/>
@@ -17,6 +21,7 @@
         <CommandBinding Command="{x:Static Controller:Commands.ViewAll}" Executed="SveManifestacije_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.DeleteCommand}" Executed="Delete_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Exit_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.SaveCommand}" Executed="Save_Click"/>
 
     </Window.CommandBindings>
 
@@ -32,148 +37,341 @@
         </Style>
 
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+
+
     </Window.Resources>
 
-
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="Calibri" Height="27">
+
+        <DockPanel.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Add Event" Click="DodajManifestaciju_Click"  Background="#EFB39D"/>
+                <MenuItem Header="Add Event Type" Click="DodajTipManifestacije_Click"  Background="#EFB39D"/>
+                <MenuItem Header="Add Label" Click="DodajEtiketu_Click"  Background="#EFB39D"/>
+                <Separator/>
+                <MenuItem Header="View All" Click="SveManifestacije_Click"  Background="#EFB39D"/>
+                <Separator/>
+                <MenuItem Header="Help" Background="#EFB39D"/>
+            </ContextMenu>
+        </DockPanel.ContextMenu>
+
+        <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="Calibri" Height="17">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <DockPanel HorizontalAlignment="Stretch"></DockPanel>
                 </ItemsPanelTemplate>
+
             </Menu.ItemsPanel>
             <MenuItem Header="File" Width="38">
                 <MenuItem Header="Add">
-                    <MenuItem Header="Event Type (Ctrl+T)" Click="DodajTipManifestacije_Click"></MenuItem>
-                    <MenuItem Header="Event (Ctrl+E)" Click="DodajManifestaciju_Click"></MenuItem>
-                    <MenuItem Header="Label (Ctrl+L)" Click="DodajEtiketu_Click"></MenuItem>
+                    <MenuItem.Style>
+                        <Style>
+                            <Setter Property="MenuItem.Foreground" Value="Black" />
+                        </Style>
+                    </MenuItem.Style>
+                    <MenuItem Header="Event Type (Ctrl+T)" Click="DodajTipManifestacije_Click">
+                        <MenuItem.Style>
+                            <Style>
+                                <Setter Property="MenuItem.Foreground" Value="Black" />
+                            </Style>
+                        </MenuItem.Style>
+
+                    </MenuItem>
+                    <MenuItem Header="Event (Ctrl+E)" Click="DodajManifestaciju_Click">
+                        <MenuItem.Style>
+                            <Style>
+                                <Setter Property="MenuItem.Foreground" Value="Black" />
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
+                    <MenuItem Header="Label (Ctrl+L)" Click="DodajEtiketu_Click">
+                        <MenuItem.Style>
+                            <Style>
+                                <Setter Property="MenuItem.Foreground" Value="Black" />
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Delete (Del)" Click="Delete_Click" ToolTip="Delete selected event"></MenuItem>
-                <MenuItem Header="Edit (Ctrl+M)" Click="Edit_Click" ToolTip="Edit selected event"></MenuItem>
-                <MenuItem Header="Save (Ctrl+S)" Click="Save_Click" ToolTip="Saving data"></MenuItem>
+                <MenuItem Header="Delete (Del)" Click="Delete_Click" ToolTip="Delete selected event">
+                    <MenuItem.Style>
+                        <Style>
+                            <Setter Property="MenuItem.Foreground" Value="Black" />
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+                <MenuItem Header="Edit (Ctrl+M)" Click="Edit_Click" ToolTip="Edit selected event">
+                    <MenuItem.Style>
+                        <Style>
+                            <Setter Property="MenuItem.Foreground" Value="Black" />
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+                <MenuItem Header="Save (Ctrl+S)" Click="Save_Click" ToolTip="Saving data">
+                    <MenuItem.Style>
+                        <Style>
+                            <Setter Property="MenuItem.Foreground" Value="Black" />
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+                <MenuItem.Style>
+                    <Style>
+                        <Setter Property="MenuItem.Foreground" Value="#F1DED7" />
+                    </Style>
+                </MenuItem.Style>
             </MenuItem>
 
-            <MenuItem Header="View All (F3)" Width="70" Click="SveManifestacije_Click" ToolTip="Tabular presentation of all the data"></MenuItem>
-            <MenuItem Header="Help (F1)" Width="55"></MenuItem>         
+            <MenuItem Header="View All (F3)" Width="70" Click="SveManifestacije_Click" ToolTip="Tabular presentation of all the data">
+                <MenuItem.Style>
+                    <Style>
+                        <Setter Property="MenuItem.Foreground" Value="#F1DED7" />
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <MenuItem Header="Help (F1)" Width="55">
+                <MenuItem.Style>
+                    <Style>
+                        <Setter Property="MenuItem.Foreground" Value="#F1DED7" />
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
             <Separator Width="1058" Background="Transparent"></Separator>
 
 
         </Menu>
-        <StackPanel x:Name="tools" DockPanel.Dock="Top" Orientation="Horizontal" Background="Transparent" Height="40" 
-                    Margin="428,5,88,0" HorizontalAlignment="Center" Width="684">
+        <StackPanel DockPanel.Dock="Top" Orientation="Vertical" 
+                    Margin="292,0,-0.4,-38" HorizontalAlignment="Center" Width="902">
 
-            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
-                    FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" 
-                    Click="DodajTipManifestacije_Click" ToolTip="Create new event type (Ctrl+T)" >
-
-                <TextBlock VerticalAlignment="Center">Add Event Type</TextBlock>
-
-            </Button>
-            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black"  Margin="0,0,20,0"
-                    FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" Click="DodajManifestaciju_Click"
-                   ToolTip="Create new event (Ctrl+E)">
-
-                <TextBlock VerticalAlignment="Center">Add Event</TextBlock>
-
-            </Button>
-            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
-                    FontFamily="Calibri" FontSize="16" BorderBrush="Transparent" 
-                    Click="DodajEtiketu_Click" ToolTip="Create new label (Ctrl+L)" >
-
-                <TextBlock VerticalAlignment="Center">Add Label</TextBlock>
-
-            </Button>
+            <StackPanel x:Name="tools" Orientation="Horizontal" Background="Transparent" Height="40">
+                <Button Margin="80,0,20,0" Click="DodajTipManifestacije_Click" ToolTip="Create new event type (Ctrl+T)" >
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/GlavniProzor/add event type.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/GlavniProzor/add event type 2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0,0,20,0" Click="DodajManifestaciju_Click" ToolTip="Create new event (Ctrl+E)">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/GlavniProzor/add event.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/GlavniProzor/add event2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0,0,20,0" Click="DodajEtiketu_Click" ToolTip="Create new label (Ctrl+L)" >
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/GlavniProzor/add label.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/GlavniProzor/add label2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+            <StackPanel  Background="Transparent" Height="40">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="txtPRETRAGAMapa" Text="Search..." Foreground="#2D0E1D" FontStyle="Oblique" Height="26" Width="500" FontFamily="Calibri" 
+                                FontSize="16" Margin="60,10,6,0"
+                                Background= "Transparent" BorderBrush="#2D0E1D" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" ToolTip="Search by event name"/>
+                    <Button  x:Name="Search_ButtonMapa" Margin="0,10,0,0" Height="21" Width="22" ToolTip="Searching for events"  Click="Search_Click" LostFocus="Search_Button_LostFocus">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/search ikonica2.png"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button  x:Name="Refresh_ButtonMapa" Height="19" Width="20" Margin="7,10,0,0" ToolTip="Clear Search/Filter"  Click="Search_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/refresh ikonica2.png"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Height="21" Width="62" ToolTip="Filtering data (Ctrl+F)"
+                               Margin="3,10,0,0" Click="Filter_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image x:Name="slika" Source="images/GlavniProzor/Filter2.png"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
 
 
         </StackPanel>
-        <StackPanel Margin="0,-50,0,0">
-            <Grid x:Name="left" Background="{StaticResource TransparentWhite}" Margin="0,0,0,0" Height="644" Width="287">
-                <DockPanel Width ="286" Margin="0,0,1,0">
+        <StackPanel Margin="0,-42,0,0">
+            <Grid x:Name="left" Margin="0,0,0,0" Height="644" Width="287">
+                <DockPanel Width ="286" Margin="0,15,1,0" Background="Transparent">
                     <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,1,0,-73" Height="60" Width="266">
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="txtPRETRAGA" Text="Search..." FontStyle="Oblique" Foreground="Silver"   Height="25" Width="210" FontFamily="Calibri" 
-                                FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"
-                                Background="{StaticResource TransparentWhite}" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" ToolTip="Search by event name"/>
-                            <Button  x:Name="Search_Button"  Height="25" Width="42" BorderBrush="Transparent" ToolTip="Searching for events"  Click="Search_Click" LostFocus="Search_Button_LostFocus"
-                                        >
-                                <TextBlock x:Name="Search"><Run Text="Search"/></TextBlock>
+                            <TextBox x:Name="txtPRETRAGA" Text="Search..." Foreground="#F1DED7" FontStyle="Oblique" Height="22" Width="210" FontFamily="Calibri" 
+                                FontSize="16" Margin="0,0,6,0" VerticalAlignment="Center"
+                                Background= "Transparent" BorderBrush="#EFB39D" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" ToolTip="Search by event name"/>
+                            <Button  x:Name="Search_Button" Height="21" Width="22" ToolTip="Searching for events"  Click="Search_Click" LostFocus="Search_Button_LostFocus">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image x:Name="slika" Source="images/GlavniProzor/search ikonica.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button  x:Name="Refresh_Button" Height="19" Width="20" Margin="7,0,0,0" ToolTip="Clear Search/Filter"  Click="Search_Click">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image x:Name="slika" Source="images/GlavniProzor/refresh ikonica.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
                             </Button>
                         </StackPanel>
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            
-                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Saving data (Ctrl+S)"
-                                Background="{StaticResource TransparentWhite}"  Margin="0,0,0,0"
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,13,0,0">
+
+                            <Button Height="20" Width="62" ToolTip="Saving data (Ctrl+S)" Margin="3,0,0,0"
                                 Click="Save_Click">
-                                <TextBlock VerticalAlignment="Center"><Run Text="Save"/></TextBlock>
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image x:Name="slika" Source="images/GlavniProzor/Save.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
                             </Button>
-                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Edit selected event (Ctrl+M)"
-                                Background="{StaticResource TransparentWhite}"  Margin="0,0,0,0"
-                                Click="Edit_Click" >
-                                <TextBlock VerticalAlignment="Center"><Run Text="Edit"/></TextBlock>
+                            <Button Height="21" Width="62" ToolTip="Edit selected event (Ctrl+M)"
+                                Margin="3,2,0,0" Click="Edit_Click" >
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image x:Name="slika" Source="images/GlavniProzor/Edit.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Button.Style >
+                                    <Style TargetType="Button">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=lista, Path=SelectedItems.Count}" Value="1" >
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
                             </Button>
-                            <Button Height="30" Width="67" ToolTip="Delete selected event (Del)"
-                                Background="{StaticResource TransparentWhite}" Margin="0,0,0,0" BorderBrush="Transparent"
-                                Click="Delete_Click" >
-                                <TextBlock VerticalAlignment="Center"><Run Text="Delete"/></TextBlock>
+                            <Button Height="21" Width="62" ToolTip="Delete selected event (Del)"
+                                Margin="3,2,0,0" Click="Delete_Click" >
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image x:Name="slika" Source="images/GlavniProzor/Delete.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Button.Style >
+                                    <Style TargetType="Button">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=lista, Path=SelectedItems.Count}" Value="0" >
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
                             </Button>
-                            <Button Height="30" Width="67" BorderBrush="Transparent" ToolTip="Filtering data (Ctrl+F)"
-                                Background="{StaticResource TransparentWhite}"  Margin="-4,0,0,0" Click="Filter_Click"
-                                       >
-                                <TextBlock VerticalAlignment="Center"><Run Text="Filter"/></TextBlock>
+                            <Button Height="21" Width="62" ToolTip="Filtering data (Ctrl+F)"
+                               Margin="3,4,0,0" Click="Filter_Click">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image x:Name="slika" Source="images/GlavniProzor/Filter.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
                             </Button>
                         </StackPanel>
 
                     </StackPanel>
-
-                    <ListView x:Name="lista" DockPanel.Dock="Bottom" ItemsSource="{Binding Manifestacije, UpdateSourceTrigger=PropertyChanged}" 
-                        Height="518"
+                    <GroupBox BorderThickness="2" Header="Events" Background="Transparent" Foreground="#F1DED7" Margin="9,72,0,75" Padding="1" BorderBrush="#EFB39D">
+                        <ListView x:Name="lista" DockPanel.Dock="Bottom" ItemsSource="{Binding Manifestacije, UpdateSourceTrigger=PropertyChanged}"
                         ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        Margin="10,-2,10.4,0" Width="266"
+                        Margin="6,10,8,11" Width="250" Background="#EFB39D"
                         PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
                         PreviewMouseMove="Lista_PreviewMouseMove"
                         AllowDrop="True"
                         DragEnter="Lista_DragEnter" 
                         Drop="Lista_Drop" >
-                        <ListView.Resources>
-                            <Style TargetType="{x:Type GridViewColumnHeader}">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </Style>
-                        </ListView.Resources>
-                        <ListView.Style>
-                            <StaticResource ResourceKey="ListViewStyle"/>
-                        </ListView.Style>
-                        <ListView.Background>
-                            <StaticResource ResourceKey="TransparentWhite"/>
-                        </ListView.Background>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                                <Image Width="40" Height="40" Source="{Binding Ikonica}"/>
-                                                <TextBlock Width="137" VerticalAlignment="Center" Text="{Binding Ime}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <EventSetter Event="PreviewMouseDoubleClick" Handler="ListViewItem_PreviewMouseDoubleClick" />
-                                <EventSetter Event="Selected" Handler="Lista_OnItemSelected" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                                <ContextMenu x:Key="ItemContextMenu">
+                                    <MenuItem Header="Edit" Click="Edit_Click" Background="#EFB39D" />
+                                    <MenuItem Header="Delete" Click="Delete_Click" Background="#EFB39D" />
+                                </ContextMenu>
+                            </ListView.Resources>
+                            <ListView.Style>
+                                <StaticResource ResourceKey="ListViewStyle"/>
+                            </ListView.Style>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                                    <Image Width="40" Height="40" Source="{Binding Ikonica}"/>
+                                                    <TextBlock Width="137" VerticalAlignment="Center" Text="{Binding Ime}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <EventSetter Event="PreviewMouseDoubleClick" Handler="ListViewItem_PreviewMouseDoubleClick" />
+                                    <EventSetter Event="Selected" Handler="Lista_OnItemSelected" />
+                                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="Control.IsMouseOver" Value="True">
+                                            <Setter Property="Control.Background" Value="Transparent" />
+                                            <Setter Property="Control.BorderBrush" Value="#2D0E1D"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True" >
+                                            <Setter Property="Background" Value="#66203E" />
+                                            <Setter Property="Foreground" Value="WhiteSmoke" />
+
+                                        </Trigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </GroupBox>
+
 
                 </DockPanel>
-                <Button x:Name="sveBtn" Width="264" Height="28" Foreground="Black" Margin="13,586,10,30" 
-                    FontFamily="Calibri" FontSize="16" Click="SveManifestacije_Click"
-                    ToolTip="Tabular presentation of all the data (F3)" >
-                    <TextBlock VerticalAlignment="Center">View All</TextBlock>
+                <Button x:Name="sveBtn" Width="264" Height="28" Margin="13,586,10,30" 
+                    Click="SveManifestacije_Click" ToolTip="Tabular presentation of all the data (F3)" >
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/GlavniProzor/View All.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/GlavniProzor/view all 2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
             </Grid>
@@ -181,22 +379,21 @@
         </StackPanel>
 
 
-        <DockPanel DockPanel.Dock="Bottom" Margin="0,10,5,10">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,45,9.6,10" Height="547">
 
-            <ListBox x:Name="MapaGrada" 
-                     ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" 
-                     Visibility="Visible" SelectionMode="Single" 
-                     AllowDrop="True" 
-                     PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" 
-                     DragEnter="Mapa_Grada_DragEnter" 
-                     Drop="Mapa_Grada_Drop" 
-                     PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
+            <DockPanel DockPanel.Dock="Left" Width="700" >
+                <ListBox Margin="38,0,0,0" x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single"
+                    AllowDrop="True" 
+                    PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" 
+                    DragEnter="Mapa_Grada_DragEnter" 
+                    Drop="Mapa_Grada_Drop" 
+                    PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
                         <ScrollViewer Name="CanvasScroller">
-                            <Canvas x:Name="CanvasPanel" IsItemsHost="True" Width="1313" Height="995">
+                            <Canvas x:Name="CanvasPanel" IsItemsHost="True" Width="1025" Height="725">
                                 <Canvas.Background>
-                                    <ImageBrush ImageSource="pack://application:,,,/images/minasanor.png"/>
+                                    <ImageBrush ImageSource="images/GlavniProzor/mapaNS.png"/>
                                 </Canvas.Background>
                             </Canvas>
                         </ScrollViewer>
@@ -221,6 +418,34 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Right" Margin="10,0,0,0">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Margin="0,60,0,0" Width="168">
+                        <Canvas Name="Mapa2" Width="130" Height="120">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="images/GlavniProzor/MapaUE.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </StackPanel>
+                    <StackPanel Margin="0,40,0,0" Width="168">
+                        <Canvas Name="Mapa3" Width="130" Height="120">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="images/GlavniProzor/MapaSU.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </StackPanel>
+                    <StackPanel Margin="0,40,0,0" Width="168">
+                        <Canvas Name="Mapa4" Width="130" Height="120">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="images/GlavniProzor/MapaBG.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </StackPanel>
+
+                </StackPanel>
+            </DockPanel>
 
         </DockPanel>
 

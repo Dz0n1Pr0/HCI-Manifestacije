@@ -100,6 +100,8 @@
     <Compile Include="TipManifestacijeWindow.xaml.cs">
       <DependentUpon>TipManifestacijeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validation\IDValidation.cs" />
+    <Compile Include="Validation\Min.cs" />
     <Compile Include="ViewWindow.xaml.cs">
       <DependentUpon>ViewWindow.xaml</DependentUpon>
     </Compile>
@@ -177,7 +179,6 @@
     <Resource Include="images\minasanor.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\mapa.png" />
     <Resource Include="images\robot.png" />
     <Resource Include="images\slanina.png" />
     <Resource Include="images\tip1.png" />
@@ -196,6 +197,98 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\strelica.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\EtiketaWindow\Add.png" />
+    <Resource Include="images\EtiketaWindow\add2.png" />
+    <Resource Include="images\EtiketaWindow\Cancel.png" />
+    <Resource Include="images\EtiketaWindow\cancel2.png" />
+    <Resource Include="images\EtiketaWindow\pozadina.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\GlavniProzor\Filter2.png" />
+    <Resource Include="images\GlavniProzor\search ikonica2.png" />
+    <Resource Include="images\GlavniProzor\refresh ikonica2.png" />
+    <Resource Include="images\GlavniProzor\MapaBG.png" />
+    <Resource Include="images\GlavniProzor\MapaSU.png" />
+    <Resource Include="images\GlavniProzor\MapaUE.png" />
+    <Resource Include="images\GlavniProzor\add event type 2.png" />
+    <Resource Include="images\GlavniProzor\add event type.png" />
+    <Resource Include="images\GlavniProzor\add event.png" />
+    <Resource Include="images\GlavniProzor\add event2.png" />
+    <Resource Include="images\GlavniProzor\add label.png" />
+    <Resource Include="images\GlavniProzor\add label2.png" />
+    <Resource Include="images\GlavniProzor\Delete.png" />
+    <Resource Include="images\GlavniProzor\Edit.png" />
+    <Resource Include="images\GlavniProzor\events deo unutra.png" />
+    <Resource Include="images\GlavniProzor\Filter.png" />
+    <Resource Include="images\GlavniProzor\mapaNS.png" />
+    <Resource Include="images\GlavniProzor\pozadina.png" />
+    <Resource Include="images\GlavniProzor\refresh ikonica.png" />
+    <Resource Include="images\GlavniProzor\Save.png" />
+    <Resource Include="images\GlavniProzor\search ikonica.png" />
+    <Resource Include="images\GlavniProzor\view all 2.png" />
+    <Resource Include="images\GlavniProzor\View All.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\FilterWindow\Cancel.png" />
+    <Resource Include="images\FilterWindow\cancel2.png" />
+    <Resource Include="images\FilterWindow\checkbox checked.png" />
+    <Resource Include="images\FilterWindow\checkbox emty.png" />
+    <Resource Include="images\FilterWindow\Filter.png" />
+    <Resource Include="images\FilterWindow\filter2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ManifestacijaWindow\Add label1.png" />
+    <Resource Include="images\ManifestacijaWindow\Add label2.png" />
+    <Resource Include="images\ManifestacijaWindow\available labels pozadina.png" />
+    <Resource Include="images\ManifestacijaWindow\Cancel.png" />
+    <Resource Include="images\ManifestacijaWindow\cancel2.png" />
+    <Resource Include="images\ManifestacijaWindow\checked.png" />
+    <Resource Include="images\ManifestacijaWindow\chosen labels pozadina.png" />
+    <Resource Include="images\ManifestacijaWindow\Delete label.png" />
+    <Resource Include="images\ManifestacijaWindow\Delete label2.png" />
+    <Resource Include="images\ManifestacijaWindow\pozadine.png" />
+    <Resource Include="images\ManifestacijaWindow\Save.png" />
+    <Resource Include="images\ManifestacijaWindow\save2.png" />
+    <Resource Include="images\ManifestacijaWindow\unchecked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\TipWindow\Add.png" />
+    <Resource Include="images\TipWindow\Add2.png" />
+    <Resource Include="images\TipWindow\Cancel.png" />
+    <Resource Include="images\TipWindow\Cancel2.png" />
+    <Resource Include="images\TipWindow\pozadina.png" />
+    <Resource Include="images\TipWindow\Upload.png" />
+    <Resource Include="images\TipWindow\Upload2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ViewWindow\Add2.png" />
+    <Resource Include="images\ViewWindow\back.png" />
+    <Resource Include="images\ViewWindow\back2.png" />
+    <Resource Include="images\ViewWindow\checked.png" />
+    <Resource Include="images\ViewWindow\Delete1.png" />
+    <Resource Include="images\ViewWindow\Edit2.png" />
+    <Resource Include="images\ViewWindow\Event Types.png" />
+    <Resource Include="images\ViewWindow\event types2.png" />
+    <Resource Include="images\ViewWindow\Events.png" />
+    <Resource Include="images\ViewWindow\events2.png" />
+    <Resource Include="images\ViewWindow\Labels.png" />
+    <Resource Include="images\ViewWindow\labels2.png" />
+    <Resource Include="images\ViewWindow\pozadina.png" />
+    <Resource Include="images\ViewWindow\unchecked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\FilterWindow\znak.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ikonica.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ManifestacijaWindow\AddMoree2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ManifestacijaWindow\AddMore.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

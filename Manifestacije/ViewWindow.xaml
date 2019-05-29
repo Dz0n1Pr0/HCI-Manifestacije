@@ -4,10 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
-         mc:Ignorable="d"
-        Title="Pregled" Height="460" Width="960" WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize" BorderBrush="Green" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        xmlns:Controller="clr-namespace:Manifestacije.Controller"
+        mc:Ignorable="d"
+        Title="Table View" Height="515.547" Width="1087.485" WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize" BorderBrush="Green" Icon="images/ikonica.png" BorderThickness="1" MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
+
+    <Window.Background>
+        <ImageBrush ImageSource="images/ViewWindow/pozadina.png"></ImageBrush>
+    </Window.Background>
 
     <Window.Resources>
 
@@ -31,75 +36,150 @@
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
     </Window.Resources>
 
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.NewCommand}" Executed="Dodaj_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Edit}" Executed="Izmeni_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.DeleteCommand}" Executed="Obrisi_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Event}" Executed="Manifestacije_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.EventType}" Executed="TipoviManif_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Label}" Executed="Etikete_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Nazad_Click"/>
+
+    </Window.CommandBindings>
+
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Height="30" Width="45" ToolTip="Adding"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0">
+                <Button Height="20" Width="75" ToolTip="Adding"
                         Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
                          Click="Dodaj_Click">
-                    <TextBlock>Add</TextBlock>
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ViewWindow/Add2.png"/>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
-                <Button Height="30" Width="45" ToolTip="Changing"
+                <Button Height="23" Width="74" ToolTip="Changing"  Name="Edit_btn"
                                     Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
                                      Click="Izmeni_Click">
-                    <TextBlock>Edit</TextBlock>
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ViewWindow/Edit2.png"/>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
-                <Button Height="30" Width="45" ToolTip="Deleting" Click="Obrisi_Click"
+                <Button Height="23" Width="75" ToolTip="Deleting" Click="Obrisi_Click"  Name="Del_btn"
                                     Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
                                     >
-                    <TextBlock>Delete</TextBlock>
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ViewWindow/Delete1.png"/>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
-                <StackPanel Width="700">
-                    <TextBlock Foreground="Black" FontFamily="Calibri" FontSize="22" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center" Height="30">Tabular View</TextBlock>
-                </StackPanel>
+
 
             </StackPanel>
 
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Height="49" Margin="0,0,0,0">
-            <StackPanel  Orientation="Horizontal" Height="45" Background="{StaticResource TransparentWhite}"
+            <StackPanel  Orientation="Horizontal" Height="45" Background="Transparent"
                     Margin="0,2,0,0" HorizontalAlignment="Center">
-                <Button Height="37" Width="100" Margin="5,0,0,5" FontFamily="Calibri" FontSize="16" BorderBrush="Transparent"
-                    Background="{StaticResource TransparentWhite}" Click="Vrste_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Events</TextBlock>
-                    </StackPanel>
+                <Button Height="37" Width="130" Margin="5,0,8,5" FontFamily="Calibri" FontSize="16" BorderBrush="Transparent"
+                    Background="{StaticResource TransparentWhite}" ToolTip="View All Events (Alt+1)" Click="Manifestacije_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ViewWindow/Events.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/ViewWindow/events2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
-                <Button Height="37" Width="100" Margin="5,0,0,5"  FontFamily="Calibri" FontSize="16" Click="TipoviVrsta_Click" 
-                    Background="{StaticResource TransparentWhite}" BorderBrush="Transparent">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock TextAlignment="Center">Event Types</TextBlock>
-                    </StackPanel>
+                <Button Height="37" Width="130" Margin="5,0,8,5"  FontFamily="Calibri" FontSize="16" Click="TipoviManif_Click" 
+                    Background="{StaticResource TransparentWhite}" ToolTip="View All Types (Alt+2)" BorderBrush="Transparent">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ViewWindow/Event Types.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/ViewWindow/event types2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
-                <Button Height="37" Width="100" Margin="5,0,0,5" FontFamily="Calibri" FontSize="16" BorderBrush="Transparent"
-                    Background="{StaticResource TransparentWhite}" Click="Etikete_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Labels</TextBlock>
-                    </StackPanel>
+                <Button Height="37" Width="130" Margin="5,0,0,5" FontFamily="Calibri" FontSize="16" BorderBrush="Transparent"
+                    Background="{StaticResource TransparentWhite}" ToolTip="View All Labels (Alt+3)" Click="Etikete_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image x:Name="slika" Source="images/ViewWindow/Labels.png"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/ViewWindow/labels2.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </StackPanel>
 
 
         </StackPanel>
 
-        <StackPanel DockPanel.Dock="Top" Margin="15,0,14.4,0" Height="330">
-            <Grid>
-               
-                <StackPanel x:Name="pnlVrste" Grid.Row="0" Grid.Column="0"
-                    Background="{StaticResource TransparentWhite}" Visibility="Visible" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Height="332" Width="915" Grid.ColumnSpan="2" Margin="7,0,6.8,0">
-                    <DataGrid x:Name="tabelaVrste" ItemsSource="{Binding Path=Manifestacije}" CanUserDeleteRows ="True"  IsReadOnly="True" 
-                  Height="330" Background="{StaticResource TransparentWhite}" 
+        <StackPanel DockPanel.Dock="Top" Margin="15,0,10.4,0" Height="340">
+            <Grid HorizontalAlignment="Left" Width="1050">
+
+                <StackPanel x:Name="pnlManif" Grid.Row="0" Grid.Column="0"
+                    Background="Transparent" Visibility="Visible"  Grid.ColumnSpan="2" Margin="4,0,6.8,0">
+                    <DataGrid x:Name="tabelaManif" ItemsSource="{Binding Path=Manifestacije}"  SelectedCellsChanged="tabelaManif_SelectedCellsChanged"
+                              IsReadOnly="True"
+                  Height="330" Background="Transparent" 
                   ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
-                  AutoGenerateColumns="True" AutoGeneratingColumn="TabelaVrste_AutoGeneratingColumn" Margin="0,0,0.2,0">
+                  AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" Margin="0,0,0.2,0">
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="ContentTemplate">
                                     <Setter.Value>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding}"></TextBlock>
+                                            <TextBlock Foreground="#320919" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style>
+                                <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
+
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                    </DataGrid>
+                </StackPanel>
+
+                <StackPanel x:Name="pnlTipoviManif" Grid.Row="0" Grid.Column="0" 
+                    Background="Transparent" Visibility="Hidden" Grid.ColumnSpan="2" Margin="4,0,6.8,0" >
+                    <DataGrid x:Name="tabelaTipoviManif" ItemsSource="{Binding Path=TipoviManifestacija}" SelectedCellsChanged="tabelaTipoviManif_SelectedCellsChanged"  CanUserDeleteRows ="True"  IsReadOnly="True" 
+                  Height="330" Background="Transparent"  
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
+                              AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock Foreground="#320919" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding}"></TextBlock>
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -110,62 +190,56 @@
                                 <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
                             </Style>
                         </DataGrid.CellStyle>
-                    </DataGrid>
-                </StackPanel>
 
-                <StackPanel x:Name="pnlTipoviVrsta" Grid.Row="0" Grid.Column="0" 
-                    Background="{StaticResource TransparentWhite}" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Visibility="Hidden" Grid.ColumnSpan="2" Margin="0,1,-0.2,1" >
-                    <DataGrid x:Name="tabelaTipoviVrsta" ItemsSource="{Binding Path=TipoviManifestacija}" CanUserDeleteRows ="True"  IsReadOnly="True" 
-                  Height="330" Width="929" Background="{StaticResource TransparentWhite}"  
-                  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                  ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}">
-                        <DataGrid.CellStyle>
-                            <Style>
-                                <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
-                            </Style>
-                        </DataGrid.CellStyle>
                     </DataGrid>
                 </StackPanel>
 
                 <StackPanel x:Name="pnlEtikete" Visibility="Hidden" Grid.Row="0" Grid.Column="0" 
-                    Background="{StaticResource TransparentWhite}" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,1,-0.2,1">
-                    <DataGrid x:Name="tabelaEtikete" ItemsSource="{Binding Path=Etikete}" CanUserDeleteRows ="True"  IsReadOnly="True" 
-                  Height="330" Width="929" Background="{StaticResource TransparentWhite}" 
+                    Background="Transparent" Grid.ColumnSpan="2" Margin="4,0,6.8,0">
+                    <DataGrid x:Name="tabelaEtikete" ItemsSource="{Binding Path=Etikete}" SelectedCellsChanged="tabelaEtikete_SelectedCellsChanged"  CanUserDeleteRows ="True"  IsReadOnly="True" 
+                  Height="330" Background="Transparent" 
                   ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
-                  AutoGenerateColumns="True" AutoGeneratingColumn="TabelaEtikete_AutoGeneratingColumn">
+                  AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding}" Foreground="#320919"></TextBlock>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
                         <DataGrid.CellStyle>
                             <Style>
                                 <Setter Property="ToolTipService.ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
                             </Style>
                         </DataGrid.CellStyle>
+
                     </DataGrid>
                 </StackPanel>
             </Grid>
 
-
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Height="40" Margin="0,5,0,0">
-            <Button Height="37" Margin="15,0,15,0" Click="Nazad_Click"  >
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center">Nazad</TextBlock>
-                </StackPanel>
+            <Button Height="37" Margin="15,0,15,0" Click="Nazad_Click" ToolTip="Return (Esc)"  >
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image x:Name="slika" Source="images/ViewWindow/back.png"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="slika"
+                            Property="Source"
+                            Value="images/ViewWindow/back2.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
 
         </StackPanel>
-
-
-
-
-
-
-
-
-
-
-
 
     </DockPanel>
 
