@@ -409,32 +409,6 @@ namespace Manifestacije
 
         private void Dodaj_Click(object sender, RoutedEventArgs e)
         {
-            if (ID == null || ID.Equals("") || Ime == null || Ime.Equals("") || Opis == null || Opis.Equals("") || Datum == null || IkonicaP == null)
-            {
-                MessageBox.Show("You must fill all fields!", "Error");
-                return;
-            }
-
-            int brojPosetilaca = 0;
-            if (!int.TryParse(this.txtGosti.Text, out brojPosetilaca))
-            {
-                MessageBox.Show("Expected number of guests must be a number", "Error");
-                return;
-            }
-
-            DateTime myDate = DateTime.ParseExact(Datum, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
-            if (myDate.Date < DateTime.Now.Date)
-            {
-                Console.WriteLine(DateTime.Now);
-                MessageBox.Show("You can only add future events.", "Erroe");
-                return;
-            }
-
-            else if (ListaManifestacija.Manifestacije.ContainsKey(ID) && Editing == false)
-            {
-                MessageBox.Show("ID already exists!", "Wrong ID");
-                return;
-            }
             TipManifestacije tip = null;
             foreach (TipManifestacije tm in ListaTipManifestacijecs.TipoviManifestacija.Values)
             {
@@ -492,10 +466,17 @@ namespace Manifestacije
 
                 Manifestacija novaManifestacija = new Manifestacija(ID, Ime, Opis, StatusSluzenjaAlkohola, KategorijaCene, Hendikepirani, Pusenje, Napolju, OcekivanaPublika, Datum, IkonicaP, tip, new Point());
                 novaManifestacija.Etikete = new List<Etiketa>();
-                foreach (Etiketa etiketa in this.IzabraneEtikete)
+                if (this.IzabraneEtikete != null)
                 {
-                    novaManifestacija.Etikete.Add(etiketa);
+                    if (this.IzabraneEtikete.Count != 0)
+                    {
+                        foreach (Etiketa etiketa in this.IzabraneEtikete)
+                        {
+                            novaManifestacija.Etikete.Add(etiketa);
+                        }
+                    }
                 }
+                
                 ListaManifestacija.Manifestacije.Add(ID, novaManifestacija);
             }
 

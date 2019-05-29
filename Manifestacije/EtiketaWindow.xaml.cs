@@ -143,13 +143,6 @@ namespace Manifestacije
 
         private void Potvrdi_Click(object sender, RoutedEventArgs e)
         {
-
-            if (Opis == null || Opis.Equals("") || ID == null || ID.Equals(""))
-            {
-                MessageBox.Show("You must fill all fields!", "Unfilled fields");
-                return;
-            }
-
             if (Editing)
             {
                 ListaEtiketa.Etikete[Selektovana.ID].Boja = Boja;
@@ -158,13 +151,6 @@ namespace Manifestacije
 
             else
             {
-
-                if (ListaEtiketa.Etikete.ContainsKey(ID))
-                {
-                    MessageBox.Show("ID already exists!", "Wrong ID");
-                    return;
-                }
-
                 if (ParentWindow is ViewWindow)
                 {
                     ViewWindow p = (ViewWindow)Owner;

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Manifestacije"
+        xmlns:custom="clr-namespace:Manifestacije.Validation"
         xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
@@ -103,6 +104,54 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#EFB39D"/>
+            <Setter Property="Margin" Value="3"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="White" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
 
         <ContextMenu x:Key="menu">
@@ -131,9 +180,12 @@
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <TextBlock Text="ID:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="10,15,90,0"></TextBlock>
-                            <TextBox x:Name="txtID" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="0,15,0,9">
+                            <TextBox x:Name="txtID" Style="{StaticResource textBoxInError}" Validation.ErrorTemplate="{StaticResource validationTemplate}" Margin="0,15,0,9">
                                 <TextBox.Text>
                                     <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <custom:IDValidation  Min="0" Max="99999"/>
+                                        </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
@@ -169,6 +221,11 @@
                             <Border x:Name="borderDATUM" BorderThickness="1.5" Margin="0,0,0,0" Grid.RowSpan="2">
                                 <DatePicker x:Name="dDATUM"  Width="200" FirstDayOfWeek="Monday" 
                                 SelectedDate="{Binding Path=Datum}">
+                                    <DatePicker.Resources>
+                                        <Style TargetType="DatePickerTextBox">
+                                            <Setter Property="IsReadOnly" Value="True"/>
+                                        </Style>
+                                    </DatePicker.Resources>
                                 </DatePicker>
                             </Border>
                         </StackPanel>
@@ -246,31 +303,15 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="25,0,0,0">
                                 <TextBlock Text="Expected No of guests:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,0,23,0"></TextBlock>
-                                <TextBox x:Name="txtGosti" Style="{StaticResource ResourceKey=TextBoxStyle}" Margin="0,0,0,0" Width="75">
+                                <TextBox x:Name="txtGosti" Style="{StaticResource ResourceKey=textBoxInError}" Validation.ErrorTemplate="{StaticResource validationTemplate}" Margin="0,0,0,0" Width="75">
                                     <TextBox.Text>
                                         <Binding Path="OcekivanaPublika" UpdateSourceTrigger="PropertyChanged">
-
+                                            <Binding.ValidationRules>
+                                                <custom:Min  MinValue="0"/>
+                                            </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
-                                    <Validation.ErrorTemplate>
-                                        <ControlTemplate>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
-                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Validation.ErrorTemplate>
+                                    
                                 </TextBox>
                             </StackPanel>
                         </StackPanel>
@@ -361,6 +402,39 @@
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=txtID, Path=Text.Length, Mode=OneWay}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtIME, Path=Text.Length, Mode=OneWay}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=txtID}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtTIP, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=dDATUM, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtSTATUS, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtCENE, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtGosti, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=txtGosti}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
                 <Button x:Name="btnPotvrdi" Width="150"  Height="40" Foreground="Black" FontFamily="Calibri"
                         FontSize="16" BorderBrush="Transparent" Margin="0,17,30,0" Click="Dodaj_Click" >
@@ -374,6 +448,39 @@
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=txtID, Path=Text.Length, Mode=OneWay}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtIME, Path=Text.Length, Mode=OneWay}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=txtID}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtTIP, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=dDATUM, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtSTATUS, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtCENE, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=txtGosti, Path=Text.Length, Mode=OneWay }" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=txtGosti}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
                 <Button Width="150" Height="40" Foreground="Black" FontFamily="Calibri" FontSize="16"
                         BorderBrush="Transparent" Click="Odustani_Click" Margin="0,17,0,0" >

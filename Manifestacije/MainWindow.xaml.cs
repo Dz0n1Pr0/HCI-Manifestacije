@@ -101,8 +101,16 @@ namespace Manifestacije
 
         private void DodajManifestaciju_Click(object sender, RoutedEventArgs e)
         {
-            ManifestacijaWindow manif = new ManifestacijaWindow(this, false, null);
-            manif.ShowDialog();
+            if (ListaTipManifestacijecs.TipoviManifestacija.Count == 0)
+            {
+                MessageBoxResult mbr = MessageBox.Show("There is no event type. Add event type for enabling this option.", "No event type");
+            }
+            else
+            {
+                ManifestacijaWindow manif = new ManifestacijaWindow(this, false, null);
+                manif.ShowDialog();
+            }
+
         }
 
         private void DodajEtiketu_Click(object sender, RoutedEventArgs e)
@@ -143,17 +151,7 @@ namespace Manifestacije
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Manifestacija selekt = (Manifestacija)lista.SelectedItem;
-
-            if (selekt == null)
-            {
-                MessageBox.Show("You must choose event from the list!");
-                return;
-            }
-            if (lista.SelectedItems.Count > 1)
-            {
-                MessageBox.Show("Choose only one event!", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
+            
 
             ManifestacijaWindow dv = new ManifestacijaWindow(this, true, selekt);     //true jer se edituje
             dv.ShowDialog();
@@ -163,14 +161,6 @@ namespace Manifestacije
         //Brisanje vrsta
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            Manifestacija selekt = (Manifestacija)lista.SelectedItem;
-
-            if (selekt == null)
-            {
-                MessageBox.Show("You must choose event from the list!");
-                return;
-            }
-            
             if (lista.SelectedItems.Count > 1)
             {
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete all the selected events?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
@@ -188,13 +178,17 @@ namespace Manifestacije
                     return;
                 }
             }
-
-            ListaManifestacija.Manifestacije.Remove(selekt.ID);
-            foreach (Etiketa etiketa in selekt.Etikete)
+            MessageBoxResult messageBoxResult1 = System.Windows.MessageBox.Show("Are you sure you want to delete selected event?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult1 == MessageBoxResult.Yes)
             {
-                ListaEtiketa.Etikete.Remove(etiketa.ID);
+                Manifestacija selekt = (Manifestacija)lista.SelectedItem;
+                ListaManifestacija.Manifestacije.Remove(selekt.ID);
+                foreach (Etiketa etiketa in selekt.Etikete)
+                {
+                    ListaEtiketa.Etikete.Remove(etiketa.ID);
+                }
+                this.setManifestacijeItems();
             }
-            this.setManifestacijeItems();
         }
 
         private void ListViewItem_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)

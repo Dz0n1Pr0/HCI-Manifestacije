@@ -114,6 +114,20 @@ namespace Manifestacije
             trenutniPanel.Visibility = Visibility.Hidden;
             trenutniPanel = pnlManif;
             pnlManif.Visibility = Visibility.Visible;
+            if (tabelaManif.SelectedItems.Count > 1)
+            {
+                Edit_btn.IsEnabled = false;
+            }
+            else if (tabelaManif.SelectedItems.Count == 0)
+            {
+                Edit_btn.IsEnabled = false;
+                Del_btn.IsEnabled = false;
+            }
+            else
+            {
+                Edit_btn.IsEnabled = true;
+                Del_btn.IsEnabled = true;
+            }
 
         }
 
@@ -122,6 +136,20 @@ namespace Manifestacije
             trenutniPanel.Visibility = Visibility.Hidden;
             trenutniPanel = pnlTipoviManif;
             pnlTipoviManif.Visibility = Visibility.Visible;
+            if (tabelaTipoviManif.SelectedItems.Count > 1)
+            {
+                Edit_btn.IsEnabled = false;
+            }
+            else if (tabelaTipoviManif.SelectedItems.Count == 0)
+            {
+                Edit_btn.IsEnabled = false;
+                Del_btn.IsEnabled = false;
+            }
+            else
+            {
+                Edit_btn.IsEnabled = true;
+                Del_btn.IsEnabled = true;
+            }
         }
 
         private void Etikete_Click(object sender, RoutedEventArgs e)
@@ -129,14 +157,34 @@ namespace Manifestacije
             trenutniPanel.Visibility = Visibility.Hidden;
             trenutniPanel = pnlEtikete;
             pnlEtikete.Visibility = Visibility.Visible;
+            if (tabelaEtikete.SelectedItems.Count > 1)
+            {
+                Edit_btn.IsEnabled = false;
+            }else if (tabelaEtikete.SelectedItems.Count == 0)
+            {
+                Edit_btn.IsEnabled = false;
+                Del_btn.IsEnabled = false;
+            }
+            else
+            {
+                Edit_btn.IsEnabled = true;
+                Del_btn.IsEnabled = true;
+            }
         }
 
         private void Dodaj_Click(object sender, RoutedEventArgs e)
         {
             if (trenutniPanel == pnlManif)
             {
-                ManifestacijaWindow rsv = new ManifestacijaWindow(this, false, null);
-                rsv.ShowDialog();
+                if (ListaTipManifestacijecs.TipoviManifestacija.Count == 0)
+                {
+                    MessageBoxResult mbr = MessageBox.Show("There is no event type. Add event type for enabling this option.", "No event type");
+                }
+                else
+                {
+                    ManifestacijaWindow rsv = new ManifestacijaWindow(this, false, null);
+                    rsv.ShowDialog();
+                }
             }
             else if (trenutniPanel == pnlEtikete)
             {
@@ -156,11 +204,6 @@ namespace Manifestacije
 
             if (trenutniPanel == pnlManif)
             {
-                if ((Manifestacija)tabelaManif.SelectedItem == null)
-                {
-                    MessageBox.Show("You must choose event from the list!");
-                    return;
-                }
                 if (tabelaManif.SelectedItems.Count > 1)
                 {
                     MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete all the selected events?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
@@ -178,17 +221,16 @@ namespace Manifestacije
                         return;
                     }
                 }
-                String selektovanID = ((Manifestacija)tabelaManif.SelectedItem).ID;
-                ListaManifestacija.Manifestacije.Remove(selektovanID);
-                popuniManifestacije();
+                MessageBoxResult messageBoxResult1 = System.Windows.MessageBox.Show("Are you sure you want to delete selected event?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult1 == MessageBoxResult.Yes)
+                {
+                    String selektovanID = ((Manifestacija)tabelaManif.SelectedItem).ID;
+                    ListaManifestacija.Manifestacije.Remove(selektovanID);
+                    popuniManifestacije();
+                }
             }
             else if (trenutniPanel == pnlEtikete)
             {
-                if ((Etiketa)tabelaEtikete.SelectedItem == null)
-                {
-                    MessageBox.Show("You must choose label from the list!");
-                    return;
-                }
                 if (tabelaEtikete.SelectedItems.Count > 1)
                 {
                     MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete all the selected labels?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
@@ -206,9 +248,10 @@ namespace Manifestacije
                         return;
                     }
                 }
+                
                 String selektovanaID = ((Etiketa)tabelaEtikete.SelectedItem).ID;
-                String message = "Are you sure?";
-                MessageBoxResult mbr = MessageBox.Show(message, "Delete", MessageBoxButton.YesNo);
+                String message = "Are you sure you want to delete selected label?";
+                MessageBoxResult mbr = MessageBox.Show(message, "Delete Confirmation", MessageBoxButton.YesNo);
 
                 if (mbr == MessageBoxResult.Yes)
                 {
@@ -238,12 +281,6 @@ namespace Manifestacije
             }
             else if (trenutniPanel == pnlTipoviManif)
             {
-                if ((TipManifestacije)tabelaTipoviManif.SelectedItem == null)
-                {
-                    MessageBox.Show("You must choose type from the list!");
-
-                    return;
-                }
                 if (tabelaTipoviManif.SelectedItems.Count > 1)
                 {
                     MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete all the selected types?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
@@ -271,20 +308,25 @@ namespace Manifestacije
                         return;
                     }
                 }
+                String message = "Are you sure you want to delete selected type?";
+                MessageBoxResult mbr = MessageBox.Show(message, "Delete Confirmation", MessageBoxButton.YesNo);
 
-                String selektovanID = ((TipManifestacije)tabelaTipoviManif.SelectedItem).ID;
-                String selektovanIme = ((TipManifestacije)tabelaTipoviManif.SelectedItem).Ime;
-                foreach (Manifestacija m in ListaManifestacija.Manifestacije.Values)
+                if (mbr == MessageBoxResult.Yes)
                 {
-                    DateTime d = DateTime.ParseExact(m.Datum, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
-                    if (m.Tip.Equals(selektovanIme) && d.Ticks > DateTime.Now.Ticks)
+                    String selektovanID = ((TipManifestacije)tabelaTipoviManif.SelectedItem).ID;
+                    String selektovanIme = ((TipManifestacije)tabelaTipoviManif.SelectedItem).Ime;
+                    foreach (Manifestacija m in ListaManifestacija.Manifestacije.Values)
                     {
-                        MessageBox.Show("Error: There are future events with type " + selektovanIme, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                        return;
+                        DateTime d = DateTime.ParseExact(m.Datum, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+                        if (m.Tip.Equals(selektovanIme) && d.Ticks > DateTime.Now.Ticks)
+                        {
+                            MessageBox.Show("Error: There are future events with type " + selektovanIme, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                            return;
+                        }
                     }
+                    ListaTipManifestacijecs.TipoviManifestacija.Remove(selektovanID);
+                    popuniTipoveManifestacija();
                 }
-                ListaTipManifestacijecs.TipoviManifestacija.Remove(selektovanID);
-                popuniTipoveManifestacija();
             }
 
         }
@@ -301,48 +343,18 @@ namespace Manifestacije
         {
             if (trenutniPanel == pnlManif)
             {
-                if ((Manifestacija)tabelaManif.SelectedItem == null)
-                {
-                    MessageBox.Show("You must choose event from the list!");
-                    return;
-                }
-                if (tabelaManif.SelectedItems.Count > 1)
-                {
-                    MessageBox.Show("Choose only one event!", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
                 ManifestacijaWindow rsv = new ManifestacijaWindow(this, true, (Manifestacija)tabelaManif.SelectedItem);
                 rsv.ShowDialog();
                 Refresh();
             }
             else if (trenutniPanel == pnlEtikete)
             {
-                if ((Etiketa)tabelaEtikete.SelectedItem == null)
-                {
-                    MessageBox.Show("You must choose label from the list!");
-                    return;
-                }
-                if (tabelaEtikete.SelectedItems.Count > 1)
-                {
-                    MessageBox.Show("Choose only one label!", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
                 EtiketaWindow rse = new EtiketaWindow(this, true, (Etiketa)tabelaEtikete.SelectedItem);
                 rse.ShowDialog();
                 Refresh();
             }
             else if (trenutniPanel == pnlTipoviManif)
             {
-                if ((TipManifestacije)tabelaTipoviManif.SelectedItem == null)
-                {
-                    MessageBox.Show("You must choose event type from the list!");
-                    return;
-                }
-                if (tabelaTipoviManif.SelectedItems.Count > 1)
-                {
-                    MessageBox.Show("Choose only one event type!", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
                 TipManifestacijeWindow rstv = new TipManifestacijeWindow(this, true, (TipManifestacije)tabelaTipoviManif.SelectedItem);
                 rstv.ShowDialog();
                 Refresh();
@@ -468,5 +480,58 @@ namespace Manifestacije
 
         }
 
+        private void tabelaManif_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (tabelaManif.SelectedItems.Count > 1)
+            {
+                Edit_btn.IsEnabled = false;
+            }
+            else if (tabelaManif.SelectedItems.Count == 0)
+            {
+                Edit_btn.IsEnabled = false;
+                Del_btn.IsEnabled = false;
+            }
+            else
+            {
+                Edit_btn.IsEnabled = true;
+                Del_btn.IsEnabled = true;
+            }
+        }
+
+        private void tabelaTipoviManif_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (tabelaTipoviManif.SelectedItems.Count > 1)
+            {
+                Edit_btn.IsEnabled = false;
+            }
+            else if (tabelaTipoviManif.SelectedItems.Count == 0)
+            {
+                Edit_btn.IsEnabled = false;
+                Del_btn.IsEnabled = false;
+            }
+            else
+            {
+                Edit_btn.IsEnabled = true;
+                Del_btn.IsEnabled = true;
+            }
+        }
+
+        private void tabelaEtikete_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (tabelaEtikete.SelectedItems.Count > 1)
+            {
+                Edit_btn.IsEnabled = false;
+            }
+            else if (tabelaEtikete.SelectedItems.Count == 0)
+            {
+                Edit_btn.IsEnabled = false;
+                Del_btn.IsEnabled = false;
+            }
+            else
+            {
+                Edit_btn.IsEnabled = true;
+                Del_btn.IsEnabled = true;
+            }
+        }
     }
 }

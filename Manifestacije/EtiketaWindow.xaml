@@ -6,6 +6,7 @@
         xmlns:xctk="http://schemas/xceed.com/wpf/xaml/toolkit"
         xmlns:xctk1="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Manifestacije"
+        xmlns:custom="clr-namespace:Manifestacije.Validation"
         xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
         Title="Add Label" Height="262.152" Width="480" WindowStartupLocation="CenterScreen"
@@ -71,6 +72,53 @@
             </WrapPanel>
         </DataTemplate>
 
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#EFB39D" />
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderBrush" Value="#EFB39D"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#BB8572"/>
+                                <Setter Property="BorderThickness" TargetName="border" Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="White" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+
+
     </Window.Resources>
     <DockPanel>
 
@@ -98,31 +146,14 @@
                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Description:" Style="{StaticResource ResourceKey=TextBlockStyle}" Margin="0,1,5.2,0" 
                            VerticalAlignment="Top" Width="90"/>
 
-                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource ResourceKey=TextBoxStyle}" Height="Auto" Margin="3.8,3,0.6,2.6" Width="Auto" >
+                <TextBox x:Name="txtID" Grid.Column="1" Grid.Row="0" Style="{StaticResource textBoxInError}" Validation.ErrorTemplate="{StaticResource validationTemplate}" Height="Auto" Margin="3.8,3,0.6,2.6" Width="Auto" >
                     <TextBox.Text>
                         <Binding Path="ID" UpdateSourceTrigger="PropertyChanged">
-
+                            <Binding.ValidationRules>
+                                <custom:IDValidation  Min="0" Max="99999"/>
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <AdornedElementPlaceholder Grid.Column="0" Grid.Row="0" x:Name="textBox"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding [0].ErrorContent}" 
-                                           Foreground="Red" Style="{StaticResource ResourceKey=TextBlockStyle}"
-                                           HorizontalAlignment="Left" FontSize="12"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
                 </TextBox>
                 <Border x:Name="borderBOJA" Grid.Column="1" Grid.Row="2" BorderThickness="1.5" Margin="3.8,0.2,0.6,2.2">
                     <xctk1:ColorPicker Name="cp" DisplayColorAndName="False" SelectedColorChanged="Cp_SelectedColorChanged" BorderBrush="#EFB39D" Background="Transparent"
@@ -152,6 +183,18 @@
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=txtID, Path=Text.Length, Mode=OneWay}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=txtID}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
             <Button Width="150" Height="30" Click="Nazad_Click" Margin="30,0,0,0" ToolTip="Return (Esc)" >
                 <Button.Template>

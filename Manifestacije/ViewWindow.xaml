@@ -59,7 +59,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Height="23" Width="74" ToolTip="Changing"
+                <Button Height="23" Width="74" ToolTip="Changing"  Name="Edit_btn"
                                     Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
                                      Click="Izmeni_Click">
                     <Button.Template>
@@ -68,7 +68,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Height="23" Width="75" ToolTip="Deleting" Click="Obrisi_Click"
+                <Button Height="23" Width="75" ToolTip="Deleting" Click="Obrisi_Click"  Name="Del_btn"
                                     Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
                                     >
                     <Button.Template>
@@ -140,7 +140,7 @@
 
                 <StackPanel x:Name="pnlManif" Grid.Row="0" Grid.Column="0"
                     Background="Transparent" Visibility="Visible"  Grid.ColumnSpan="2" Margin="4,0,6.8,0">
-                    <DataGrid x:Name="tabelaManif" ItemsSource="{Binding Path=Manifestacije}"
+                    <DataGrid x:Name="tabelaManif" ItemsSource="{Binding Path=Manifestacije}"  SelectedCellsChanged="tabelaManif_SelectedCellsChanged"
                               IsReadOnly="True"
                   Height="330" Background="Transparent" 
                   ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
@@ -169,7 +169,7 @@
 
                 <StackPanel x:Name="pnlTipoviManif" Grid.Row="0" Grid.Column="0" 
                     Background="Transparent" Visibility="Hidden" Grid.ColumnSpan="2" Margin="4,0,6.8,0" >
-                    <DataGrid x:Name="tabelaTipoviManif" ItemsSource="{Binding Path=TipoviManifestacija}" CanUserDeleteRows ="True"  IsReadOnly="True" 
+                    <DataGrid x:Name="tabelaTipoviManif" ItemsSource="{Binding Path=TipoviManifestacija}" SelectedCellsChanged="tabelaTipoviManif_SelectedCellsChanged"  CanUserDeleteRows ="True"  IsReadOnly="True" 
                   Height="330" Background="Transparent"  
                   ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
@@ -196,7 +196,7 @@
 
                 <StackPanel x:Name="pnlEtikete" Visibility="Hidden" Grid.Row="0" Grid.Column="0" 
                     Background="Transparent" Grid.ColumnSpan="2" Margin="4,0,6.8,0">
-                    <DataGrid x:Name="tabelaEtikete" ItemsSource="{Binding Path=Etikete}" CanUserDeleteRows ="True"  IsReadOnly="True" 
+                    <DataGrid x:Name="tabelaEtikete" ItemsSource="{Binding Path=Etikete}" SelectedCellsChanged="tabelaEtikete_SelectedCellsChanged"  CanUserDeleteRows ="True"  IsReadOnly="True" 
                   Height="330" Background="Transparent" 
                   ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource DataGridStyle}"
