@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Manifestacije
 {
@@ -59,7 +60,6 @@ namespace Manifestacije
             CreateCheckBoxes();
             CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1));
             DateFrom.BlackoutDates.Add(cdr);
-
             filtrirano = new ObservableCollection<Manifestacija>();
             filterTipovi = new ObservableCollection<TipManifestacije>();
             filterEtikete = new ObservableCollection<Etiketa>();
@@ -290,6 +290,235 @@ namespace Manifestacije
 
         private void DoFilter(object sender, RoutedEventArgs e)
         {
+            ObservableCollection<Manifestacija> m = DoFilterList();
+            ObservableCollection<Manifestacija> m1 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi1);
+            ObservableCollection<Manifestacija> m2 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi2);
+            ObservableCollection<Manifestacija> m3 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi3);
+            ObservableCollection<Manifestacija> m4 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi4);
+
+            MainWindow pw = (MainWindow)Owner;
+            pw.lista.ItemsSource = m;
+            if(pw.aktivnaMapa == 1)
+            {
+                pw.MapaGrada.ItemsSource = m1;
+            }else if(pw.aktivnaMapa == 2)
+            {
+                pw.MapaGrada.ItemsSource = m2;
+            }
+            else if (pw.aktivnaMapa == 3)
+            {
+                pw.MapaGrada.ItemsSource = m3;
+            }
+            else if (pw.aktivnaMapa == 4)
+            {
+                pw.MapaGrada.ItemsSource = m4;
+            }
+
+
+            Close();
+
+        }
+
+        private ObservableCollection<Manifestacija> DoFilterMape(ObservableCollection<Manifestacija> manifZaFilter)
+        {
+            var pomocna = new ObservableCollection<Manifestacija>();
+            var pomocna2 = new ObservableCollection<Manifestacija>();
+            //prvo filtriramo po tipu ako ima neki cekiran
+            if (filterTipovi.Count > 0)
+            {
+                foreach (TipManifestacije tip in filterTipovi)
+                {
+                    foreach (Manifestacija m in manifZaFilter)
+                    {
+                        if (m.Tip == null)
+                        {
+                            continue;
+                        }
+                        if (m.Tip.Equals(tip))
+                        {
+                            pomocna.Add(m);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                pomocna = new ObservableCollection<Manifestacija>(manifZaFilter);
+            }
+            //filtriramo novu listu prema etiketama
+            if (filterEtikete.Count > 0)
+            {
+                foreach (Etiketa et in filterEtikete)
+                {
+                    foreach (Manifestacija m in pomocna)
+                    {
+                        foreach (Etiketa et2 in m.Etikete)
+                        {
+                            if (et.Equals(et2))
+                            {
+                                pomocna2.Add(m);
+                                break;
+                            }
+                        }
+                    }
+                }
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna2 = pomocna;
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+            //filtriranje po datumu
+            if (!(FromDate.Equals("")))
+            {
+                Console.WriteLine(FromDate + "aa" + ToDate);
+                DateTime fDate = DateTime.ParseExact(FromDate, "dd-MMM-yy", null);
+                DateTime tDate = DateTime.ParseExact(ToDate, "dd-MMM-yy", null);
+                Console.WriteLine(fDate + "eeeeee" + tDate);
+                foreach (Manifestacija m in pomocna2)
+                {
+                    DateTime mDate = DateTime.ParseExact(m.Datum, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+                    if (mDate.Ticks >= fDate.Ticks && mDate.Ticks <= tDate.Ticks)
+                    {
+                        pomocna.Add(m);
+                    }
+                }
+                pomocna2 = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna = pomocna2;
+                pomocna2 = new ObservableCollection<Manifestacija>();
+            }
+            //alkohol filter 
+            if (NoAlcohol || BringAlcohol || BuyAlcohol)
+            {
+                foreach (Manifestacija m in pomocna)
+                {
+                    if (NoAlcohol && m.StatusSluzenjaAlkohola.Equals("No alcohol"))
+                    {
+                        pomocna2.Add(m);
+                    }
+                    if (BringAlcohol && m.StatusSluzenjaAlkohola.Equals("You can bring alcohol"))
+                    {
+                        pomocna2.Add(m);
+                    }
+                    if (BuyAlcohol && m.StatusSluzenjaAlkohola.Equals("You can buy alcohol"))
+                    {
+                        pomocna2.Add(m);
+                    }
+                }
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna2 = pomocna;
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+
+            //cene filter
+            if (Free || Low || Medium || High)
+            {
+                foreach (Manifestacija m in pomocna2)
+                {
+                    if (Free && m.KategorijaCene.Equals("Free"))
+                    {
+                        pomocna.Add(m);
+                    }
+                    if (Low && m.KategorijaCene.Equals("Low prices"))
+                    {
+                        pomocna.Add(m);
+                    }
+                    if (Medium && m.KategorijaCene.Equals("Meduim prices"))
+                    {
+                        pomocna.Add(m);
+                    }
+                    if (High && m.KategorijaCene.Equals("High prices"))
+                    {
+                        pomocna.Add(m);
+                    }
+                }
+                pomocna2 = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna = pomocna2;
+                pomocna2 = new ObservableCollection<Manifestacija>();
+            }
+            //hendikepirani filter
+            if (YesHandic || NoHandic)
+            {
+                foreach (Manifestacija m in pomocna)
+                {
+                    if (YesHandic && m.Hendikepirani)
+                    {
+                        pomocna2.Add(m);
+                    }
+                    if (NoHandic && !(m.Hendikepirani))
+                    {
+                        pomocna2.Add(m);
+                    }
+                }
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna2 = pomocna;
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+            //pusenje filter
+            if (YesSmoking || NoSmoking)
+            {
+                foreach (Manifestacija m in pomocna2)
+                {
+                    if (YesSmoking && m.Pusenje)
+                    {
+                        pomocna.Add(m);
+                    }
+                    if (NoSmoking && !(m.Pusenje))
+                    {
+                        pomocna2.Add(m);
+                    }
+                }
+                pomocna2 = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna = pomocna2;
+                pomocna2 = new ObservableCollection<Manifestacija>();
+            }
+            //napolju filter
+            if (YesOut || NoOut)
+            {
+                foreach (Manifestacija m in pomocna)
+                {
+                    if (YesOut && m.Hendikepirani)
+                    {
+                        pomocna2.Add(m);
+                    }
+                    if (NoOut && !(m.Hendikepirani))
+                    {
+                        pomocna2.Add(m);
+                    }
+                }
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+            else
+            {
+                pomocna2 = pomocna;
+                pomocna = new ObservableCollection<Manifestacija>();
+            }
+
+            filtrirano = pomocna2;
+
+            return filtrirano;
+            
+        }
+
+
+     private ObservableCollection<Manifestacija> DoFilterList()
+        {
             var pomocna = new ObservableCollection<Manifestacija>();
             var pomocna2 = new ObservableCollection<Manifestacija>();
             //prvo filtriramo po tipu ako ima neki cekiran
@@ -479,12 +708,12 @@ namespace Manifestacije
             }
 
             filtrirano = pomocna2;
+            return filtrirano;
 
             
-            MainWindow pw = (MainWindow)Owner;
-            pw.lista.ItemsSource = filtrirano;
+           
             
-            Close();
+           
         }
 
     }

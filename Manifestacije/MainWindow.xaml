@@ -56,7 +56,7 @@
                 <Separator/>
                 <MenuItem Header="View All" Click="SveManifestacije_Click"  Background="#EFB39D"/>
                 <Separator/>
-                <MenuItem Header="Help" Background="#EFB39D"/>
+                <MenuItem Header="Help" Click="Help_Click" Background="#EFB39D"/>
             </ContextMenu>
         </DockPanel.ContextMenu>
         <MediaElement Source="C:\Users\Dz0n1Pr0\Desktop\HCI\Manifestacije\testProzor.webm" LoadedBehavior="Manual" Name="mePlayer"  Visibility="Collapsed" Width="1400"/>
@@ -151,9 +151,9 @@
 
         </Menu>
         <StackPanel DockPanel.Dock="Top" Orientation="Vertical" 
-                    Margin="292,0,-0.4,-38" HorizontalAlignment="Center" Width="902">
+                    Margin="292,-20,-0.4,-28" HorizontalAlignment="Center" Width="902" Height="83">
 
-            <StackPanel x:Name="tools" Orientation="Horizontal" Background="Transparent" Height="40">
+            <StackPanel x:Name="tools" Margin="0,25,0,0" Orientation="Horizontal" Background="Transparent" Height="40">
                 <Button Margin="80,0,20,0" Click="DodajTipManifestacije_Click" ToolTip="Create new event type (Ctrl+T)" >
                     <Button.Template>
                         <ControlTemplate>
@@ -197,36 +197,6 @@
                     </Button.Template>
                 </Button>
             </StackPanel>
-            <StackPanel  Background="Transparent" Height="40">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="txtPRETRAGAMapa" Text="Search..." Foreground="#2D0E1D" FontStyle="Oblique" Height="26" Width="500" FontFamily="Calibri" 
-                                FontSize="16" Margin="60,10,6,0"
-                                Background= "Transparent" BorderBrush="#2D0E1D" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" ToolTip="Search by event name"/>
-                    <Button  x:Name="Search_ButtonMapa" Margin="0,10,0,0" Height="21" Width="22" ToolTip="Searching for events"  Click="Search_Click" LostFocus="Search_Button_LostFocus">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/search ikonica2.png"/>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Button  x:Name="Refresh_ButtonMapa" Height="19" Width="20" Margin="7,10,0,0" ToolTip="Clear Search/Filter"  Click="Search_Click">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/refresh ikonica2.png"/>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Button Height="21" Width="62" ToolTip="Filtering data (Ctrl+F)"
-                               Margin="3,10,0,0" Click="Filter_Click">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/Filter2.png"/>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </StackPanel>
-            </StackPanel>
-
 
         </StackPanel>
         <StackPanel Margin="0,-42,0,0">
@@ -245,7 +215,7 @@
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
-                            <Button  x:Name="Refresh_Button" Height="19" Width="20" Margin="7,0,0,0" ToolTip="Clear Search/Filter"  Click="Search_Click">
+                            <Button  x:Name="Refresh_Button" Height="19" Width="20" Margin="7,0,0,0" ToolTip="Clear Search/Filter"  Click="Refresh_Click">
                                 <Button.Template>
                                     <ControlTemplate>
                                         <Image x:Name="slika" Source="images/GlavniProzor/refresh ikonica.png"/>
@@ -382,45 +352,45 @@
         </StackPanel>
 
 
-        <DockPanel DockPanel.Dock="Bottom" Margin="0,45,9.6,10" Height="547">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,18,9.6,-15" Height="567">
 
-            <DockPanel DockPanel.Dock="Left" Width="770" >
+            <DockPanel DockPanel.Dock="Left" Width="770" Margin="0,0,0,0.2" >
                 <ListBox Margin="10,0,0,10" x:Name="MapaGrada" ItemsSource ="{Binding ManifestacijeNaMapi, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" SelectionMode="Single"
                     AllowDrop="True" 
                     PreviewMouseLeftButtonDown="Mapa_Grada_PreviewMouseLeftButtonDown" 
                     DragEnter="Mapa_Grada_DragEnter" 
                     Drop="Mapa_Grada_Drop" 
                     PreviewMouseMove="Mapa_Grada_PreviewMouseMove">
-                <ListBox.Template>
-                    <ControlTemplate TargetType="{x:Type ListBox}">
-                        <ScrollViewer Name="CanvasScroller">
-                            <Canvas x:Name="CanvasPanel" IsItemsHost="True" Width="1025" Height="725">
-                                <Canvas.Background>
-                                    <ImageBrush ImageSource="images/GlavniProzor/mapaNS.png"/>
-                                </Canvas.Background>
-                            </Canvas>
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ListBox.Template >
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Canvas.Top" Value="{Binding Tacka.Y}"></Setter>
-                        <Setter Property="Canvas.Left" Value="{Binding Tacka.X}"></Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel AllowDrop="False" Width="50" Height="50" HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Grid>
-                                <Image Width="40" Height="40" Margin="5 5 5 5" Source="{Binding Ikonica}" VerticalAlignment="Center">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <ScrollViewer Name="CanvasScroller">
+                                <Canvas x:Name="CanvasPanel" IsItemsHost="True" Width="1025" Height="725">
+                                    <Canvas.Background>
+                                        <ImageBrush ImageSource="images/GlavniProzor/mapaNS.png"/>
+                                    </Canvas.Background>
+                                </Canvas>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ListBox.Template >
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Canvas.Top" Value="{Binding Tacka.Y}"></Setter>
+                            <Setter Property="Canvas.Left" Value="{Binding Tacka.X}"></Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel AllowDrop="False" Width="50" Height="50" HorizontalAlignment="Left" Orientation="Horizontal">
+                                <Grid>
+                                    <Image Width="40" Height="40" Margin="5 5 5 5" Source="{Binding Ikonica}" VerticalAlignment="Center">
 
-                                </Image>
-                                <Image Width="20" Height="20" Margin="0 0 0 0" Source="images/strelica.png" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                            </Grid>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                                    </Image>
+                                    <Image Width="20" Height="20" Margin="0 0 0 0" Source="images/strelica.png" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Right" Margin="9,0,0,0">
@@ -453,7 +423,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa3_Click" ToolTip="Switch to map of Uzice (Ctrl+3)" >
+                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa3_Click" ToolTip="Switch to map of Subotica (Ctrl+3)" >
                         <Button.Template>
                             <ControlTemplate>
                                 <Image x:Name="slika" Source="images/GlavniProzor/MapaSU.png"/>
@@ -481,7 +451,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    
+
 
                 </StackPanel>
             </DockPanel>

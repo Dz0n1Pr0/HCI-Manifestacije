@@ -61,15 +61,11 @@ namespace Manifestacije
         private Point startPoint = new Point();
         public DispatcherTimer timer;
         public int tajmer;
-        private int aktivnaMapa;
+        public int aktivnaMapa { get; set; }
 
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
         private ObservableCollection<Manifestacija> ManifestacijeNaMapi { get; set; }
-
-        private ObservableCollection<Manifestacija> SacuvaneNaMapi1 { get; set; }
-        private ObservableCollection<Manifestacija> SacuvaneNaMapi2 { get; set; }
-        private ObservableCollection<Manifestacija> SacuvaneNaMapi3 { get; set; }
-        private ObservableCollection<Manifestacija> SacuvaneNaMapi4 { get; set; }
+        
 
         public MainWindow()
         {
@@ -492,10 +488,30 @@ namespace Manifestacije
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
+            ObservableCollection<ObservableCollection<Manifestacija>> manifNaMapi = new ObservableCollection<ObservableCollection<Manifestacija>>();
             Filter filter = new Filter(this);
             filter.ShowDialog();
             //this.lista.ItemsSource = filter.getFiltrirano();
 
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            setManifestacijeItems();
+            if (aktivnaMapa == 1)
+            {
+                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi1;
+            } else if (aktivnaMapa == 2)
+            {
+                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi2;
+            }else if (aktivnaMapa == 3)
+            {
+                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi3;
+            }
+            else if (aktivnaMapa == 4)
+            {
+                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi4;
+            }
         }
 
         private void DemoStart_Click(object sender, RoutedEventArgs e)
@@ -649,13 +665,14 @@ namespace Manifestacije
                 DragDrop.DoDragDrop(listBoxItem, dragData, DragDropEffects.Move);
             }
         }
+        
 
         private void Mapa1_Click(object sender, RoutedEventArgs e)
         {
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaNS.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-
+            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 1;
             loadMapEvents(aktivnaMapa);
@@ -666,7 +683,7 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaUE.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-
+            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 2;
             loadMapEvents(aktivnaMapa);
@@ -677,7 +694,7 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaSU.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-
+            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 3;
             loadMapEvents(aktivnaMapa);
@@ -688,7 +705,7 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaBG.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-
+            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 4;
             loadMapEvents(aktivnaMapa);
@@ -699,16 +716,16 @@ namespace Manifestacije
             switch (map)
             {
                 case 1:
-                    SacuvaneNaMapi1 = ManifestacijeNaMapi;
+                    ListaManifestacija.SacuvaneNaMapi1 = ManifestacijeNaMapi;
                     break;
                 case 2:
-                    SacuvaneNaMapi2 = ManifestacijeNaMapi;
+                    ListaManifestacija.SacuvaneNaMapi2 = ManifestacijeNaMapi;
                     break;
                 case 3:
-                    SacuvaneNaMapi3 = ManifestacijeNaMapi;
+                    ListaManifestacija.SacuvaneNaMapi3 = ManifestacijeNaMapi;
                     break;
                 case 4:
-                    SacuvaneNaMapi4 = ManifestacijeNaMapi;
+                    ListaManifestacija.SacuvaneNaMapi4 = ManifestacijeNaMapi;
                     break;
                 default:
                     throw new Exception("Trying to acces an out of bounds map. Only 4 exist.");
@@ -720,16 +737,16 @@ namespace Manifestacije
             switch (map)
             {
                 case 1:
-                    ManifestacijeNaMapi = SacuvaneNaMapi1;
+                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi1;
                     break;
                 case 2:
-                    ManifestacijeNaMapi = SacuvaneNaMapi2;
+                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi2;
                     break;
                 case 3:
-                    ManifestacijeNaMapi = SacuvaneNaMapi3;
+                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi3;
                     break;
                 case 4:
-                    ManifestacijeNaMapi = SacuvaneNaMapi4;
+                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi4;
                     break;
                 default:
                     throw new Exception("Trying to acces an out of bounds map. Only 4 exist.");
@@ -740,10 +757,10 @@ namespace Manifestacije
         private void initMapLists()
         {
             ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
-            SacuvaneNaMapi1 = new ObservableCollection<Manifestacija>();
-            SacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
-            SacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();
-            SacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.SacuvaneNaMapi1 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.SacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.SacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.SacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
         }
 
 
