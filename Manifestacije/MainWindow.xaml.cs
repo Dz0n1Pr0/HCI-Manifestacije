@@ -164,26 +164,47 @@ namespace Manifestacije
        
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            Manifestacija selekt = (Manifestacija)lista.SelectedItem;
-            
+            Manifestacija selekt1 = (Manifestacija)lista.SelectedItem;
+            Manifestacija selekt2 = (Manifestacija)MapaGrada.SelectedItem;
 
-            ManifestacijaWindow dv = new ManifestacijaWindow(this, true, selekt);     //true jer se edituje
-            dv.ShowDialog();
+            if ((selekt1 != null && selekt2 != null) || lista.SelectedItems.Count > 1 || MapaGrada.SelectedItems.Count > 1)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Cannot edit multiple items. Please select only one.", "Error", System.Windows.MessageBoxButton.OK);
+            }
+            else
+            {
+                if (selekt1 != null)
+                {
+                    ManifestacijaWindow dv = new ManifestacijaWindow(this, true, selekt1);     //true jer se edituje
+                    dv.ShowDialog();
+                }
+                else if (selekt2 != null)
+                {
+                    ManifestacijaWindow dv = new ManifestacijaWindow(this, true, selekt2);     //true jer se edituje
+                    dv.ShowDialog();
+                }
+            }
+
+            saveMapEvents(aktivnaMapa);
         }
 
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.SelectedItems.Count > 1)
+            if ((lista.SelectedItems.Count + MapaGrada.SelectedItems.Count) > 1)
             {
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete all the selected events?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
+                    Manifestacija selekt = (Manifestacija)MapaGrada.SelectedItem;
+                    if (selekt != null)
+                        ManifestacijeNaMapi.Remove(selekt);
                     foreach (Manifestacija m in lista.SelectedItems)
                     {
                         ListaManifestacija.Manifestacije.Remove(m.ID);
                     }
                     this.setManifestacijeItems();
+                    saveMapEvents(aktivnaMapa);
                     return;
                 }
                 else
@@ -194,13 +215,26 @@ namespace Manifestacije
             MessageBoxResult messageBoxResult1 = System.Windows.MessageBox.Show("Are you sure you want to delete selected event?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult1 == MessageBoxResult.Yes)
             {
-                Manifestacija selekt = (Manifestacija)lista.SelectedItem;
-                ListaManifestacija.Manifestacije.Remove(selekt.ID);
-                foreach (Etiketa etiketa in selekt.Etikete)
+                if (lista.SelectedItems.Count > 0)
                 {
-                    ListaEtiketa.Etikete.Remove(etiketa.ID);
+                    Manifestacija selekt = (Manifestacija)lista.SelectedItem;
+                    ListaManifestacija.Manifestacije.Remove(selekt.ID);
+                    foreach (Etiketa etiketa in selekt.Etikete)
+                    {
+                        ListaEtiketa.Etikete.Remove(etiketa.ID);
+                    }
+                    this.setManifestacijeItems();
                 }
-                this.setManifestacijeItems();
+                if (MapaGrada.SelectedItems.Count > 0)
+                {
+                    Manifestacija selekt = (Manifestacija)MapaGrada.SelectedItem;
+                    ManifestacijeNaMapi.Remove(selekt);
+                    foreach (Etiketa etiketa in selekt.Etikete)
+                    {
+                        ListaEtiketa.Etikete.Remove(etiketa.ID);
+                    }
+                    saveMapEvents(aktivnaMapa);
+                }
             }
         }
 
@@ -307,7 +341,7 @@ namespace Manifestacije
                         ImageSource slika = null;
                         slika = new BitmapImage(new Uri(manif[10]));
                         TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
-                        string[] koord = manif[15].Split(',');
+                        string[] koord = manif[15].Split(';');
                         Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
                         m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
                             tipM, tacka);
