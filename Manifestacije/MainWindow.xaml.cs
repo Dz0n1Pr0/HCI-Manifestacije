@@ -337,7 +337,7 @@ namespace Manifestacije
                         ImageSource slika = null;
                         slika = new BitmapImage(new Uri(manif[10]));
                         TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
-                        string[] koord = manif[15].Split(';');
+                        string[] koord = manif[15].Split(',');
                         Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
                         m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
                             tipM, tacka);
@@ -414,7 +414,7 @@ namespace Manifestacije
                 tw.WriteLine(string.Format("{0}", kvp.Value));          
             }
         }
-
+        
         private void Save_Manifestacije(TextWriter tw, string file)
         {
             foreach (KeyValuePair<string, Manifestacija> kvp in ListaManifestacija.Manifestacije)
@@ -761,6 +761,10 @@ namespace Manifestacije
             ListaManifestacija.SacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
             ListaManifestacija.SacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();
             ListaManifestacija.SacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi1 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
         }
 
 

@@ -17,6 +17,10 @@ namespace Manifestacije.Modeli
         public static ObservableCollection<Manifestacija> SacuvaneNaMapi2 { get; set; }
         public static ObservableCollection<Manifestacija> SacuvaneNaMapi3 { get; set; }
         public static ObservableCollection<Manifestacija> SacuvaneNaMapi4 { get; set; }
+        public static ObservableCollection<Manifestacija> FilterSacuvaneNaMapi1 { get; set; }
+        public static ObservableCollection<Manifestacija> FilterSacuvaneNaMapi2 { get; set; }
+        public static ObservableCollection<Manifestacija> FilterSacuvaneNaMapi3 { get; set; }
+        public static ObservableCollection<Manifestacija> FilterSacuvaneNaMapi4 { get; set; }
 
 
 
