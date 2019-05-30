@@ -207,7 +207,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBox x:Name="txtPRETRAGA" Text="Search..." Foreground="#F1DED7" FontStyle="Oblique" Height="22" Width="210" FontFamily="Calibri" 
                                 FontSize="16" Margin="0,0,6,0" VerticalAlignment="Center"
-                                Background= "Transparent" BorderBrush="#EFB39D" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" ToolTip="Search by event name"/>
+                                Background= "Transparent" BorderBrush="#EFB39D" Cursor="IBeam" GotFocus="txtPRETRAGA_Enter" LostFocus="txtPRETRAGA_Leave" KeyDown="txtPRETRAGA_KeyDown" ToolTip="Search by event name"/>
                             <Button  x:Name="Search_Button" Height="21" Width="22" ToolTip="Searching for events"  Click="Search_Click" LostFocus="Search_Button_LostFocus">
                                 <Button.Template>
                                     <ControlTemplate>

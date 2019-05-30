@@ -868,5 +868,32 @@ namespace Manifestacije
         {
             HelpProvider.ShowHelp(this);
         }
+
+        private void txtPRETRAGA_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                this.lista.ItemsSource = null;
+                string parametar = this.txtPRETRAGA.Text;
+                if (this.txtPRETRAGA.FontStyle == FontStyles.Oblique)
+                {
+                    parametar = "";
+                    this.txtPRETRAGA.FontStyle = FontStyles.Normal;
+                    SolidColorBrush color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F1DED7"));
+                    this.txtPRETRAGA.Foreground = color;
+                }
+                ObservableCollection<Manifestacija> pomocna = new ObservableCollection<Manifestacija>();
+                foreach (Manifestacija m in this.Manifestacije)
+                {
+                    if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
+                    {
+                        pomocna.Add(m);
+                    }
+                }
+                PoslednjaPretraga = parametar;
+                this.lista.ItemsSource = pomocna;
+                this.txtPRETRAGA.Text = "";
+            }
+        }
     }
 }
