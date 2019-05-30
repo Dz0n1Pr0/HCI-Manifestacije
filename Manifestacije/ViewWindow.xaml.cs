@@ -34,6 +34,12 @@ namespace Manifestacije
 
         public ObservableCollection<Manifestacija> Manifestacije { get; set; }
         public ObservableCollection<TipManifestacije> TipoviManifestacija { get; set; }
+
+        internal void doThings()
+        {
+            throw new NotImplementedException();
+        }
+
         public ObservableCollection<Etiketa> Etikete { get; set; }
 
         public StackPanel trenutniPanel;
@@ -532,6 +538,11 @@ namespace Manifestacije
                 Edit_btn.IsEnabled = true;
                 Del_btn.IsEnabled = true;
             }
+        }
+
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            HelpProvider.ShowHelp(this);
         }
     }
 }

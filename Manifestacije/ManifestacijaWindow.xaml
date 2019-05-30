@@ -16,6 +16,7 @@
         <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Odustani_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.AddLabel}" Executed="DodajEtiketu_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.RmvLabel}" Executed="ObrisiEtiketu_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.HelpCommand}" Executed="Help_Executed"/>
     </Window.CommandBindings>
     <Window.Background>
         <ImageBrush ImageSource="images/ManifestacijaWindow/pozadine.png"></ImageBrush>

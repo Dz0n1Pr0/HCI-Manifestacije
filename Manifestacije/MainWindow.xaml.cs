@@ -37,6 +37,11 @@ namespace Manifestacije
             }
         }
 
+        internal void doThings()
+        {
+            throw new NotImplementedException();
+        }
+
         public static MainWindow instance = null;
         public static MainWindow Instance
         {
@@ -707,8 +712,12 @@ namespace Manifestacije
             SacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
         }
 
+
         #endregion
 
-
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            HelpProvider.ShowHelp(this);
+        }
     }
 }

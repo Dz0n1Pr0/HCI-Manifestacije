@@ -40,6 +40,12 @@ namespace Manifestacije
 
         public ObservableCollection<String> StatusAlkohola { get; set; }
         public ObservableCollection<String> StatusKategorije { get; set; }
+
+        internal void doThings()
+        {
+            throw new NotImplementedException();
+        }
+
         public ObservableCollection<String> TipoviManifestacije { get; set; }
         public ObservableCollection<Etiketa> SveEtikete { get; set; }
         public ObservableCollection<Etiketa> IzabraneEtikete { get; set; }
@@ -587,6 +593,9 @@ namespace Manifestacije
             RmvLbl.IsEnabled = true;
             AddLbl.IsEnabled = false;
         }
-
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            HelpProvider.ShowHelp(this);
+        }
     }
 }

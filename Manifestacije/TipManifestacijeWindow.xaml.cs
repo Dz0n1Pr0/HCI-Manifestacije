@@ -65,6 +65,12 @@ namespace Manifestacije
                 }
             }
         }
+
+        internal void doThings()
+        {
+            throw new NotImplementedException();
+        }
+
         private string opis;
         public string Opis
         {
@@ -193,6 +199,10 @@ namespace Manifestacije
             }
 
             this.Close();
+        }
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            HelpProvider.ShowHelp(this);
         }
     }
 }

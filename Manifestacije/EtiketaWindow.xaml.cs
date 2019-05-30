@@ -55,6 +55,12 @@ namespace Manifestacije
                 }
             }
         }
+
+        internal void doThings()
+        {
+            throw new NotImplementedException();
+        }
+
         public Color Boja
         {
             get
@@ -178,6 +184,11 @@ namespace Manifestacije
         private void Cp_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             Boja = (Color)cp.SelectedColor;
+        }
+
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            HelpProvider.ShowHelp(this);
         }
     }
 

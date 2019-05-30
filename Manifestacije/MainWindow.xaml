@@ -7,13 +7,14 @@
         xmlns:Controller="clr-namespace:Manifestacije.Controller"
         mc:Ignorable="d"
         Title="Map Events" Height="689.6" Width="1200" Icon="images/ikonica.png" WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        ResizeMode="CanMinimize" MouseLeftButtonDown="Window_MouseLeftButtonDown"  local:HelpProvider.HelpKey="Forma">
 
     <Window.Background>
         <ImageBrush ImageSource="images/GlavniProzor/pozadina.png"></ImageBrush>
     </Window.Background>
 
     <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.HelpCommand}" Executed="Help_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.NewEventType}" Executed="DodajTipManifestacije_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.NewEvent}" Executed="DodajManifestaciju_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.NewLabel}" Executed="DodajEtiketu_Click"/>
@@ -131,7 +132,7 @@
                     </Style>
                 </MenuItem.Style>
             </MenuItem>
-            <MenuItem Header="Help (F1)" Width="55">
+            <MenuItem Header="Help (F1)" Width="55" Click="Help_Click" ToolTip="Open Help window">
                 <MenuItem.Style>
                     <Style>
                         <Setter Property="MenuItem.Foreground" Value="#F1DED7" />

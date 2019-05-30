@@ -44,6 +44,7 @@
         <CommandBinding Command="{x:Static Controller:Commands.EventType}" Executed="TipoviManif_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.Label}" Executed="Etikete_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Nazad_Click"/>
+        <CommandBinding Command="{x:Static Controller:Commands.HelpCommand}" Executed="Help_Executed"/>
 
     </Window.CommandBindings>
 

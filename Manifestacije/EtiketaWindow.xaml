@@ -17,6 +17,7 @@
     </Window.Background>
 
     <Window.CommandBindings>
+        <CommandBinding Command="{x:Static Controller:Commands.HelpCommand}" Executed="Help_Executed"/>
         <CommandBinding Command="{x:Static Controller:Commands.SaveCommand}" Executed="Potvrdi_Click"/>
         <CommandBinding Command="{x:Static Controller:Commands.Exit}" Executed="Nazad_Click"/>
     </Window.CommandBindings>
