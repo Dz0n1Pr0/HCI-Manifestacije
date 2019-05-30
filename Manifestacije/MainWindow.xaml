@@ -393,59 +393,59 @@
                 </ListBox>
             </DockPanel>
 
-            <DockPanel DockPanel.Dock="Right" Margin="9,0,0,0">
+            <DockPanel DockPanel.Dock="Right" Margin="7,0,0,0">
                 <StackPanel Orientation="Vertical">
-                    <Button Margin="9,15,0,0" Width="110" Height="110" Click="Mapa1_Click" ToolTip="Switch to map of Novi Sad (Ctrl+1)" >
+                    <Button Margin="0,15,0,0" Width="110" Height="110" Click="Mapa1_Click" ToolTip="Switch to map of Novi Sad (Ctrl+1)" >
                         <Button.Template>
                             <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/MapaNS.png"/>
+                                <Image x:Name="slika" Source="images/GlavniProzor/btnns.png"/>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/btnns2.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa2_Click" ToolTip="Switch to map of Uzice (Ctrl+2)" >
+                    <Button Margin="0,25,0,0" Width="110" Height="110" Click="Mapa2_Click" ToolTip="Switch to map of Uzice (Ctrl+2)" >
                         <Button.Template>
                             <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/MapaUE.png"/>
+                                <Image x:Name="slika" Source="images/GlavniProzor/btnue.png"/>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/btnue2.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa3_Click" ToolTip="Switch to map of Subotica (Ctrl+3)" >
+                    <Button Margin="0,25,0,0" Width="110" Height="110" Click="Mapa3_Click" ToolTip="Switch to map of Subotica (Ctrl+3)" >
                         <Button.Template>
                             <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/MapaSU.png"/>
+                                <Image x:Name="slika" Source="images/GlavniProzor/btnsu.png"/>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/btnsu2.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button Margin="9,25,0,0" Width="110" Height="110" Click="Mapa4_Click" ToolTip="Switch to map of Beograd (Ctrl+4)" >
+                    <Button Margin="0,25,0,0" Width="110" Height="110" Click="Mapa4_Click" ToolTip="Switch to map of Beograd (Ctrl+4)" >
                         <Button.Template>
                             <ControlTemplate>
-                                <Image x:Name="slika" Source="images/GlavniProzor/MapaBG.png"/>
+                                <Image x:Name="slika" Source="images/GlavniProzor/btnbg.png"/>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/btnbg2.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

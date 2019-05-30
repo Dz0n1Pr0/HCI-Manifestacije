@@ -293,40 +293,46 @@ namespace Manifestacije
             ListaEtiketa.Etikete = new Dictionary<string, Etiketa>();
             ListaTipManifestacijecs.TipoviManifestacija = new Dictionary<string, TipManifestacije>();
             ListaManifestacija.Manifestacije = new Dictionary<string, Manifestacija>();
+            initMapLists();
             while ((line = sr.ReadLine()) != null)
             {
-
-
-                if (line == "")
+                Console.WriteLine("\n"+line+"\n");
+                while (line == "")
                 {
                     i++;
-                    if (sr.ReadLine() != null && i<3)
+                    if (sr.ReadLine() != null && i < 7)
                     {
                         line = sr.ReadLine();
                     }
-                    }
-                    if (i == 0)
-                    {
-                        string[] et = line.Split('|');
-                        Color color = (Color)ColorConverter.ConvertFromString(et[2]);
-                        Etiketa novaE = new Etiketa(et[0], color, et[1], new SolidColorBrush(color));
-                        ListaEtiketa.Etikete.Add(et[0], novaE);
+                    else if (sr.EndOfStream)
+                        return;
+                }
 
-                    } else if (i == 1)
-                    {
-                        string[] et = line.Split('|');
-                        ImageSource slika = null;
-                        slika = new BitmapImage(new Uri(et[3]));
-                        TipManifestacije tipM = new TipManifestacije(et[0], et[1], et[2], slika);
-                        ListaTipManifestacijecs.TipoviManifestacija.Add(et[0], tipM);
-                    }
-                    else
-                    {
+                Console.WriteLine("LINE\n" + line + "\nWITH I " + i);
+
+                if (i == 0)
+                {
+                    string[] et = line.Split('|');
+                    Color color = (Color)ColorConverter.ConvertFromString(et[2]);
+                    Etiketa novaE = new Etiketa(et[0], color, et[1], new SolidColorBrush(color));
+                    ListaEtiketa.Etikete.Add(et[0], novaE);
+
+                }
+                else if (i == 1)
+                {
+                    string[] et = line.Split('|');
+                    ImageSource slika = null;
+                    slika = new BitmapImage(new Uri(et[3]));
+                    TipManifestacije tipM = new TipManifestacije(et[0], et[1], et[2], slika);
+                    ListaTipManifestacijecs.TipoviManifestacija.Add(et[0], tipM);
+                }
+                else if (i == 2)
+                {
                     bool a = true;
                     Manifestacija m = null;
                     //line = sr.ReadLine();
-                    while (a) {
-                        
+                    while (a)
+                    {
                         if (line == null)
                         {
                             ListaManifestacija.Manifestacije.Add(m.ID, m);
@@ -344,26 +350,211 @@ namespace Manifestacije
                         m.Etikete = new List<Etiketa>();
                         while ((line = sr.ReadLine())!=null)
                         {
-                            if((line.StartsWith(manif[0] + "#E"))){
+                            if ((line.StartsWith(manif[0] + "#E")))
+                            {
                                 string[] l1 = line.Split('|');
                                 Etiketa et1 = ListaEtiketa.Etikete[l1[1]];
                                 m.Etikete.Add(et1);
-                            }else
+                            }
+                            else
                             {
                                 ListaManifestacija.Manifestacije.Add(m.ID, m);
                                 break;
                             }
-                            
-
                         }
-
                     }
-                        
-                            
-                    }
+                }
+                else if (i == 3)
+                {
+                    bool a = true;
+                    Manifestacija m = null;
+                    //line = sr.ReadLine();
+                    while (a)
+                    {
+                        if (line == null)
+                        {
+                            ListaManifestacija.SacuvaneNaMapi1.Add(m);
+                            return;
+                        }
+                        string[] manif = line.Split('|');
+                        Console.WriteLine("FIRST MAP W STRING\n" + line);
 
-                    
-                
+                        ImageSource slika = null;
+                        slika = new BitmapImage(new Uri(manif[10]));
+                        TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
+                        string[] koord = manif[15].Split(',');
+                        Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
+                        m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
+                            tipM, tacka);
+                        m.Etikete = new List<Etiketa>();
+                        while ((line = sr.ReadLine()) != "")
+                        {
+                            Console.WriteLine("FIRST MAP W ETIKETE\n" + line);
+                            if ((line.StartsWith(manif[0] + "#E")))
+                            {
+                                Console.WriteLine("FIRST MAP AT ETIKETA");
+                                string[] l1 = line.Split('|');
+                                Etiketa et1 = ListaEtiketa.Etikete[l1[1]];
+                                m.Etikete.Add(et1);
+                            }
+                            else
+                            {
+                                Console.WriteLine("FIRST MAP NO ETIKETA");
+                                ListaManifestacija.SacuvaneNaMapi1.Add(m);
+                                break;
+                            }
+                        }
+                        if (line == "")
+                        {
+                            i++;
+                            line = sr.ReadLine();
+                            break;
+                        }
+                    }
+                }
+                else if (i == 4)
+                {
+                    bool a = true;
+                    Manifestacija m = null;
+                    //line = sr.ReadLine();
+                    while (a)
+                    {
+                        if (line == null)
+                        {
+                            ListaManifestacija.SacuvaneNaMapi2.Add(m);
+                            return;
+                        }
+                        string[] manif = line.Split('|');
+                        Console.WriteLine("SECOND MAP W STRING\n" + line);
+
+                        ImageSource slika = null;
+                        slika = new BitmapImage(new Uri(manif[10]));
+                        TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
+                        string[] koord = manif[15].Split(',');
+                        Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
+                        m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
+                            tipM, tacka);
+                        m.Etikete = new List<Etiketa>();
+                        while ((line = sr.ReadLine()) != "")
+                        {
+                            Console.WriteLine("SECOND MAP W ETIKETE\n" + line);
+                            if ((line.StartsWith(manif[0] + "#E")))
+                            {
+                                Console.WriteLine("SECOND MAP AT ETIKETA");
+                                string[] l1 = line.Split('|');
+                                Etiketa et1 = ListaEtiketa.Etikete[l1[1]];
+                                m.Etikete.Add(et1);
+                            }
+                            else
+                            {
+                                Console.WriteLine("SECOND MAP NO ETIKETA");
+                                ListaManifestacija.SacuvaneNaMapi2.Add(m);
+                                break;
+                            }
+                        }
+                        if (line == "")
+                        {
+                            i++;
+                            line = sr.ReadLine();
+                            break;
+                        }
+                    }
+                }
+                else if (i == 5)
+                {
+                    bool a = true;
+                    Manifestacija m = null;
+                    //line = sr.ReadLine();
+                    while (a)
+                    {
+                        if (line == null)
+                        {
+                            ListaManifestacija.SacuvaneNaMapi3.Add(m);
+                            return;
+                        }
+                        string[] manif = line.Split('|');
+                        Console.WriteLine("THIRD MAP W STRING\n" + line);
+
+                        ImageSource slika = null;
+                        slika = new BitmapImage(new Uri(manif[10]));
+                        TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
+                        string[] koord = manif[15].Split(',');
+                        Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
+                        m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
+                            tipM, tacka);
+                        m.Etikete = new List<Etiketa>();
+                        while ((line = sr.ReadLine()) != "")
+                        {
+                            Console.WriteLine("THIRD MAP W ETIKETE\n" + line);
+                            if ((line.StartsWith(manif[0] + "#E")))
+                            {
+                                Console.WriteLine("THIRD MAP AT ETIKETA");
+                                string[] l1 = line.Split('|');
+                                Etiketa et1 = ListaEtiketa.Etikete[l1[1]];
+                                m.Etikete.Add(et1);
+                            }
+                            else
+                            {
+                                Console.WriteLine("THIRD MAP NO ETIKETA");
+                                ListaManifestacija.SacuvaneNaMapi3.Add(m);
+                                break;
+                            }
+                        }
+                        if (line == "")
+                        {
+                            i++;
+                            line = sr.ReadLine();
+                            break;
+                        }
+                    }
+                }
+                else if (i == 6)
+                {
+                    bool a = true;
+                    Manifestacija m = null;
+                    //line = sr.ReadLine();
+                    while (a)
+                    {
+                        if (line == null)
+                        {
+                            ListaManifestacija.SacuvaneNaMapi4.Add(m);
+                            return;
+                        }
+                        string[] manif = line.Split('|');
+
+                        ImageSource slika = null;
+                        slika = new BitmapImage(new Uri(manif[10]));
+                        TipManifestacije tipM = ListaTipManifestacijecs.TipoviManifestacija[manif[11]];
+                        string[] koord = manif[15].Split(',');
+                        Point tacka = new Point(Double.Parse(koord[0]), Double.Parse(koord[1]));
+                        m = new Manifestacija(manif[0], manif[1], manif[2], manif[3], manif[4], Boolean.Parse(manif[5]), Boolean.Parse(manif[6]), Boolean.Parse(manif[7]), int.Parse(manif[8]), manif[9], slika,
+                            tipM, tacka);
+                        m.Etikete = new List<Etiketa>();
+                        while ((line = sr.ReadLine()) != "")
+                        {
+                            if ((line.StartsWith(manif[0] + "#E")))
+                            {
+                                string[] l1 = line.Split('|');
+                                Etiketa et1 = ListaEtiketa.Etikete[l1[1]];
+                                m.Etikete.Add(et1);
+                            }
+                            else
+                            {
+                                ListaManifestacija.SacuvaneNaMapi4.Add(m);
+                                break;
+                            }
+                        }
+                        if (line == "")
+                        {
+                            i++;
+                            line = sr.ReadLine();
+                            break;
+                        }
+                    }
+                }
+
+
+
             }
 
         }
@@ -423,6 +614,42 @@ namespace Manifestacije
                 foreach (Etiketa etiketa in kvp.Value.Etikete)
                 {
                     tw.WriteLine(string.Format("{0}", kvp.Key + "#E|" + etiketa.ID));
+                }
+            }
+            tw.WriteLine("\n");
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi1)
+            {
+                tw.WriteLine(string.Format("{0}|{1}", m.ID, m));
+                foreach (Etiketa etiketa in m.Etikete)
+                {
+                    tw.WriteLine(string.Format("{0}", m.ID + "#E|" + etiketa.ID));
+                }
+            }
+            tw.WriteLine("\n");
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi2)
+            {
+                tw.WriteLine(string.Format("{0}|{1}", m.ID, m));
+                foreach (Etiketa etiketa in m.Etikete)
+                {
+                    tw.WriteLine(string.Format("{0}", m.ID + "#E|" + etiketa.ID));
+                }
+            }
+            tw.WriteLine("\n");
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi3)
+            {
+                tw.WriteLine(string.Format("{0}|{1}", m.ID, m));
+                foreach (Etiketa etiketa in m.Etikete)
+                {
+                    tw.WriteLine(string.Format("{0}", m.ID + "#E|" + etiketa.ID));
+                }
+            }
+            tw.WriteLine("\n");
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi4)
+            {
+                tw.WriteLine(string.Format("{0}|{1}", m.ID, m));
+                foreach (Etiketa etiketa in m.Etikete)
+                {
+                    tw.WriteLine(string.Format("{0}", m.ID + "#E|" + etiketa.ID));
                 }
             }
         }

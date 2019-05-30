@@ -309,22 +309,20 @@
     <Resource Include="images\GlavniProzor\temp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\GlavniProzor\btnns.png" />
-    <Resource Include="images\GlavniProzor\btnns2.png" />
-    <Resource Include="images\GlavniProzor\btnue.png" />
-    <Resource Include="images\GlavniProzor\btnue2.png" />
-    <Resource Include="images\GlavniProzor\btnsu.png" />
-    <Resource Include="images\GlavniProzor\btnsu2.png" />
-    <Resource Include="images\GlavniProzor\btnbg.png" />
-    <Resource Include="images\GlavniProzor\btnbg2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Help\error.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\etiketa.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\GlavniProzor\btnbg.png" />
+    <Resource Include="images\GlavniProzor\btnbg2.png" />
+    <Resource Include="images\GlavniProzor\btnns.png" />
+    <Resource Include="images\GlavniProzor\btnns2.png" />
+    <Resource Include="images\GlavniProzor\btnsu.png" />
+    <Resource Include="images\GlavniProzor\btnsu2.png" />
+    <Resource Include="images\GlavniProzor\btnue.png" />
+    <Resource Include="images\GlavniProzor\btnue2.png" />
     <Resource Include="Help\view.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
