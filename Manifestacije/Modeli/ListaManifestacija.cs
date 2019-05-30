@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,13 @@ namespace Manifestacije.Modeli
     {
         //Singleton
         private static Dictionary<string, Manifestacija> manifestacije = null;
+        public static ObservableCollection<Manifestacija> SacuvaneNaMapi1 { get; set; }
+        public static ObservableCollection<Manifestacija> SacuvaneNaMapi2 { get; set; }
+        public static ObservableCollection<Manifestacija> SacuvaneNaMapi3 { get; set; }
+        public static ObservableCollection<Manifestacija> SacuvaneNaMapi4 { get; set; }
+
+
+
         public static Dictionary<string, Manifestacija> Manifestacije
         {
             get
