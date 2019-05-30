@@ -242,12 +242,8 @@
                                 </Button.Template>
                                 <Button.Style >
                                     <Style TargetType="Button">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=lista, Path=SelectedItems.Count}" Value="1" >
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        
                                     </Style>
                                 </Button.Style>
                             </Button>
@@ -261,11 +257,6 @@
                                 <Button.Style >
                                     <Style TargetType="Button">
                                         <Setter Property="IsEnabled" Value="True"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=lista, Path=SelectedItems.Count}" Value="0" >
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
                                     </Style>
                                 </Button.Style>
                             </Button>
