@@ -162,7 +162,7 @@ namespace Manifestacije
                 }
             }
             this.lista.ItemsSource = null;
-            this.lista.ItemsSource = pomocna;
+            this.lista.ItemsSource = Manifestacije;
         }
 
        
@@ -441,6 +441,9 @@ namespace Manifestacije
         {
             this.lista.ItemsSource = null;
             string parametar = this.txtPRETRAGA.Text;
+            filtriranje = true;
+            
+
             if (this.txtPRETRAGA.FontStyle == FontStyles.Oblique)
             {
                 parametar = "";
@@ -448,16 +451,50 @@ namespace Manifestacije
                 SolidColorBrush color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F1DED7"));
                 this.txtPRETRAGA.Foreground = color;
             }
-            ObservableCollection<Manifestacija> pomocna = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterManifestacije = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi1 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterSacuvaneNaMapi4 = new ObservableCollection<Manifestacija>();
+
             foreach (Manifestacija m in this.Manifestacije)
             {
                 if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
                 {
-                    pomocna.Add(m);
+                    ListaManifestacija.FilterManifestacije.Add(m);
+                }
+            }
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi1)
+            {
+                if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
+                {
+                    ListaManifestacija.FilterSacuvaneNaMapi1.Add(m);
+                }
+            }
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi2)
+            {
+                if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
+                {
+                    ListaManifestacija.FilterSacuvaneNaMapi2.Add(m);
+                }
+            }
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi3)
+            {
+                if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
+                {
+                    ListaManifestacija.FilterSacuvaneNaMapi3.Add(m);
+                }
+            }
+            foreach (Manifestacija m in ListaManifestacija.SacuvaneNaMapi4)
+            {
+                if (m.Ime.ToUpper().Contains(parametar.ToUpper()))
+                {
+                    ListaManifestacija.FilterSacuvaneNaMapi4.Add(m);
                 }
             }
             PoslednjaPretraga = parametar;
-            this.lista.ItemsSource = pomocna;
+            setManifestacijeItems();
+            loadMapEvents(aktivnaMapa);
             this.txtPRETRAGA.Text = "";
         }
 
