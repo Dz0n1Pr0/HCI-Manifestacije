@@ -13,6 +13,7 @@ namespace Manifestacije.Modeli
     {
         //Singleton
         private static Dictionary<string, Manifestacija> manifestacije = null;
+        public static ObservableCollection<Manifestacija> FilterManifestacije { get; set; }
         public static ObservableCollection<Manifestacija> SacuvaneNaMapi1 { get; set; }
         public static ObservableCollection<Manifestacija> SacuvaneNaMapi2 { get; set; }
         public static ObservableCollection<Manifestacija> SacuvaneNaMapi3 { get; set; }

@@ -62,6 +62,7 @@ namespace Manifestacije
         public DispatcherTimer timer;
         public int tajmer;
         public int aktivnaMapa { get; set; }
+        public bool filtriranje { get; set; }
 
         private ObservableCollection<Manifestacija> Manifestacije { get; set; }
         private ObservableCollection<Manifestacija> ManifestacijeNaMapi { get; set; }
@@ -145,7 +146,14 @@ namespace Manifestacije
         public void setManifestacijeItems()
         {
             var pomocna = new ObservableCollection<Manifestacija>();
-            Manifestacije = new ObservableCollection<Manifestacija>(ListaManifestacija.Manifestacije.Values);
+            if (filtriranje) {
+                Manifestacije = ListaManifestacija.FilterManifestacije;
+            }
+            else
+            {
+                Manifestacije = new ObservableCollection<Manifestacija>(ListaManifestacija.Manifestacije.Values);
+            }
+            
             foreach (Manifestacija m in Manifestacije)  //da se ne bi ponistavao search kada se klikne na dugme 'Nazad'
             {
                 if (m.Ime.ToUpper().Contains(PoslednjaPretraga.ToUpper()))
@@ -491,27 +499,16 @@ namespace Manifestacije
             ObservableCollection<ObservableCollection<Manifestacija>> manifNaMapi = new ObservableCollection<ObservableCollection<Manifestacija>>();
             Filter filter = new Filter(this);
             filter.ShowDialog();
-            //this.lista.ItemsSource = filter.getFiltrirano();
+            filtriranje = true;
 
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
+            filtriranje = false;
             setManifestacijeItems();
-            if (aktivnaMapa == 1)
-            {
-                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi1;
-            } else if (aktivnaMapa == 2)
-            {
-                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi2;
-            }else if (aktivnaMapa == 3)
-            {
-                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi3;
-            }
-            else if (aktivnaMapa == 4)
-            {
-                MapaGrada.ItemsSource = ListaManifestacija.SacuvaneNaMapi4;
-            }
+            loadMapEvents(aktivnaMapa);
+            
         }
 
         private void DemoStart_Click(object sender, RoutedEventArgs e)
@@ -593,6 +590,30 @@ namespace Manifestacije
                 ListaManifestacija.Manifestacije.Add(man.ID, man);
                 this.setManifestacijeItems();
                 ManifestacijeNaMapi.Remove(man);
+                if (filtriranje)
+                {
+                    ListaManifestacija.FilterManifestacije.Add(man);
+                    if (aktivnaMapa == 1)
+                    {
+                        ListaManifestacija.FilterSacuvaneNaMapi1.Remove(man);
+                    }
+                    else if (aktivnaMapa == 2)
+                    {
+                        ListaManifestacija.FilterSacuvaneNaMapi2.Remove(man);
+                    }
+                    else if (aktivnaMapa == 3)
+                    {
+                        ListaManifestacija.FilterSacuvaneNaMapi3.Remove(man);
+                    }
+                    else if (aktivnaMapa == 4)
+                    {
+                        ListaManifestacija.FilterSacuvaneNaMapi4.Remove(man);
+                    }
+
+                }
+                loadMapEvents(aktivnaMapa);
+                setManifestacijeItems();
+                
             }
         }
 
@@ -639,13 +660,61 @@ namespace Manifestacije
                     ListaManifestacija.Manifestacije.Remove(man.ID);
                     this.setManifestacijeItems();
                     ManifestacijeNaMapi.Add(man);
+                    if (filtriranje)
+                    {
+                        ListaManifestacija.FilterManifestacije.Remove(man);
+                        if (aktivnaMapa == 1)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi1.Add(man);
+                        }
+                        else if (aktivnaMapa == 2)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi2.Add(man);
+                        }
+                        else if (aktivnaMapa == 3)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi3.Add(man);
+                        }
+                        else if (aktivnaMapa == 4)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi4.Add(man);
+                        }
+
+                    }
                 }
                 else
                 {
                     Console.WriteLine(man.Tacka);
                     ManifestacijeNaMapi.Remove(man);
                     ManifestacijeNaMapi.Add(man);
+                    if (filtriranje)
+                    {
+                        if (aktivnaMapa == 1)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi1.Remove(man);
+                            ListaManifestacija.FilterSacuvaneNaMapi1.Add(man);
+                        }
+                        else if (aktivnaMapa == 2)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi2.Remove(man);
+                            ListaManifestacija.FilterSacuvaneNaMapi2.Add(man);
+                        }
+                        else if (aktivnaMapa == 3)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi3.Remove(man);
+                            ListaManifestacija.FilterSacuvaneNaMapi3.Add(man);
+                        }
+                        else if (aktivnaMapa == 4)
+                        {
+                            ListaManifestacija.FilterSacuvaneNaMapi4.Remove(man);
+                            ListaManifestacija.FilterSacuvaneNaMapi4.Add(man);
+                        }
+
+                    }
                 }
+               
+                loadMapEvents(aktivnaMapa);
+                setManifestacijeItems();
             }
         }
 
@@ -672,7 +741,6 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaNS.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 1;
             loadMapEvents(aktivnaMapa);
@@ -683,7 +751,6 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaUE.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 2;
             loadMapEvents(aktivnaMapa);
@@ -694,7 +761,6 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaSU.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 3;
             loadMapEvents(aktivnaMapa);
@@ -705,7 +771,6 @@ namespace Manifestacije
             Canvas canvas = (Canvas)MapaGrada.Template.FindName("CanvasPanel", MapaGrada);
             var uriSource = new Uri("../../images/GlavniProzor/MapaBG.png", UriKind.Relative);
             canvas.Background = new ImageBrush(new BitmapImage(uriSource));
-            Refresh_Click(sender, e);
             saveMapEvents(aktivnaMapa);
             aktivnaMapa = 4;
             loadMapEvents(aktivnaMapa);
@@ -737,16 +802,44 @@ namespace Manifestacije
             switch (map)
             {
                 case 1:
-                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi1;
+                    if (filtriranje)
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.FilterSacuvaneNaMapi1;
+                    }
+                    else
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi1;
+                    }
                     break;
                 case 2:
-                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi2;
+                    if (filtriranje)
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.FilterSacuvaneNaMapi2;
+                    }
+                    else
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi2;
+                    }
                     break;
                 case 3:
-                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi3;
+                    if (filtriranje)
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.FilterSacuvaneNaMapi3;
+                    }
+                    else
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi3;
+                    }
                     break;
                 case 4:
-                    ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi4;
+                    if (filtriranje)
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.FilterSacuvaneNaMapi4;
+                    }
+                    else
+                    {
+                        ManifestacijeNaMapi = ListaManifestacija.SacuvaneNaMapi4;
+                    }
                     break;
                 default:
                     throw new Exception("Trying to acces an out of bounds map. Only 4 exist.");
@@ -757,6 +850,7 @@ namespace Manifestacije
         private void initMapLists()
         {
             ManifestacijeNaMapi = new ObservableCollection<Manifestacija>();
+            ListaManifestacija.FilterManifestacije = new ObservableCollection<Manifestacija>();
             ListaManifestacija.SacuvaneNaMapi1 = new ObservableCollection<Manifestacija>();
             ListaManifestacija.SacuvaneNaMapi2 = new ObservableCollection<Manifestacija>();
             ListaManifestacija.SacuvaneNaMapi3 = new ObservableCollection<Manifestacija>();

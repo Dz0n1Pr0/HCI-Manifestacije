@@ -284,34 +284,37 @@ namespace Manifestacije
 
             if (mbr == MessageBoxResult.Yes)
             {
+                MainWindow pw = (MainWindow)Owner;
+                pw.filtriranje = false;
                 Close();
             }
         }
 
         private void DoFilter(object sender, RoutedEventArgs e)
         {
-            ObservableCollection<Manifestacija> m = DoFilterList();
-            ObservableCollection<Manifestacija> m1 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi1);
-            ObservableCollection<Manifestacija> m2 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi2);
-            ObservableCollection<Manifestacija> m3 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi3);
-            ObservableCollection<Manifestacija> m4 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi4);
+            ListaManifestacija.FilterManifestacije = DoFilterList();
+            ListaManifestacija.FilterSacuvaneNaMapi1 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi1);
+            ListaManifestacija.FilterSacuvaneNaMapi2 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi2);
+            ListaManifestacija.FilterSacuvaneNaMapi3 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi3);
+            ListaManifestacija.FilterSacuvaneNaMapi4 = DoFilterMape(ListaManifestacija.SacuvaneNaMapi4);
 
             MainWindow pw = (MainWindow)Owner;
-            pw.lista.ItemsSource = m;
+            pw.lista.ItemsSource = ListaManifestacija.FilterManifestacije;
             if(pw.aktivnaMapa == 1)
             {
-                pw.MapaGrada.ItemsSource = m1;
-            }else if(pw.aktivnaMapa == 2)
+                pw.MapaGrada.ItemsSource = ListaManifestacija.FilterSacuvaneNaMapi1;
+            }
+            else if(pw.aktivnaMapa == 2)
             {
-                pw.MapaGrada.ItemsSource = m2;
+                pw.MapaGrada.ItemsSource = ListaManifestacija.FilterSacuvaneNaMapi2;
             }
             else if (pw.aktivnaMapa == 3)
             {
-                pw.MapaGrada.ItemsSource = m3;
+                pw.MapaGrada.ItemsSource = ListaManifestacija.FilterSacuvaneNaMapi3;
             }
             else if (pw.aktivnaMapa == 4)
             {
-                pw.MapaGrada.ItemsSource = m4;
+                pw.MapaGrada.ItemsSource = ListaManifestacija.FilterSacuvaneNaMapi4;
             }
 
 
