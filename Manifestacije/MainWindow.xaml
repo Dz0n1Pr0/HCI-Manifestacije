@@ -59,7 +59,7 @@
                 <MenuItem Header="Help" Click="Help_Click" Background="#EFB39D"/>
             </ContextMenu>
         </DockPanel.ContextMenu>
-        <MediaElement Source="C:\Users\Dz0n1Pr0\Desktop\HCI\Manifestacije\testProzor.webm" LoadedBehavior="Manual" Name="mePlayer"  Visibility="Collapsed" Width="1400"/>
+        <MediaElement Source="pack://application:,,,/Manifestacije;component/images/20190530_162925.mp4" LoadedBehavior="Manual" Name="mePlayer"  Visibility="Collapsed" Width="1400"/>
         <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="Calibri" Height="17">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -403,7 +403,7 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/NS.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -417,7 +417,7 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/UE.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -431,7 +431,7 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/SU.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -445,7 +445,7 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="slika"
                                                 Property="Source"
-                                                Value="images/GlavniProzor/temp.png" />
+                                                Value="images/GlavniProzor/BG.png" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

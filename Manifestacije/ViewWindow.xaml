@@ -141,7 +141,7 @@
 
                 <StackPanel x:Name="pnlManif" Grid.Row="0" Grid.Column="0"
                     Background="Transparent" Visibility="Visible"  Grid.ColumnSpan="2" Margin="4,0,6.8,0">
-                    <DataGrid x:Name="tabelaManif" ItemsSource="{Binding Path=Manifestacije}"  SelectedCellsChanged="tabelaManif_SelectedCellsChanged"
+                    <DataGrid x:Name="tabelaManif" ItemsSource="{Binding Path=Manifestacijee}"  SelectedCellsChanged="tabelaManif_SelectedCellsChanged"
                               IsReadOnly="True"
                   Height="330" Background="Transparent" 
                   ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 

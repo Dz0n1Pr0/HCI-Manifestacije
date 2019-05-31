@@ -134,7 +134,10 @@ namespace Manifestacije
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            mePlayer.Visibility = Visibility.Collapsed;
+            mePlayer.Stop();
+            Cursor = Cursors.Arrow;
+            timer.Stop();
         }
 
         private void DodajTipManifestacije_Click(object sender, RoutedEventArgs e)
@@ -282,6 +285,9 @@ namespace Manifestacije
                         MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
                         $"Details:\n\n{ex.StackTrace}");
                     }
+                }else
+                {
+                    System.Environment.Exit(1);
                 }
 
 
@@ -578,14 +584,14 @@ namespace Manifestacije
         {
             if (mePlayer.Source != null)
             {
-                Console.WriteLine("{0}", mePlayer.Position.ToString(@"mm\:ss"));
+                /*Console.WriteLine("{0}", mePlayer.Position.ToString(@"mm\:ss"));
                 if (mePlayer.Position.ToString(@"mm\:ss").Equals(mePlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss")))
                 {
                     mePlayer.Visibility = Visibility.Collapsed;
                     mePlayer.Stop();
                     Cursor = Cursors.Arrow;
                     timer.Stop();
-                }
+                }*/
             }
         }
 

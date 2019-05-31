@@ -1,0 +1,17 @@
+MAP-EVENTS
+1|...|#FFFF0000
+ff|dasdas|#FF33C9B8
+
+
+1|Tip1|Opis1|pack://application:,,,/Manifestacije;component/images/tip1.png
+2|Tip2|Opis2|pack://application:,,,/Manifestacije;component/images/robot.png
+3|Tip3|Opis3|pack://application:,,,/Manifestacije;component/images/slanina.png
+
+
+1|Slaninijada|Opis1|You can buy alcohol|Low prices|True|True|True|5000|9/11/2019 12:00:00 AM|pack://application:,,,/Manifestacije;component/images/slanina.png|1|Tip1|Opis1|pack://application:,,,/Manifestacije;component/images/tip1.png|0,0
+1#E|1
+1#E|ff
+2|Exit Festival|Najbolji muzicki festival u Evropi|You can buy alcohol|High prices|False|True|True|100000|7/4/2019 12:00:00 AM|pack://application:,,,/Manifestacije;component/images/exit.png|1|Tip1|Opis1|pack://application:,,,/Manifestacije;component/images/tip1.png|0,0
+2#E|1
+3|Rakijada Pranjani|Najbolja rakija!|You can buy alcohol|Low prices|False|True|True|5000|7/27/2019 12:00:00 AM|pack://application:,,,/Manifestacije;component/images/rakijada.png|3|Tip3|Opis3|pack://application:,,,/Manifestacije;component/images/slanina.png|0,0
+3#E|ff

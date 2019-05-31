@@ -33,6 +33,7 @@ namespace Manifestacije
         }
 
         public ObservableCollection<Manifestacija> Manifestacije { get; set; }
+        public ObservableCollection<Manifestacija> Manifestacijee { get; set; }
         public ObservableCollection<TipManifestacije> TipoviManifestacija { get; set; }
 
         internal void doThings()
@@ -54,6 +55,23 @@ namespace Manifestacije
             ParentWindow = par;
 
             Manifestacije = new ObservableCollection<Manifestacija>(ListaManifestacija.Manifestacije.Values);
+            Manifestacijee = new ObservableCollection<Manifestacija>(ListaManifestacija.Manifestacije.Values);
+            foreach(Manifestacija ma in ListaManifestacija.SacuvaneNaMapi1)
+            {
+                Manifestacijee.Add(ma);
+            }
+            foreach (Manifestacija ma in ListaManifestacija.SacuvaneNaMapi2)
+            {
+                Manifestacijee.Add(ma);
+            }
+            foreach (Manifestacija ma in ListaManifestacija.SacuvaneNaMapi3)
+            {
+                Manifestacijee.Add(ma);
+            }
+            foreach (Manifestacija ma in ListaManifestacija.SacuvaneNaMapi4)
+            {
+                Manifestacijee.Add(ma);
+            }
             TipoviManifestacija = new ObservableCollection<TipManifestacije>(ListaTipManifestacijecs.TipoviManifestacija.Values);
             Etikete = new ObservableCollection<Etiketa>(ListaEtiketa.Etikete.Values);
             trenutniPanel = pnlManif;
